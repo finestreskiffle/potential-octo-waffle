@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="it" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Scheda Allenamento</title>
+  <meta name="description" content="Web app per gestire allenamenti semplice, offline e installabile." />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7c3aed">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Tailwind via CDN (no build) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config for dark mode class strategy
+    tailwind.config = { darkMode: 'class' };
+  </script>
+
+  <style>
+    /* iOS safe area */
+    body { padding-bottom: env(safe-area-inset-bottom); }
+
+    /* Pretty checkbox without @apply (pure CSS) */
+    input[type="checkbox"].chk {
+      width: 1.75rem; height: 1.75rem;
+      border-radius: 9999px; border: 2px solid #cbd5e1; /* slate-300 */
+      -webkit-appearance: none; appearance: none; cursor: pointer;
+      outline: none; transition: all .2s ease;
+      box-shadow: 0 0 0 2px rgba(163, 230, 53, .0); /* ring */
+      background: transparent;
+    }
+    html.dark input[type="checkbox"].chk { border-color: #475569; } /* slate-600 */
+    input[type="checkbox"].chk:checked {
+      background: #84cc16; border-color: #84cc16; /* lime-500 */
+      box-shadow: 0 0 0 2px rgba(163, 230, 53, .5);
+    }
+
+    /* Hide number spinners */
+    input[type=number]::-webkit-outer-spin-button,
+    input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 transition-colors">
+  <div class="max-w-xl mx-auto p-4 pb-24">
+    <header class="flex items-center justify-between gap-3 mb-4">
+      <h1 class="text-2xl font-bold">Scheda Allenamento</h1>
+      <div class="flex items-center gap-2">
+        <button id="installHint" class="text-xs px-2 py-1 rounded-full border border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">Installa</button>
+        <button id="themeToggle" aria-label="Cambia tema" class="p-2 rounded-xl border border-slate-300 dark:border-slate-700">
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="grid gap-4">
+      <div class="rounded-2xl p-4 bg-white dark:bg-slate-800 shadow">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="font-semibold">Allenamento di oggi</h2>
+          <span class="text-sm text-slate-500" id="todayLabel"></span>
+        </div>
+        <div id="exerciseList" class="grid gap-3"></div>
+        <div class="flex items-center justify-between mt-4">
+          <button id="resetBtn" class="text-sm px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700">Reset</button>
+          <button id="completeBtn" class="text-sm px-4 py-2 rounded-xl bg-violet-600 text-white hover:bg-violet-700">Allenamento completato</button>
+        </div>
+      </div>
+
+      <div class="rounded-2xl p-4 bg-white dark:bg-slate-800 shadow">
+        <h2 class="font-semibold mb-2">Storico</h2>
+        <div class="text-sm text-slate-500 mb-2">Settimana <span id="weekNum">1</span> — Giorno <span id="dayNum">1</span></div>
+        <div id="history" class="text-sm text-slate-600 dark:text-slate-300"></div>
+      </div>
+
+      <div class="rounded-2xl p-4 bg-white dark:bg-slate-800 shadow">
+        <h2 class="font-semibold mb-2">Impostazioni</h2>
+        <div class="grid gap-3">
+          <label class="grid gap-1">
+            <span class="text-sm">Peso di default (kg)</span>
+            <input type="number" id="defaultWeight" step="0.5" min="0" class="px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent">
+          </label>
+          <button id="exportBtn" class="text-sm px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700">Esporta dati (.json)</button>
+          <label class="text-sm">
+            <input id="importFile" type="file" accept="application/json" class="hidden">
+            <span id="importBtn" class="inline-block px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 cursor-pointer">Importa dati (.json)</span>
+          </label>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="fixed bottom-0 inset-x-0 p-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-t border-slate-200 dark:border-slate-800">
+    <div class="max-w-xl mx-auto flex items-center justify-center gap-4 text-xs text-slate-500">
+      <span>Offline pronto ✅</span>
+      <span class="hidden sm:inline">|</span>
+      <a href="https://developer.apple.com/documentation/safari-release-notes/safari-16_4-release-notes" target="_blank" rel="noopener noreferrer" class="underline">PWAs su iOS</a>
+    </div>
+  </footer>
+
+  <script>
+    // --- Theme ---
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const savedTheme = localStorage.getItem('theme');
+    function applyTheme(theme) {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      document.getElementById('themeIcon').textContent = theme === 'dark' ? '🌞' : '🌙';
+    }
+    applyTheme(savedTheme || (prefersDark ? 'dark' : 'light'));
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+
+    // --- Data model ---
+    const DEFAULT_WORKOUTS = [
+      { name: "Giorno A", exercises: [
+        { id: "squat", label: "Squat", sets: 5, reps: 5 },
+        { id: "bench", label: "Panca piana", sets: 5, reps: 5 },
+        { id: "row", label: "Rematore", sets: 5, reps: 5 }
+      ]},
+      { name: "Giorno B", exercises: [
+        { id: "deadlift", label: "Stacco", sets: 5, reps: 5 },
+        { id: "ohp", label: "Lento avanti", sets: 5, reps: 5 },
+        { id: "pulldown", label: "Lat machine", sets: 5, reps: 5 }
+      ]}
+    ];
+
+    const state = {
+      week: parseInt(localStorage.getItem('week') || '1', 10),
+      dayIndex: parseInt(localStorage.getItem('dayIndex') || '0', 10), // 0 -> A, 1 -> B
+      workouts: JSON.parse(localStorage.getItem('workouts') || JSON.stringify(DEFAULT_WORKOUTS)),
+      weights: JSON.parse(localStorage.getItem('weights') || '{}'), // { exerciseId: kg }
+      progress: JSON.parse(localStorage.getItem('progress') || '{}'), // { exerciseId: [bool,bool,...] }
+      defaultWeight: parseFloat(localStorage.getItem('defaultWeight') || '20')
+    };
+
+    document.getElementById('defaultWeight').value = String(state.defaultWeight);
+
+    function save() {
+      localStorage.setItem('week', String(state.week));
+      localStorage.setItem('dayIndex', String(state.dayIndex));
+      localStorage.setItem('workouts', JSON.stringify(state.workouts));
+      localStorage.setItem('weights', JSON.stringify(state.weights));
+      localStorage.setItem('progress', JSON.stringify(state.progress));
+      localStorage.setItem('defaultWeight', String(state.defaultWeight));
+      renderHistory();
+    }
+
+    function today() {
+      const d = new Date();
+      return d.toLocaleDateString('it-IT', { weekday: 'long', day: '2-digit', month: '2-digit' });
+    }
+
+    // Render
+    const list = document.getElementById('exerciseList');
+    function renderWorkout() {
+      const w = state.workouts[state.dayIndex];
+      document.getElementById('todayLabel').textContent = `${w.name} — ${today()}`;
+      list.innerHTML = '';
+      w.exercises.forEach(ex => {
+        const weight = state.weights[ex.id] ?? state.defaultWeight;
+        const exProg = state.progress[ex.id] ?? Array(ex.sets).fill(false);
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between gap-3 p-3 rounded-xl border border-slate-200 dark:border-slate-700";
+
+        const left = document.createElement('div');
+        left.className = "flex items-center gap-3";
+        const checkCol = document.createElement('div');
+        checkCol.className = "flex flex-wrap gap-2";
+        for (let i=0; i<ex.sets; i++) {
+          const cb = document.createElement('input');
+          cb.type = "checkbox"; cb.className = "chk"; cb.checked = !!exProg[i];
+          cb.addEventListener('change', () => {
+            const arr = state.progress[ex.id] ?? Array(ex.sets).fill(false);
+            arr[i] = cb.checked;
+            state.progress[ex.id] = arr;
+            save();
+          });
+          checkCol.appendChild(cb);
+        }
+        const label = document.createElement('div');
+        label.innerHTML = `<div class="font-medium">${ex.label}</div><div class="text-xs text-slate-500">${ex.sets}×${ex.reps}</div>`;
+        left.append(checkCol, label);
+
+        const right = document.createElement('div');
+        right.className = "flex items-center gap-2";
+        const weightInput = document.createElement('input');
+        weightInput.type = "number"; weightInput.step = "0.5"; weightInput.min = "0";
+        weightInput.value = weight;
+        weightInput.className = "w-24 px-3 py-2 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent";
+        weightInput.addEventListener('change', () => {
+          state.weights[ex.id] = parseFloat(weightInput.value || state.defaultWeight);
+          save();
+        });
+        const kg = document.createElement('span'); kg.textContent = "kg"; kg.className = "text-sm text-slate-500";
+        right.append(weightInput, kg);
+
+        row.append(left, right);
+        list.appendChild(row);
+      });
+    }
+
+    function renderHistory() {
+      document.getElementById('weekNum').textContent = String(state.week);
+      document.getElementById('dayNum').textContent = String(state.dayIndex + 1);
+      const his = document.getElementById('history');
+      const doneSets = Object.values(state.progress).reduce((acc, arr) => acc + arr.filter(Boolean).length, 0);
+      his.textContent = doneSets ? `Serie completate oggi: ${doneSets}` : "Nessuna serie completata ancora oggi.";
+    }
+
+    // Actions
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      state.progress = {};
+      save();
+      renderWorkout();
+    });
+
+    document.getElementById('completeBtn').addEventListener('click', () => {
+      // Avanza al prossimo giorno, A <-> B; ogni 4 completamenti avanza settimana
+      state.dayIndex = state.dayIndex === 0 ? 1 : 0;
+      if (state.dayIndex === 0) state.week += 1;
+      state.progress = {};
+      save();
+      renderWorkout();
+    });
+
+    document.getElementById('defaultWeight').addEventListener('change', (e) => {
+      const v = parseFloat(e.target.value || '20');
+      state.defaultWeight = v;
+      save();
+      renderWorkout();
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', () => {
+      const data = {
+        week: state.week,
+        dayIndex: state.dayIndex,
+        workouts: state.workouts,
+        weights: state.weights,
+        progress: state.progress,
+        defaultWeight: state.defaultWeight
+      };
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = "allenamento-backup.json"; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('importBtn').addEventListener('click', () => {
+      document.getElementById('importFile').click();
+    });
+    document.getElementById('importFile').addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        const txt = await file.text();
+        const data = JSON.parse(txt);
+        Object.assign(state, data);
+        save();
+        renderWorkout();
+        alert("Dati importati ✅");
+      } catch (err) {
+        alert("File non valido.");
+      }
+      e.target.value = "";
+    });
+
+    // Install hint
+    document.getElementById('installHint').addEventListener('click', () => {
+      alert("Per installare: apri in Safari ➜ Condividi ➜ Aggiungi a Home.");
+    });
+
+    // Init UI
+    renderWorkout(); renderHistory();
+
+    // --- Service Worker registration ---
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js");
+      });
+    }
+  </script>
+</body>
+</html>
