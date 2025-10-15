@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    <title>Palestra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        :root {
+            --bg-primary: #000;
+            --bg-secondary: #1c1c1e;
+            --bg-tertiary: #2c2c2e;
+            --bg-card: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.5);
+            --text-tertiary: rgba(255, 255, 255, 0.3);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --overlay-bg: rgba(255, 255, 255, 0.08);
+            --overlay-hover: rgba(255, 255, 255, 0.12);
+            --shadow: rgba(0, 0, 0, 0.4);
+            --stat-bg: rgba(10, 132, 255, 0.1);
+            --stat-border: rgba(10, 132, 255, 0.15);
+            --video-bg: rgba(255, 59, 48, 0.1);
+            --video-border: rgba(255, 59, 48, 0.15);
+        }
+        
+        body.light-mode {
+            --bg-primary: #f2f2f7;
+            --bg-secondary: #fff;
+            --bg-tertiary: #f9f9f9;
+            --bg-card: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
+            --text-primary: #000;
+            --text-secondary: rgba(0, 0, 0, 0.6);
+            --text-tertiary: rgba(0, 0, 0, 0.4);
+            --border-color: rgba(0, 0, 0, 0.1);
+            --border-subtle: rgba(0, 0, 0, 0.05);
+            --overlay-bg: rgba(0, 0, 0, 0.05);
+            --overlay-hover: rgba(0, 0, 0, 0.08);
+            --shadow: rgba(0, 0, 0, 0.1);
+            --stat-bg: rgba(10, 132, 255, 0.08);
+            --stat-border: rgba(10, 132, 255, 0.15);
+            --video-bg: rgba(255, 59, 48, 0.08);
+            --video-border: rgba(255, 59, 48, 0.2);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+            background-color: var(--bg-primary);
+            padding-bottom: calc(env(safe-area-inset-bottom) + 90px);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: var(--text-primary);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            padding: calc(env(safe-area-inset-top) + 16px) 16px 16px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            min-height: 44px;
+        }
+        
+        .header h1 {
+            font-size: clamp(28px, 8vw, 32px);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.8px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .icon-btn {
+            background: var(--overlay-bg);
+            border: none;
+            min-width: 44px;
+            min-height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            -webkit-touch-callout: none;
+        }
+        
+        .icon-btn:active {
+            background: var(--overlay-hover);
+        }
+        
+        .icon-btn svg {
+            fill: var(--text-primary);
+            stroke: var(--text-primary);
+        }
+        
+        .days-carousel {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0 0 12px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .days-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .day-tab {
+            flex-shrink: 0;
+            padding: 10px 18px;
+            background: var(--overlay-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            -webkit-touch-callout: none;
+        }
+        
+        .day-tab.active {
+            background: #0a84ff;
+            color: #fff;
+            border-color: #0a84ff;
+        }
+        
+        .day-tab:active {
+            transform: scale(0.96);
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        
+        .exercise-item {
+            background: var(--bg-card);
+            border-radius: 14px;
+            margin-bottom: 10px;
+            padding: 14px;
+            box-shadow: 0 4px 12px var(--shadow);
+            border: 1px solid var(--border-subtle);
+            animation: fadeIn 0.3s ease-out;
+            cursor: pointer;
+            min-height: 44px;
+            -webkit-touch-callout: none;
+            will-change: transform;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .exercise-item:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+        
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .exercise-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            flex: 1;
+            letter-spacing: -0.3px;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        
+        .exercise-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .stat {
+            background: var(--stat-bg);
+            border-radius: 10px;
+            padding: 10px 8px;
+            text-align: center;
+            border: 1px solid var(--stat-border);
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-weight: 600;
+        }
+        
+        .video-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px;
+            background: var(--video-bg);
+            border-radius: 10px;
+            color: #ff453a;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            border: 1px solid var(--video-border);
+            cursor: pointer;
+            width: 100%;
+            min-height: 44px;
+            transition: background 0.2s;
+            -webkit-touch-callout: none;
+        }
+        
+        .video-toggle:active {
+            background: rgba(255, 59, 48, 0.2);
+        }
+        
+        .video-container {
+            margin-bottom: 8px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid var(--video-border);
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+        }
+        
+        .video-container.show {
+            max-height: 600px;
+            opacity: 1;
+        }
+        
+        .video-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+            display: block;
+        }
+        
+        .exercise-date {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-align: right;
+            font-weight: 500;
+        }
+        
+        .empty-state {
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 50px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--shadow);
+            margin-top: 20px;
+        }
+        
+        .empty-state-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+        
+        .empty-state-text {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .fab {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom) + 20px);
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 8px 24px rgba(10, 132, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            z-index: 50;
+            will-change: transform;
+            -webkit-touch-callout: none;
+        }
+        
+        .fab:active {
+            transform: scale(0.9);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            z-index: 100;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+            will-change: transform;
+        }
+        
+        .modal.show {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+            padding: calc(env(safe-area-inset-top) + 16px) 16px 16px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 60px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        .modal-title {
+            font-size: clamp(24px, 7vw, 28px);
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.8px;
+        }
+        
+        .close-btn {
+            background: var(--overlay-bg);
+            border: none;
+            min-width: 44px;
+            min-height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            color: var(--text-primary);
+            font-size: 22px;
+            line-height: 1;
+            -webkit-touch-callout: none;
+        }
+        
+        .close-btn:active {
+            background: var(--overlay-hover);
+        }
+        
+        .modal-content {
+            padding: 20px 16px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+        }
+        
+        .form-card {
+            background: var(--bg-card);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+            margin-bottom: 16px;
+        }
+        
+        .form-group {
+            border-bottom: 0.5px solid var(--border-color);
+            padding: 14px 16px;
+        }
+        
+        .form-group:last-child {
+            border-bottom: none;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            border: none;
+            font-size: 17px;
+            color: var(--text-primary);
+            background: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            min-height: 24px;
+        }
+        
+        .form-group input::placeholder {
+            color: var(--text-tertiary);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+        }
+        
+        .inline-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+        
+        .inline-inputs .form-group {
+            border-bottom: none;
+            border-right: 0.5px solid var(--border-color);
+        }
+        
+        .inline-inputs .form-group:last-child {
+            border-right: none;
+        }
+        
+        .inline-inputs input {
+            text-align: center;
+            font-weight: 600;
+            font-size: 20px;
+        }
+        
+        .button {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            transition: transform 0.1s, opacity 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            min-height: 52px;
+            -webkit-touch-callout: none;
+        }
+        
+        .button:active {
+            transform: scale(0.98);
+        }
+        
+        .button-primary {
+            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            color: #fff;
+            margin-bottom: 12px;
+        }
+        
+        .button-delete {
+            background: rgba(255, 59, 48, 0.1);
+            color: #ff453a;
+            border: 1px solid rgba(255, 59, 48, 0.2);
+        }
+        
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-out;
+        }
+        
+        .settings-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .settings-content {
+            background: var(--bg-card);
+            border-radius: 18px;
+            padding: 24px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px var(--shadow);
+            transform: scale(0.9);
+            transition: transform 0.3s ease-out;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .settings-modal.show .settings-content {
+            transform: scale(1);
+        }
+        
+        .settings-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+        
+        .settings-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .days-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        
+        .day-option {
+            padding: 18px;
+            background: var(--overlay-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-touch-callout: none;
+        }
+        
+        .day-option:active {
+            transform: scale(0.95);
+        }
+        
+        .day-option.selected {
+            background: #0a84ff;
+            border-color: #0a84ff;
+            color: #fff;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .modal-title {
+                font-size: 24px;
+            }
+            
+            .days-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (hover: hover) {
+            .settings-btn:hover {
+                background: rgba(255, 255, 255, 0.15);
+            }
+            
+            .day-tab:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
+            
+            .day-tab.active:hover {
+                background: #0a84ff;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-top">
+            <h1>Palestra</h1>
+            <button class="settings-btn" onclick="app.openSettings()" aria-label="Impostazioni">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <circle cx="10" cy="10" r="2.5" stroke="#fff" stroke-width="1.5"/>
+                    <path d="M10 1v2M10 17v2M17.66 5l-1.73 1M4.07 14l-1.73 1M19 10h-2M3 10H1M17.66 15l-1.73-1M4.07 6l-1.73-1" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="days-carousel" id="daysCarousel"></div>
+    </div>
+    
+    <div class="container" id="exerciseList"></div>
+
+    <button class="fab" onclick="app.openAddModal()" aria-label="Aggiungi esercizio">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <div class="modal" id="addModal">
+        <div class="modal-header">
+            <h2 class="modal-title" id="modalTitle">Aggiungi</h2>
+            <button class="close-btn" onclick="app.closeAddModal()" aria-label="Chiudi">✕</button>
+        </div>
+        <div class="modal-content">
+            <div class="form-card">
+                <div class="form-group">
+                    <label for="exerciseName">Nome Esercizio</label>
+                    <input type="text" id="exerciseName" placeholder="es. Panca piana" autocomplete="off">
+                </div>
+                <div class="inline-inputs">
+                    <div class="form-group">
+                        <label for="weight">Peso (kg)</label>
+                        <input type="number" id="weight" placeholder="0" inputmode="decimal" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="sets">Serie</label>
+                        <input type="number" id="sets" placeholder="0" inputmode="numeric">
+                    </div>
+                    <div class="form-group">
+                        <label for="reps">Rip.</label>
+                        <input type="number" id="reps" placeholder="0" inputmode="numeric">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="videoLink">Link YouTube (opzionale)</label>
+                    <input type="url" id="videoLink" placeholder="https://youtube.com/..." inputmode="url">
+                </div>
+            </div>
+            
+            <button class="button button-primary" onclick="app.saveExercise()">
+                <span id="saveButtonText">Salva</span>
+            </button>
+            <button class="button button-delete hidden" id="deleteBtn" onclick="app.confirmDelete()">
+                Elimina Esercizio
+            </button>
+        </div>
+    </div>
+
+    <div class="settings-modal" id="settingsModal" onclick="app.closeSettingsOnBackdrop(event)">
+        <div class="settings-content" onclick="event.stopPropagation()">
+            <div class="settings-title">Allenamento</div>
+            <div class="settings-subtitle">Giorni a settimana</div>
+            <div class="days-selector" id="daysSelector"></div>
+            <button class="button button-primary" onclick="app.saveSettings()">Salva</button>
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            state: {
+                workoutDays: 3,
+                currentDay: 1,
+                workoutData: {},
+                editingId: null,
+                touchStartX: 0,
+                touchEndX: 0,
+                touchStartY: 0,
+                isSwiping: false
+            },
+
+            dom: {},
+
+            init() {
+                this.cacheDom();
+                this.loadData();
+                this.setupEventListeners();
+                this.renderDaysTabs();
+                this.selectDay(1);
+            },
+
+            cacheDom() {
+                this.dom = {
+                    daysCarousel: document.getElementById('daysCarousel'),
+                    exerciseList: document.getElementById('exerciseList'),
+                    addModal: document.getElementById('addModal'),
+                    settingsModal: document.getElementById('settingsModal'),
+                    daysSelector: document.getElementById('daysSelector'),
+                    modalTitle: document.getElementById('modalTitle'),
+                    deleteBtn: document.getElementById('deleteBtn'),
+                    saveButtonText: document.getElementById('saveButtonText'),
+                    exerciseName: document.getElementById('exerciseName'),
+                    weight: document.getElementById('weight'),
+                    sets: document.getElementById('sets'),
+                    reps: document.getElementById('reps'),
+                    videoLink: document.getElementById('videoLink')
+                };
+            },
+
+            loadData() {
+                try {
+                    const config = localStorage.getItem('gymConfig');
+                    if (config) {
+                        this.state.workoutDays = JSON.parse(config).workoutDays || 3;
+                    }
+                    
+                    const data = localStorage.getItem('gymWorkoutData');
+                    if (data) {
+                        this.state.workoutData = JSON.parse(data);
+                    }
+                    
+                    this.initializeWorkoutData();
+                } catch (e) {
+                    console.error('Errore nel caricamento dati:', e);
+                    this.initializeWorkoutData();
+                }
+            },
+
+            initializeWorkoutData() {
+                for (let i = 1; i <= this.state.workoutDays; i++) {
+                    if (!this.state.workoutData[i]) {
+                        this.state.workoutData[i] = [];
+                    }
+                }
+            },
+
+            saveData: (() => {
+                let timeout;
+                return function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        try {
+                            localStorage.setItem('gymConfig', JSON.stringify({ 
+                                workoutDays: this.state.workoutDays 
+                            }));
+                            localStorage.setItem('gymWorkoutData', JSON.stringify(this.state.workoutData));
+                        } catch (e) {
+                            console.error('Errore nel salvataggio dati:', e);
+                        }
+                    }, 300);
+                };
+            })(),
+
+            setupEventListeners() {
+                let touchStartTime = 0;
+                
+                document.addEventListener('touchstart', (e) => {
+                    this.state.touchStartX = e.changedTouches[0].screenX;
+                    this.state.touchStartY = e.changedTouches[0].screenY;
+                    touchStartTime = Date.now();
+                    this.state.isSwiping = false;
+                }, { passive: true });
+
+                document.addEventListener('touchmove', (e) => {
+                    const deltaX = Math.abs(e.changedTouches[0].screenX - this.state.touchStartX);
+                    const deltaY = Math.abs(e.changedTouches[0].screenY - this.state.touchStartY);
+                    
+                    if (deltaX > 20 && deltaX > deltaY) {
+                        this.state.isSwiping = true;
+                    }
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    this.state.touchEndX = e.changedTouches[0].screenX;
+                    const touchDuration = Date.now() - touchStartTime;
+                    
+                    if (this.state.isSwiping && touchDuration < 300) {
+                        this.handleSwipe();
+                    }
+                }, { passive: true });
+
+                // Previeni zoom su double tap
+                let lastTap = 0;
+                document.addEventListener('touchend', (e) => {
+                    const currentTime = Date.now();
+                    const tapLength = currentTime - lastTap;
+                    if (tapLength < 500 && tapLength > 0) {
+                        e.preventDefault();
+                    }
+                    lastTap = currentTime;
+                }, { passive: false });
+            },
+
+            handleSwipe() {
+                const diff = this.state.touchStartX - this.state.touchEndX;
+                const threshold = 60;
+                
+                if (Math.abs(diff) < threshold) return;
+                
+                if (diff > 0 && this.state.currentDay < this.state.workoutDays) {
+                    this.selectDay(this.state.currentDay + 1);
+                } else if (diff < 0 && this.state.currentDay > 1) {
+                    this.selectDay(this.state.currentDay - 1);
+                }
+            },
+
+            renderDaysTabs() {
+                const fragment = document.createDocumentFragment();
+                
+                for (let i = 1; i <= this.state.workoutDays; i++) {
+                    const tab = document.createElement('div');
+                    tab.className = 'day-tab';
+                    tab.textContent = `Giorno ${i}`;
+                    tab.setAttribute('role', 'tab');
+                    tab.setAttribute('aria-selected', 'false');
+                    tab.onclick = () => this.selectDay(i);
+                    fragment.appendChild(tab);
+                }
+                
+                this.dom.daysCarousel.innerHTML = '';
+                this.dom.daysCarousel.appendChild(fragment);
+            },
+
+            selectDay(day) {
+                this.state.currentDay = day;
+                
+                const tabs = this.dom.daysCarousel.querySelectorAll('.day-tab');
+                tabs.forEach((tab, i) => {
+                    const isActive = i + 1 === day;
+                    tab.classList.toggle('active', isActive);
+                    tab.setAttribute('aria-selected', isActive.toString());
+                });
+                
+                const activeTab = tabs[day - 1];
+                if (activeTab) {
+                    activeTab.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'nearest', 
+                        inline: 'center' 
+                    });
+                }
+                
+                this.renderExercises();
+            },
+
+            openAddModal() {
+                this.dom.addModal.classList.add('show');
+                this.dom.modalTitle.textContent = 'Aggiungi';
+                this.dom.deleteBtn.classList.add('hidden');
+                this.dom.saveButtonText.textContent = 'Salva';
+                document.body.style.overflow = 'hidden';
+                
+                setTimeout(() => {
+                    this.dom.exerciseName.focus();
+                }, 350);
+            },
+
+            closeAddModal() {
+                this.dom.addModal.classList.remove('show');
+                document.body.style.overflow = '';
+                this.clearForm();
+            },
+
+            openSettings() {
+                this.dom.settingsModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                this.renderDaysSelector();
+            },
+
+            closeSettings() {
+                this.dom.settingsModal.classList.remove('show');
+                document.body.style.overflow = '';
+            },
+
+            closeSettingsOnBackdrop(event) {
+                if (event.target === this.dom.settingsModal) {
+                    this.closeSettings();
+                }
+            },
+
+            renderDaysSelector() {
+                const fragment = document.createDocumentFragment();
+                
+                for (let i = 1; i <= 7; i++) {
+                    const option = document.createElement('div');
+                    option.className = 'day-option';
+                    option.classList.toggle('selected', i === this.state.workoutDays);
+                    option.textContent = i;
+                    option.setAttribute('role', 'button');
+                    option.onclick = () => this.selectWorkoutDays(i);
+                    fragment.appendChild(option);
+                }
+                
+                this.dom.daysSelector.innerHTML = '';
+                this.dom.daysSelector.appendChild(fragment);
+            },
+
+            selectWorkoutDays(days) {
+                this.state.workoutDays = days;
+                this.dom.daysSelector.querySelectorAll('.day-option').forEach((opt, i) => {
+                    opt.classList.toggle('selected', i + 1 === days);
+                });
+            },
+
+            saveSettings() {
+                this.initializeWorkoutData();
+                this.saveData();
+                this.renderDaysTabs();
+                this.selectDay(Math.min(this.state.currentDay, this.state.workoutDays));
+                this.closeSettings();
+            },
+
+            saveExercise() {
+                const name = this.dom.exerciseName.value.trim();
+                if (!name) {
+                    this.dom.exerciseName.focus();
+                    return;
+                }
+
+                const exercise = {
+                    id: this.state.editingId || Date.now(),
+                    name,
+                    weight: parseFloat(this.dom.weight.value) || 0,
+                    sets: parseInt(this.dom.sets.value) || 0,
+                    reps: parseInt(this.dom.reps.value) || 0,
+                    videoLink: this.dom.videoLink.value.trim(),
+                    lastUpdated: new Date().toLocaleDateString('it-IT')
+                };
+
+                const exercises = this.state.workoutData[this.state.currentDay];
+                
+                if (this.state.editingId) {
+                    const index = exercises.findIndex(e => e.id === this.state.editingId);
+                    if (index !== -1) {
+                        exercises[index] = exercise;
+                    }
+                } else {
+                    exercises.unshift(exercise);
+                }
+
+                this.saveData();
+                this.closeAddModal();
+                this.renderExercises();
+            },
+
+            clearForm() {
+                this.dom.exerciseName.value = '';
+                this.dom.weight.value = '';
+                this.dom.sets.value = '';
+                this.dom.reps.value = '';
+                this.dom.videoLink.value = '';
+                this.state.editingId = null;
+            },
+
+            editExercise(id) {
+                const exercise = this.state.workoutData[this.state.currentDay].find(e => e.id === id);
+                if (!exercise) return;
+
+                this.dom.exerciseName.value = exercise.name;
+                this.dom.weight.value = exercise.weight || '';
+                this.dom.sets.value = exercise.sets || '';
+                this.dom.reps.value = exercise.reps || '';
+                this.dom.videoLink.value = exercise.videoLink || '';
+                this.dom.modalTitle.textContent = 'Modifica';
+                this.dom.deleteBtn.classList.remove('hidden');
+                this.dom.saveButtonText.textContent = 'Salva';
+                this.state.editingId = id;
+                
+                this.dom.addModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            },
+
+            confirmDelete() {
+                if (confirm('Eliminare questo esercizio?')) {
+                    this.deleteExercise(this.state.editingId);
+                    this.closeAddModal();
+                }
+            },
+
+            deleteExercise(id) {
+                const exercises = this.state.workoutData[this.state.currentDay];
+                this.state.workoutData[this.state.currentDay] = exercises.filter(e => e.id !== id);
+                this.saveData();
+                this.renderExercises();
+            },
+
+            getYouTubeVideoId(url) {
+                if (!url) return null;
+                const patterns = [
+                    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([^&\?\/]+)/,
+                    /^([a-zA-Z0-9_-]{11})$/
+                ];
+                for (const pattern of patterns) {
+                    const match = url.match(pattern);
+                    if (match) return match[1];
+                }
+                return null;
+            },
+
+            toggleVideo(id, event) {
+                event.stopPropagation();
+                const container = document.getElementById(`video-${id}`);
+                const button = document.getElementById(`btn-${id}`);
+                
+                if (!container || !button) return;
+                
+                if (container.classList.contains('show')) {
+                    container.classList.remove('show');
+                    button.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <path d="M8 5v14l11-7L8 5z" fill="#ff453a"/>
+                        </svg>
+                        Video
+                    `;
+                } else {
+                    container.classList.add('show');
+                    button.innerHTML = `
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                            <rect x="6" y="5" width="4" height="14" fill="#ff453a"/>
+                            <rect x="14" y="5" width="4" height="14" fill="#ff453a"/>
+                        </svg>
+                        Nascondi
+                    `;
+                }
+            },
+
+            renderExercises() {
+                const exercises = this.state.workoutData[this.state.currentDay] || [];
+                
+                if (exercises.length === 0) {
+                    this.dom.exerciseList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">💪</div>
+                            <div class="empty-state-text">Nessun esercizio</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const html = exercises.map(ex => {
+                    const videoId = this.getYouTubeVideoId(ex.videoLink);
+                    
+                    return `
+                    <div class="exercise-item" onclick="app.editExercise(${ex.id})">
+                        <div class="exercise-header">
+                            <div class="exercise-name">${this.escapeHtml(ex.name)}</div>
+                        </div>
+                        
+                        <div class="exercise-stats">
+                            <div class="stat">
+                                <div class="stat-value">${ex.weight}</div>
+                                <div class="stat-label">kg</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${ex.sets}</div>
+                                <div class="stat-label">Serie</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${ex.reps}</div>
+                                <div class="stat-label">Rip.</div>
+                            </div>
+                        </div>
+                        
+                        ${videoId ? `
+                            <button class="video-toggle" id="btn-${ex.id}" onclick="app.toggleVideo(${ex.id}, event)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                                    <path d="M8 5v14l11-7L8 5z" fill="#ff453a"/>
+                                </svg>
+                                Video
+                            </button>
+                            <div class="video-container" id="video-${ex.id}">
+                                <iframe 
+                                    class="video-frame"
+                                    src="https://www.youtube-nocookie.com/embed/${videoId}" 
+                                    title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        ` : ''}
+                        
+                        <div class="exercise-date">${ex.lastUpdated}</div>
+                    </div>
+                `}).join('');
+                
+                this.dom.exerciseList.innerHTML = html;
+            },
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => app.init());
+        } else {
+            app.init();
+        }
+    </script>
+</body>
+</html>
