@@ -2,9 +2,10 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Palestra">
     <meta name="theme-color" content="#000000">
     <title>Palestra</title>
     <style>
@@ -15,80 +16,91 @@
             -webkit-tap-highlight-color: transparent;
         }
         
+        :root {
+            --bg-primary: #000;
+            --bg-secondary: rgba(28, 28, 30, 0.8);
+            --bg-tertiary: #2c2c2e;
+            --bg-glass: rgba(28, 28, 30, 0.7);
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-tertiary: rgba(255, 255, 255, 0.4);
+            --border-color: rgba(255, 255, 255, 0.12);
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --overlay-bg: rgba(255, 255, 255, 0.1);
+            --overlay-hover: rgba(255, 255, 255, 0.15);
+            --shadow: rgba(0, 0, 0, 0.5);
+            --stat-bg: rgba(10, 132, 255, 0.12);
+            --stat-border: rgba(10, 132, 255, 0.2);
+            --video-bg: rgba(255, 59, 48, 0.12);
+            --video-border: rgba(255, 59, 48, 0.2);
+            --accent-glow: rgba(10, 132, 255, 0.3);
+        }
+        
+        body.light-mode {
+            --bg-primary: #f5f5f7;
+            --bg-secondary: rgba(255, 255, 255, 0.85);
+            --bg-tertiary: #fff;
+            --bg-glass: rgba(255, 255, 255, 0.75);
+            --text-primary: #000;
+            --text-secondary: rgba(0, 0, 0, 0.6);
+            --text-tertiary: rgba(0, 0, 0, 0.4);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --border-subtle: rgba(0, 0, 0, 0.04);
+            --overlay-bg: rgba(0, 0, 0, 0.05);
+            --overlay-hover: rgba(0, 0, 0, 0.08);
+            --shadow: rgba(0, 0, 0, 0.08);
+            --stat-bg: rgba(10, 132, 255, 0.08);
+            --stat-border: rgba(10, 132, 255, 0.15);
+            --video-bg: rgba(255, 59, 48, 0.08);
+            --video-border: rgba(255, 59, 48, 0.2);
+            --accent-glow: rgba(10, 132, 255, 0.2);
+        }
+        
         html {
             scroll-behavior: smooth;
             -webkit-text-size-adjust: 100%;
         }
         
-        :root {
-            --bg-primary: #000;
-            --bg-secondary: #1c1c1e;
-            --bg-tertiary: #2c2c2e;
-            --bg-card: linear-gradient(135deg, #1c1c1e 0%, #2c2c2e 100%);
-            --text-primary: #fff;
-            --text-secondary: rgba(255, 255, 255, 0.5);
-            --text-tertiary: rgba(255, 255, 255, 0.3);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --border-subtle: rgba(255, 255, 255, 0.05);
-            --overlay-bg: rgba(255, 255, 255, 0.08);
-            --overlay-hover: rgba(255, 255, 255, 0.12);
-            --shadow: rgba(0, 0, 0, 0.4);
-            --stat-bg: rgba(10, 132, 255, 0.1);
-            --stat-border: rgba(10, 132, 255, 0.15);
-            --video-bg: rgba(255, 59, 48, 0.1);
-            --video-border: rgba(255, 59, 48, 0.15);
-        }
-        
-        body.light-mode {
-            --bg-primary: #f2f2f7;
-            --bg-secondary: #fff;
-            --bg-tertiary: #f9f9f9;
-            --bg-card: linear-gradient(135deg, #fff 0%, #f9f9f9 100%);
-            --text-primary: #000;
-            --text-secondary: rgba(0, 0, 0, 0.6);
-            --text-tertiary: rgba(0, 0, 0, 0.4);
-            --border-color: rgba(0, 0, 0, 0.1);
-            --border-subtle: rgba(0, 0, 0, 0.05);
-            --overlay-bg: rgba(0, 0, 0, 0.05);
-            --overlay-hover: rgba(0, 0, 0, 0.08);
-            --shadow: rgba(0, 0, 0, 0.1);
-            --stat-bg: rgba(10, 132, 255, 0.08);
-            --stat-border: rgba(10, 132, 255, 0.15);
-            --video-bg: rgba(255, 59, 48, 0.08);
-            --video-border: rgba(255, 59, 48, 0.2);
-        }
-        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
-            background-color: var(--bg-primary);
+            background: var(--bg-primary);
             padding-bottom: calc(env(safe-area-inset-bottom) + 90px);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
             min-height: 100vh;
             overflow-x: hidden;
             color: var(--text-primary);
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .header {
-            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-            padding: calc(env(safe-area-inset-top) + 16px) 16px 16px 16px;
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 10;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: var(--bg-secondary);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: calc(env(safe-area-inset-top) + 16px) 20px 16px 20px;
         }
         
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
             min-height: 44px;
-            gap: 12px;
         }
         
         .header h1 {
-            font-size: clamp(28px, 8vw, 32px);
+            font-size: clamp(28px, 7vw, 32px);
             font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.8px;
@@ -96,40 +108,38 @@
         
         .header-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             align-items: center;
-            flex-shrink: 0;
         }
         
         .icon-btn {
             background: var(--overlay-bg);
-            border: none;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
             width: 44px;
             height: 44px;
-            min-width: 44px;
-            min-height: 44px;
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-touch-callout: none;
-            padding: 0;
         }
         
         .icon-btn:active {
+            transform: scale(0.94);
             background: var(--overlay-hover);
         }
         
         .icon-btn svg {
             color: var(--text-primary);
-            display: block;
         }
         
         .days-carousel {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             overflow-x: auto;
             overflow-y: hidden;
             padding: 0 0 12px 0;
@@ -145,103 +155,101 @@
         
         .day-tab {
             flex-shrink: 0;
-            padding: 10px 18px;
+            padding: 11px 20px;
             background: var(--overlay-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
-            border-radius: 10px;
+            border-radius: 12px;
             color: var(--text-secondary);
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             min-height: 44px;
             display: flex;
             align-items: center;
-            -webkit-touch-callout: none;
         }
         
         .day-tab.active {
-            background: #0a84ff;
+            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
             color: #fff;
-            border-color: #0a84ff;
+            border-color: transparent;
+            box-shadow: 0 4px 16px var(--accent-glow);
+            transform: scale(1.02);
         }
         
         .day-tab:active {
             transform: scale(0.96);
         }
         
-        .container {
+        .main-content {
             max-width: 600px;
             margin: 0 auto;
-            padding: 0 16px;
+            padding: 0 20px;
+            padding-top: calc(140px + env(safe-area-inset-top));
         }
         
         .exercise-item {
-            background: var(--bg-card);
-            border-radius: 14px;
-            margin-bottom: 10px;
-            padding: 14px;
-            box-shadow: 0 4px 12px var(--shadow);
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            border-radius: 18px;
+            margin-bottom: 12px;
+            padding: 16px;
+            box-shadow: 0 8px 32px var(--shadow);
             border: 1px solid var(--border-subtle);
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            min-height: 44px;
-            -webkit-touch-callout: none;
-            will-change: transform;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .exercise-item:active {
             transform: scale(0.98);
-            box-shadow: 0 2px 8px var(--shadow);
-        }
-        
-        .exercise-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
+            box-shadow: 0 4px 16px var(--shadow);
         }
         
         .exercise-name {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
-            flex: 1;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.4px;
             line-height: 1.3;
-            word-break: break-word;
+            margin-bottom: 12px;
         }
         
         .exercise-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
         
         .stat {
             background: var(--stat-bg);
-            border-radius: 10px;
-            padding: 10px 8px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 14px;
+            padding: 12px 10px;
             text-align: center;
             border: 1px solid var(--stat-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .stat-value {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--text-primary);
-            letter-spacing: -0.5px;
+            letter-spacing: -0.6px;
         }
         
         .stat-label {
             font-size: 10px;
             color: var(--text-secondary);
-            margin-top: 2px;
+            margin-top: 3px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.4px;
             font-weight: 600;
         }
         
@@ -249,35 +257,36 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            padding: 12px;
+            gap: 8px;
+            padding: 13px;
             background: var(--video-bg);
-            border-radius: 10px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 14px;
             color: #ff453a;
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             border: 1px solid var(--video-border);
             cursor: pointer;
             width: 100%;
             min-height: 44px;
-            transition: background 0.2s;
-            -webkit-touch-callout: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .video-toggle:active {
-            background: rgba(255, 59, 48, 0.2);
+            transform: scale(0.97);
         }
         
         .video-container {
-            margin-bottom: 8px;
-            border-radius: 10px;
+            margin-bottom: 10px;
+            border-radius: 14px;
             overflow: hidden;
             background: #000;
             border: 1px solid var(--video-border);
             max-height: 0;
             opacity: 0;
-            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .video-container.show {
@@ -289,7 +298,6 @@
             width: 100%;
             aspect-ratio: 16 / 9;
             border: none;
-            display: block;
         }
         
         .exercise-date {
@@ -300,48 +308,50 @@
         }
         
         .empty-state {
-            background: var(--bg-card);
-            border-radius: 14px;
-            padding: 50px 20px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            border-radius: 18px;
+            padding: 60px 24px;
             text-align: center;
-            box-shadow: 0 4px 12px var(--shadow);
+            box-shadow: 0 8px 32px var(--shadow);
+            border: 1px solid var(--border-subtle);
             margin-top: 20px;
         }
         
         .empty-state-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
-            opacity: 0.3;
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.4;
         }
         
         .empty-state-text {
-            font-size: 15px;
+            font-size: 16px;
             color: var(--text-secondary);
             font-weight: 500;
         }
         
         .fab {
             position: fixed;
-            bottom: calc(env(safe-area-inset-bottom) + 20px);
-            right: 20px;
-            width: 56px;
-            height: 56px;
+            bottom: calc(env(safe-area-inset-bottom) + 24px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
             background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
             border: none;
             border-radius: 50%;
-            box-shadow: 0 8px 24px rgba(10, 132, 255, 0.5);
+            box-shadow: 0 12px 40px var(--accent-glow);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 50;
-            will-change: transform;
-            -webkit-touch-callout: none;
         }
         
         .fab:active {
-            transform: scale(0.9);
+            transform: translateX(-50%) scale(0.92);
         }
         
         .modal {
@@ -353,8 +363,7 @@
             background: var(--bg-primary);
             z-index: 100;
             transform: translateY(100%);
-            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-            will-change: transform;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .modal.show {
@@ -362,21 +371,28 @@
         }
         
         .modal-header {
-            background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
-            padding: calc(env(safe-area-inset-top) + 16px) 16px 16px 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: var(--bg-secondary);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        
+        .modal-header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: calc(env(safe-area-inset-top) + 16px) 20px 16px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            min-height: 60px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
         }
         
         .modal-title {
-            font-size: clamp(24px, 7vw, 28px);
+            font-size: clamp(24px, 6vw, 28px);
             font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.8px;
@@ -384,43 +400,45 @@
         
         .close-btn {
             background: var(--overlay-bg);
-            border: none;
-            min-width: 44px;
-            min-height: 44px;
-            border-radius: 10px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text-primary);
             font-size: 22px;
-            line-height: 1;
-            -webkit-touch-callout: none;
         }
         
         .close-btn:active {
-            background: var(--overlay-hover);
+            transform: scale(0.94);
         }
         
         .modal-content {
-            padding: 20px 16px;
             max-width: 600px;
             margin: 0 auto;
-            padding-bottom: calc(env(safe-area-inset-bottom) + 20px);
+            padding: calc(env(safe-area-inset-top) + 80px) 20px calc(env(safe-area-inset-bottom) + 40px) 20px;
         }
         
         .form-card {
-            background: var(--bg-card);
-            border-radius: 14px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 4px 12px var(--shadow);
+            box-shadow: 0 8px 32px var(--shadow);
+            border: 1px solid var(--border-subtle);
             margin-bottom: 16px;
         }
         
         .form-group {
             border-bottom: 0.5px solid var(--border-color);
-            padding: 14px 16px;
+            padding: 16px 18px;
         }
         
         .form-group:last-child {
@@ -431,8 +449,8 @@
             display: block;
             font-size: 12px;
             color: var(--text-secondary);
-            margin-bottom: 6px;
-            font-weight: 500;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
         
         .form-group input {
@@ -442,7 +460,6 @@
             color: var(--text-primary);
             background: transparent;
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-            min-height: 24px;
         }
         
         .form-group input::placeholder {
@@ -456,7 +473,6 @@
         .inline-inputs {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 0;
         }
         
         .inline-inputs .form-group {
@@ -470,28 +486,26 @@
         
         .inline-inputs input {
             text-align: center;
-            font-weight: 600;
-            font-size: 20px;
+            font-weight: 700;
+            font-size: 22px;
         }
         
         .button {
-            display: block;
             width: 100%;
-            padding: 16px;
+            padding: 17px;
             border: none;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 17px;
             font-weight: 600;
             cursor: pointer;
             font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-            transition: transform 0.1s, opacity 0.2s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            min-height: 52px;
-            -webkit-touch-callout: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 16px var(--shadow);
+            min-height: 54px;
         }
         
         .button:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
         
         .button-primary {
@@ -501,9 +515,11 @@
         }
         
         .button-delete {
-            background: rgba(255, 59, 48, 0.1);
+            background: var(--video-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             color: #ff453a;
-            border: 1px solid rgba(255, 59, 48, 0.2);
+            border: 1px solid var(--video-border);
         }
         
         .settings-modal {
@@ -513,8 +529,8 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 100;
             display: flex;
             align-items: center;
@@ -522,7 +538,7 @@
             padding: 20px;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease-out;
+            transition: opacity 0.3s ease;
         }
         
         .settings-modal.show {
@@ -531,14 +547,17 @@
         }
         
         .settings-content {
-            background: var(--bg-card);
-            border-radius: 18px;
-            padding: 24px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 24px;
+            padding: 28px;
             max-width: 400px;
             width: 100%;
             box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid var(--border-subtle);
             transform: scale(0.9);
-            transition: transform 0.3s ease-out;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             max-height: 80vh;
             overflow-y: auto;
         }
@@ -548,53 +567,238 @@
         }
         
         .settings-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-align: center;
+            letter-spacing: -0.6px;
         }
         
         .settings-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            text-align: center;
+        }
+        
+        .settings-section {
+            margin-bottom: 24px;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        .import-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        .import-btn:active {
+            transform: scale(0.97);
+            background: var(--overlay-hover);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .import-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .import-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .import-content {
+            background: var(--bg-glass);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 24px;
+            padding: 28px;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid var(--border-subtle);
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .import-modal.show .import-content {
+            transform: scale(1);
+        }
+        
+        .import-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            text-align: center;
+            letter-spacing: -0.6px;
+        }
+        
+        .import-subtitle {
             font-size: 14px;
             color: var(--text-secondary);
             margin-bottom: 24px;
             text-align: center;
+            line-height: 1.4;
+        }
+        
+        .format-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .format-btn {
+            padding: 20px 16px;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+        
+        .format-btn:active {
+            transform: scale(0.94);
+        }
+        
+        .format-btn.selected {
+            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 20px var(--accent-glow);
+        }
+        
+        .drop-zone {
+            padding: 40px 20px;
+            background: var(--overlay-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 2px dashed var(--border-color);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 16px;
+        }
+        
+        .drop-zone:hover {
+            border-color: #0a84ff;
+            background: var(--overlay-hover);
+        }
+        
+        .drop-zone.dragover {
+            border-color: #0a84ff;
+            background: var(--overlay-hover);
+            transform: scale(1.02);
+        }
+        
+        .drop-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        
+        .drop-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        
+        .drop-subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .file-name {
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            background: var(--overlay-bg);
+            border-radius: 10px;
         }
         
         .days-selector {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 24px;
+            gap: 12px;
+            margin-bottom: 28px;
         }
         
         .day-option {
-            padding: 18px;
+            padding: 20px;
             background: var(--overlay-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 2px solid var(--border-color);
-            border-radius: 12px;
+            border-radius: 14px;
             color: var(--text-secondary);
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s;
-            min-height: 56px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            -webkit-touch-callout: none;
         }
         
         .day-option:active {
-            transform: scale(0.95);
+            transform: scale(0.94);
         }
         
         .day-option.selected {
-            background: #0a84ff;
-            border-color: #0a84ff;
+            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            border-color: transparent;
             color: #fff;
+            box-shadow: 0 6px 20px var(--accent-glow);
         }
         
         .hidden {
@@ -604,7 +808,7 @@
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(12px);
             }
             to {
                 opacity: 1;
@@ -613,74 +817,39 @@
         }
         
         @media (max-width: 360px) {
-            .header h1 {
-                font-size: 26px;
-            }
-            
-            .modal-title {
-                font-size: 24px;
-            }
-            
             .days-selector {
                 grid-template-columns: repeat(3, 1fr);
             }
-        }
-        
-        @media (hover: hover) {
-            .icon-btn:hover {
-                background: var(--overlay-hover);
-            }
-            
-            .day-tab:hover {
-                background: var(--overlay-hover);
-            }
-            
-            .day-tab.active:hover {
-                background: #0a84ff;
-            }
-        }
-        
-        /* Transizioni per cambio tema */
-        * {
-            transition-property: background-color, border-color, color;
-            transition-duration: 0.3s;
-            transition-timing-function: ease;
-        }
-        
-        /* Eccezioni per transizioni esistenti */
-        .exercise-item,
-        .modal,
-        .settings-modal,
-        .video-container,
-        .fab {
-            transition-property: transform, opacity, background, box-shadow, max-height, background-color, border-color, color;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <div class="header-top">
-            <h1>Palestra</h1>
-            <div class="header-actions">
-                <button class="icon-btn" onclick="app.toggleTheme()" aria-label="Cambia tema">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="themeIcon">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <button class="icon-btn" onclick="app.openSettings()" aria-label="Impostazioni">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M10 1v2M10 17v2M17.66 5l-1.73 1M4.07 14l-1.73 1M19 10h-2M3 10H1M17.66 15l-1.73-1M4.07 6l-1.73-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </button>
+        <div class="header-content">
+            <div class="header-top">
+                <h1>Palestra</h1>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="app.toggleTheme()" aria-label="Cambia tema">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="themeIcon">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" onclick="app.openSettings()" aria-label="Impostazioni">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="5" r="2" fill="currentColor"/>
+                            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                            <circle cx="12" cy="19" r="2" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
+            <div class="days-carousel" id="daysCarousel"></div>
         </div>
-        <div class="days-carousel" id="daysCarousel"></div>
     </div>
     
-    <div class="container" id="exerciseList"></div>
+    <div class="main-content" id="exerciseList"></div>
 
-    <button class="fab" onclick="app.openAddModal()" aria-label="Aggiungi esercizio">
+    <button class="fab" onclick="app.openAddModal()" aria-label="Aggiungi">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
         </svg>
@@ -688,8 +857,10 @@
 
     <div class="modal" id="addModal">
         <div class="modal-header">
-            <h2 class="modal-title" id="modalTitle">Aggiungi</h2>
-            <button class="close-btn" onclick="app.closeAddModal()" aria-label="Chiudi">✕</button>
+            <div class="modal-header-content">
+                <h2 class="modal-title" id="modalTitle">Aggiungi</h2>
+                <button class="close-btn" onclick="app.closeAddModal()">✕</button>
+            </div>
         </div>
         <div class="modal-content">
             <div class="form-card">
@@ -699,7 +870,7 @@
                 </div>
                 <div class="inline-inputs">
                     <div class="form-group">
-                        <label for="weight">Peso (kg)</label>
+                        <label for="weight">Peso</label>
                         <input type="number" id="weight" placeholder="0" inputmode="decimal" step="0.5">
                     </div>
                     <div class="form-group">
@@ -712,7 +883,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="videoLink">Link YouTube (opzionale)</label>
+                    <label for="videoLink">Link YouTube</label>
                     <input type="url" id="videoLink" placeholder="https://youtube.com/..." inputmode="url">
                 </div>
             </div>
@@ -728,10 +899,57 @@
 
     <div class="settings-modal" id="settingsModal" onclick="app.closeSettingsOnBackdrop(event)">
         <div class="settings-content" onclick="event.stopPropagation()">
-            <div class="settings-title">Allenamento</div>
-            <div class="settings-subtitle">Giorni a settimana</div>
-            <div class="days-selector" id="daysSelector"></div>
+            <div class="settings-title">Impostazioni</div>
+            
+            <div class="settings-section">
+                <div class="section-title">Allenamento</div>
+                <div class="settings-subtitle">Giorni a settimana</div>
+                <div class="days-selector" id="daysSelector"></div>
+            </div>
+            
+            <div class="settings-section">
+                <div class="section-title">Importa/Esporta</div>
+                <button class="import-btn" onclick="app.downloadExampleWorkout()">
+                    ⬇️ Scarica Scheda Esempio
+                </button>
+                <button class="import-btn" onclick="app.openImportModal()">
+                    📥 Importa Allenamento
+                </button>
+                <button class="import-btn" onclick="app.exportWorkout()">
+                    📤 Esporta Allenamento
+                </button>
+            </div>
+            
             <button class="button button-primary" onclick="app.saveSettings()">Salva</button>
+        </div>
+    </div>
+
+    <div class="import-modal" id="importModal" onclick="app.closeImportOnBackdrop(event)">
+        <div class="import-content" onclick="event.stopPropagation()">
+            <div class="import-title">Importa Allenamento</div>
+            <div class="import-subtitle">Carica un file JSON o CSV con i tuoi esercizi</div>
+            
+            <div class="format-options">
+                <button class="format-btn selected" onclick="app.selectFormat('json')" id="jsonBtn">
+                    📄 JSON
+                </button>
+                <button class="format-btn" onclick="app.selectFormat('csv')" id="csvBtn">
+                    📊 CSV
+                </button>
+            </div>
+            
+            <input type="file" id="fileInput" class="file-input" accept=".json,.csv" onchange="app.handleFileSelect(event)">
+            
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <div class="drop-icon">📁</div>
+                <div class="drop-text">Tocca per selezionare</div>
+                <div class="drop-subtext">Oppure trascina il file qui</div>
+            </div>
+            
+            <div class="file-name hidden" id="fileName"></div>
+            
+            <button class="button button-primary" onclick="app.importFile()">Importa</button>
+            <button class="button button-delete" onclick="app.closeImportModal()">Annulla</button>
         </div>
     </div>
 
@@ -745,7 +963,9 @@
                 touchStartX: 0,
                 touchEndX: 0,
                 touchStartY: 0,
-                isSwiping: false
+                isSwiping: false,
+                selectedFormat: 'json',
+                selectedFile: null
             },
 
             dom: {},
@@ -783,36 +1003,31 @@
                     if (savedTheme === 'light') {
                         document.body.classList.add('light-mode');
                         this.updateThemeIcon(true);
-                    } else if (!savedTheme) {
-                        // Se non c'è preferenza salvata, usa quella del sistema
-                        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                            document.body.classList.add('light-mode');
-                            this.updateThemeIcon(true);
-                        }
+                    } else if (!savedTheme && window.matchMedia?.('(prefers-color-scheme: light)').matches) {
+                        document.body.classList.add('light-mode');
+                        this.updateThemeIcon(true);
                     }
                 } catch (e) {
-                    console.error('Errore nel caricamento tema:', e);
+                    console.error('Errore tema:', e);
                 }
             },
 
             toggleTheme() {
                 const isLight = document.body.classList.toggle('light-mode');
                 this.updateThemeIcon(isLight);
-                
                 try {
                     localStorage.setItem('gymTheme', isLight ? 'light' : 'dark');
                 } catch (e) {
-                    console.error('Errore nel salvataggio tema:', e);
+                    console.error('Errore salvataggio tema:', e);
                 }
             },
 
             updateThemeIcon(isLight) {
-                const themeIcon = document.getElementById('themeIcon');
-                if (!themeIcon) return;
+                const icon = document.getElementById('themeIcon');
+                if (!icon) return;
                 
                 if (isLight) {
-                    // Icona sole per modalità chiara
-                    themeIcon.innerHTML = `
+                    icon.innerHTML = `
                         <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
                         <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -824,17 +1039,12 @@
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     `;
                 } else {
-                    // Icona luna per modalità scura
-                    themeIcon.innerHTML = `
+                    icon.innerHTML = `
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                     `;
                 }
                 
-                // Aggiorna theme-color per la status bar
-                const metaTheme = document.querySelector('meta[name="theme-color"]');
-                if (metaTheme) {
-                    metaTheme.setAttribute('content', isLight ? '#f2f2f7' : '#000000');
-                }
+                document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isLight ? '#f5f5f7' : '#000000');
             },
 
             loadData() {
@@ -846,12 +1056,16 @@
                     
                     const data = localStorage.getItem('gymWorkoutData');
                     if (data) {
-                        this.state.workoutData = JSON.parse(data);
+                        const parsed = JSON.parse(data);
+                        this.state.workoutData = {};
+                        for (let key in parsed) {
+                            this.state.workoutData[parseInt(key)] = parsed[key];
+                        }
                     }
                     
                     this.initializeWorkoutData();
                 } catch (e) {
-                    console.error('Errore nel caricamento dati:', e);
+                    console.error('Errore caricamento:', e);
                     this.initializeWorkoutData();
                 }
             },
@@ -862,20 +1076,33 @@
                         this.state.workoutData[i] = [];
                     }
                 }
+                for (let day in this.state.workoutData) {
+                    if (parseInt(day) > this.state.workoutDays) {
+                        delete this.state.workoutData[day];
+                    }
+                }
             },
 
             saveData: (() => {
                 let timeout;
-                return function() {
+                return function(immediate = false) {
+                    if (immediate) {
+                        try {
+                            localStorage.setItem('gymConfig', JSON.stringify({ workoutDays: this.state.workoutDays }));
+                            localStorage.setItem('gymWorkoutData', JSON.stringify(this.state.workoutData));
+                        } catch (e) {
+                            console.error('Errore salvataggio:', e);
+                        }
+                        return;
+                    }
+                    
                     clearTimeout(timeout);
                     timeout = setTimeout(() => {
                         try {
-                            localStorage.setItem('gymConfig', JSON.stringify({ 
-                                workoutDays: this.state.workoutDays 
-                            }));
+                            localStorage.setItem('gymConfig', JSON.stringify({ workoutDays: this.state.workoutDays }));
                             localStorage.setItem('gymWorkoutData', JSON.stringify(this.state.workoutData));
                         } catch (e) {
-                            console.error('Errore nel salvataggio dati:', e);
+                            console.error('Errore salvataggio:', e);
                         }
                     }, 300);
                 };
@@ -894,51 +1121,26 @@
                 document.addEventListener('touchmove', (e) => {
                     const deltaX = Math.abs(e.changedTouches[0].screenX - this.state.touchStartX);
                     const deltaY = Math.abs(e.changedTouches[0].screenY - this.state.touchStartY);
-                    
-                    if (deltaX > 20 && deltaX > deltaY) {
-                        this.state.isSwiping = true;
-                    }
+                    if (deltaX > 20 && deltaX > deltaY) this.state.isSwiping = true;
                 }, { passive: true });
 
                 document.addEventListener('touchend', (e) => {
                     this.state.touchEndX = e.changedTouches[0].screenX;
                     const touchDuration = Date.now() - touchStartTime;
-                    
-                    if (this.state.isSwiping && touchDuration < 300) {
-                        this.handleSwipe();
-                    }
+                    if (this.state.isSwiping && touchDuration < 300) this.handleSwipe();
                 }, { passive: true });
 
-                // Previeni zoom su double tap
-                let lastTap = 0;
-                document.addEventListener('touchend', (e) => {
-                    const currentTime = Date.now();
-                    const tapLength = currentTime - lastTap;
-                    if (tapLength < 500 && tapLength > 0) {
-                        e.preventDefault();
+                window.matchMedia?.('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if (!localStorage.getItem('gymTheme')) {
+                        document.body.classList.toggle('light-mode', !e.matches);
+                        this.updateThemeIcon(!e.matches);
                     }
-                    lastTap = currentTime;
-                }, { passive: false });
-
-                // Ascolta i cambiamenti della preferenza del sistema
-                if (window.matchMedia) {
-                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                        const savedTheme = localStorage.getItem('gymTheme');
-                        // Cambia solo se l'utente non ha impostato manualmente un tema
-                        if (!savedTheme) {
-                            const shouldBeDark = e.matches;
-                            document.body.classList.toggle('light-mode', !shouldBeDark);
-                            this.updateThemeIcon(!shouldBeDark);
-                        }
-                    });
-                }
+                });
             },
 
             handleSwipe() {
                 const diff = this.state.touchStartX - this.state.touchEndX;
-                const threshold = 60;
-                
-                if (Math.abs(diff) < threshold) return;
+                if (Math.abs(diff) < 60) return;
                 
                 if (diff > 0 && this.state.currentDay < this.state.workoutDays) {
                     this.selectDay(this.state.currentDay + 1);
@@ -949,40 +1151,22 @@
 
             renderDaysTabs() {
                 const fragment = document.createDocumentFragment();
-                
                 for (let i = 1; i <= this.state.workoutDays; i++) {
                     const tab = document.createElement('div');
                     tab.className = 'day-tab';
                     tab.textContent = `Giorno ${i}`;
-                    tab.setAttribute('role', 'tab');
-                    tab.setAttribute('aria-selected', 'false');
                     tab.onclick = () => this.selectDay(i);
                     fragment.appendChild(tab);
                 }
-                
                 this.dom.daysCarousel.innerHTML = '';
                 this.dom.daysCarousel.appendChild(fragment);
             },
 
             selectDay(day) {
                 this.state.currentDay = day;
-                
                 const tabs = this.dom.daysCarousel.querySelectorAll('.day-tab');
-                tabs.forEach((tab, i) => {
-                    const isActive = i + 1 === day;
-                    tab.classList.toggle('active', isActive);
-                    tab.setAttribute('aria-selected', isActive.toString());
-                });
-                
-                const activeTab = tabs[day - 1];
-                if (activeTab) {
-                    activeTab.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'nearest', 
-                        inline: 'center' 
-                    });
-                }
-                
+                tabs.forEach((tab, i) => tab.classList.toggle('active', i + 1 === day));
+                tabs[day - 1]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
                 this.renderExercises();
             },
 
@@ -992,10 +1176,7 @@
                 this.dom.deleteBtn.classList.add('hidden');
                 this.dom.saveButtonText.textContent = 'Salva';
                 document.body.style.overflow = 'hidden';
-                
-                setTimeout(() => {
-                    this.dom.exerciseName.focus();
-                }, 350);
+                setTimeout(() => this.dom.exerciseName.focus(), 350);
             },
 
             closeAddModal() {
@@ -1016,24 +1197,367 @@
             },
 
             closeSettingsOnBackdrop(event) {
-                if (event.target === this.dom.settingsModal) {
-                    this.closeSettings();
+                if (event.target === this.dom.settingsModal) this.closeSettings();
+            },
+
+            openImportModal() {
+                document.getElementById('importModal').classList.add('show');
+                this.setupDropZone();
+            },
+
+            closeImportModal() {
+                document.getElementById('importModal').classList.remove('show');
+                this.state.selectedFile = null;
+                document.getElementById('fileName').classList.add('hidden');
+                document.getElementById('fileInput').value = '';
+            },
+
+            closeImportOnBackdrop(event) {
+                if (event.target === document.getElementById('importModal')) {
+                    this.closeImportModal();
                 }
+            },
+
+            selectFormat(format) {
+                this.state.selectedFormat = format;
+                document.getElementById('jsonBtn').classList.toggle('selected', format === 'json');
+                document.getElementById('csvBtn').classList.toggle('selected', format === 'csv');
+                
+                const fileInput = document.getElementById('fileInput');
+                fileInput.accept = format === 'json' ? '.json' : '.csv';
+            },
+
+            setupDropZone() {
+                const dropZone = document.getElementById('dropZone');
+                
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, false);
+                });
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.add('dragover');
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.remove('dragover');
+                    }, false);
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    const files = e.dataTransfer.files;
+                    if (files.length) {
+                        this.processFile(files[0]);
+                    }
+                }, false);
+            },
+
+            handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (file) this.processFile(file);
+            },
+
+            processFile(file) {
+                const ext = file.name.split('.').pop().toLowerCase();
+                
+                if ((ext === 'json' && this.state.selectedFormat !== 'json') ||
+                    (ext === 'csv' && this.state.selectedFormat !== 'csv')) {
+                    this.showMessage(`Seleziona prima il formato ${ext.toUpperCase()}`);
+                    return;
+                }
+                
+                this.state.selectedFile = file;
+                document.getElementById('fileName').textContent = `📎 ${file.name}`;
+                document.getElementById('fileName').classList.remove('hidden');
+            },
+
+            async importFile() {
+                if (!this.state.selectedFile) {
+                    this.showMessage('Seleziona un file da importare');
+                    return;
+                }
+
+                try {
+                    const text = await this.state.selectedFile.text();
+                    let data;
+
+                    if (this.state.selectedFormat === 'json') {
+                        data = await this.parseJSON(text);
+                    } else {
+                        data = await this.parseCSV(text);
+                    }
+
+                    if (data) {
+                        // Salva DIRETTAMENTE in localStorage
+                        localStorage.setItem('gymConfig', JSON.stringify({ 
+                            workoutDays: data.giorni 
+                        }));
+                        localStorage.setItem('gymWorkoutData', JSON.stringify(data.esercizi));
+                        
+                        // Chiudi modal
+                        this.closeImportModal();
+                        this.closeSettings();
+                        
+                        // Reload dopo aver salvato
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 100);
+                    }
+                } catch (error) {
+                    console.error('Errore import:', error);
+                    this.showMessage('Errore nell\'importazione: ' + error.message);
+                }
+            },
+
+            showMessage(msg) {
+                alert(msg);
+            },
+
+            async parseJSON(text) {
+                try {
+                    const data = JSON.parse(text);
+                    
+                    // Validazione dati
+                    if (!data.giorni || !data.esercizi) {
+                        throw new Error('Formato JSON non valido: mancano "giorni" o "esercizi"');
+                    }
+                    
+                    if (isNaN(parseInt(data.giorni)) || parseInt(data.giorni) < 1 || parseInt(data.giorni) > 7) {
+                        throw new Error('Numero di giorni non valido (deve essere tra 1 e 7)');
+                    }
+
+                    const workoutData = {};
+                    let idCounter = Date.now();
+                    
+                    for (let day in data.esercizi) {
+                        const dayNum = parseInt(day);
+                        
+                        if (isNaN(dayNum) || dayNum < 1) {
+                            console.warn(`Giorno ${day} ignorato: non valido`);
+                            continue;
+                        }
+                        
+                        if (!Array.isArray(data.esercizi[day])) {
+                            console.warn(`Giorno ${day} ignorato: non è un array`);
+                            continue;
+                        }
+                        
+                        workoutData[dayNum] = data.esercizi[day]
+                            .filter(ex => ex && (ex.nome || ex.name))
+                            .map(ex => {
+                                idCounter++;
+                                return {
+                                    id: idCounter,
+                                    name: String(ex.nome || ex.name || ''),
+                                    weight: parseFloat(ex.peso || ex.weight || 0) || 0,
+                                    sets: parseInt(ex.serie || ex.sets || 0) || 0,
+                                    reps: parseInt(ex.ripetizioni || ex.reps || 0) || 0,
+                                    videoLink: String(ex.video || ex.videoLink || ''),
+                                    lastUpdated: new Date().toLocaleDateString('it-IT')
+                                };
+                            });
+                    }
+                    
+                    const totalExercises = Object.values(workoutData).reduce((sum, arr) => sum + arr.length, 0);
+                    
+                    if (totalExercises === 0) {
+                        throw new Error('Nessun esercizio valido trovato nel file');
+                    }
+
+                    return {
+                        giorni: parseInt(data.giorni),
+                        esercizi: workoutData
+                    };
+                } catch (error) {
+                    if (error instanceof SyntaxError) {
+                        throw new Error('File JSON non valido: ' + error.message);
+                    }
+                    throw error;
+                }
+            },
+
+            async parseCSV(text) {
+                try {
+                    const lines = text.trim().split('\n');
+                    
+                    if (lines.length < 2) {
+                        throw new Error('File CSV vuoto o invalido');
+                    }
+                    
+                    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                    
+                    const hasName = headers.some(h => h.includes('nome') || h.includes('name'));
+                    if (!hasName) {
+                        throw new Error('CSV deve contenere una colonna "nome" o "name"');
+                    }
+                    
+                    const workoutData = {};
+                    let maxDay = 0;
+                    let idCounter = Date.now();
+                    let validRows = 0;
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        const values = line.split(',').map(v => v.trim());
+                        if (values.length < 2) continue;
+                        
+                        const row = {};
+                        headers.forEach((header, index) => {
+                            row[header] = values[index] || '';
+                        });
+                        
+                        const name = row.nome || row.name;
+                        if (!name) continue;
+                        
+                        const day = parseInt(row.giorno || row.day || 1);
+                        if (isNaN(day) || day < 1 || day > 7) continue;
+                        
+                        if (day > maxDay) maxDay = day;
+                        if (!workoutData[day]) workoutData[day] = [];
+                        
+                        idCounter++;
+                        workoutData[day].push({
+                            id: idCounter,
+                            name: String(name),
+                            weight: parseFloat(row.peso || row.weight || 0) || 0,
+                            sets: parseInt(row.serie || row.sets || 0) || 0,
+                            reps: parseInt(row.ripetizioni || row.reps || row.repetitions || 0) || 0,
+                            videoLink: String(row.video || row.videolink || ''),
+                            lastUpdated: new Date().toLocaleDateString('it-IT')
+                        });
+                        validRows++;
+                    }
+                    
+                    if (validRows === 0) {
+                        throw new Error('Nessun esercizio valido trovato nel CSV');
+                    }
+
+                    return {
+                        giorni: maxDay,
+                        esercizi: workoutData
+                    };
+                } catch (error) {
+                    if (error.message.includes('trovato')) {
+                        throw error;
+                    }
+                    throw new Error('File CSV non valido: ' + error.message);
+                }
+            },
+
+            exportWorkout() {
+                const exportData = {
+                    nome: "Il Mio Allenamento",
+                    giorni: this.state.workoutDays,
+                    esercizi: {}
+                };
+
+                for (let day in this.state.workoutData) {
+                    exportData.esercizi[day] = this.state.workoutData[day].map(ex => ({
+                        nome: ex.name,
+                        peso: ex.weight,
+                        serie: ex.sets,
+                        ripetizioni: ex.reps,
+                        video: ex.videoLink
+                    }));
+                }
+
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `allenamento_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            },
+
+            downloadExampleWorkout() {
+                const exampleWorkout = {
+                    "nome": "Scheda Split 6 Giorni",
+                    "giorni": 6,
+                    "esercizi": {
+                        "1": [
+                            {"nome": "Panca Piana Bilanciere", "peso": 80, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=rT7DgCr-3pg"},
+                            {"nome": "Panca Inclinata Manubri", "peso": 32, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=8iPEnn-ltC8"},
+                            {"nome": "Croci ai Cavi", "peso": 15, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=taI4XduLpTk"},
+                            {"nome": "Panca Piana Manubri", "peso": 36, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=VmB1G1K7v94"},
+                            {"nome": "Chest Press", "peso": 50, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=xUm0BiZCWlQ"},
+                            {"nome": "Push Up", "peso": 0, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=IODxDxX7oi4"}
+                        ],
+                        "2": [
+                            {"nome": "Trazioni alla Sbarra", "peso": 0, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=eGo4IYlbE5g"},
+                            {"nome": "Rematore con Bilanciere", "peso": 70, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=T3N-TO4reLQ"},
+                            {"nome": "Lat Machine", "peso": 60, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=CAwf7n6Luuc"},
+                            {"nome": "Rematore Manubrio", "peso": 32, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=roCP6wCXPqo"},
+                            {"nome": "Pulley Basso", "peso": 55, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=UCXxvVItLoM"},
+                            {"nome": "Face Pull", "peso": 25, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=rep-qVOkqgk"}
+                        ],
+                        "3": [
+                            {"nome": "Squat", "peso": 100, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=ultWZbUMPL8"},
+                            {"nome": "Leg Press", "peso": 180, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=IZxyjW7MPJQ"},
+                            {"nome": "Affondi con Manubri", "peso": 20, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=QOVaHwm-Q6U"},
+                            {"nome": "Leg Curl", "peso": 40, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=1Tq3QdYUuHs"},
+                            {"nome": "Leg Extension", "peso": 50, "serie": 4, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=YyvSfEjZIho"},
+                            {"nome": "Calf Raise", "peso": 80, "serie": 4, "ripetizioni": 20, "video": "https://www.youtube.com/watch?v=gwLzBJYoWlI"}
+                        ],
+                        "4": [
+                            {"nome": "Military Press", "peso": 50, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=qEwKCR5JCog"},
+                            {"nome": "Alzate Laterali", "peso": 12, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=3VcKaXpzqRo"},
+                            {"nome": "Alzate Frontali", "peso": 10, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=qPNiF5c75oc"},
+                            {"nome": "Arnold Press", "peso": 20, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=6Z15_WdXmVw"},
+                            {"nome": "Scrollate con Manubri", "peso": 36, "serie": 4, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=cJRVVxmytaM"},
+                            {"nome": "Alzate Posteriori", "peso": 8, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=ttvfGg9d76c"}
+                        ],
+                        "5": [
+                            {"nome": "Curl con Bilanciere", "peso": 30, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo"},
+                            {"nome": "French Press", "peso": 25, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=d_KZxkY_0cM"},
+                            {"nome": "Curl Martello", "peso": 16, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"},
+                            {"nome": "Dip alle Parallele", "peso": 0, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=2z8JmcrW-As"},
+                            {"nome": "Curl ai Cavi", "peso": 20, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=4bRU5cXgb-E"},
+                            {"nome": "Pushdown ai Cavi", "peso": 30, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=2-LAMcpzODU"}
+                        ],
+                        "6": [
+                            {"nome": "Stacco da Terra", "peso": 110, "serie": 4, "ripetizioni": 6, "video": "https://www.youtube.com/watch?v=op9kVnSso6Q"},
+                            {"nome": "Clean and Press", "peso": 50, "serie": 3, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=KwYJTpQ_x5A"},
+                            {"nome": "Thruster", "peso": 40, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=L219ltL15zk"},
+                            {"nome": "Burpees", "peso": 0, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=TU8QYVW0gDU"},
+                            {"nome": "Plank", "peso": 0, "serie": 3, "ripetizioni": 60, "video": "https://www.youtube.com/watch?v=ASdvN_XEl_c"},
+                            {"nome": "Russian Twist", "peso": 10, "serie": 3, "ripetizioni": 20, "video": "https://www.youtube.com/watch?v=wkD8rjkodUI"}
+                        ]
+                    }
+                };
+
+                const dataStr = JSON.stringify(exampleWorkout, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'scheda-esempio-6giorni.json';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
             },
 
             renderDaysSelector() {
                 const fragment = document.createDocumentFragment();
-                
                 for (let i = 1; i <= 7; i++) {
                     const option = document.createElement('div');
                     option.className = 'day-option';
                     option.classList.toggle('selected', i === this.state.workoutDays);
                     option.textContent = i;
-                    option.setAttribute('role', 'button');
                     option.onclick = () => this.selectWorkoutDays(i);
                     fragment.appendChild(option);
                 }
-                
                 this.dom.daysSelector.innerHTML = '';
                 this.dom.daysSelector.appendChild(fragment);
             },
@@ -1071,12 +1595,9 @@
                 };
 
                 const exercises = this.state.workoutData[this.state.currentDay];
-                
                 if (this.state.editingId) {
                     const index = exercises.findIndex(e => e.id === this.state.editingId);
-                    if (index !== -1) {
-                        exercises[index] = exercise;
-                    }
+                    if (index !== -1) exercises[index] = exercise;
                 } else {
                     exercises.unshift(exercise);
                 }
@@ -1121,8 +1642,8 @@
             },
 
             deleteExercise(id) {
-                const exercises = this.state.workoutData[this.state.currentDay];
-                this.state.workoutData[this.state.currentDay] = exercises.filter(e => e.id !== id);
+                this.state.workoutData[this.state.currentDay] = 
+                    this.state.workoutData[this.state.currentDay].filter(e => e.id !== id);
                 this.saveData();
                 this.renderExercises();
             },
@@ -1144,7 +1665,6 @@
                 event.stopPropagation();
                 const container = document.getElementById(`video-${id}`);
                 const button = document.getElementById(`btn-${id}`);
-                
                 if (!container || !button) return;
                 
                 if (container.classList.contains('show')) {
@@ -1182,13 +1702,9 @@
                 
                 const html = exercises.map(ex => {
                     const videoId = this.getYouTubeVideoId(ex.videoLink);
-                    
                     return `
                     <div class="exercise-item" onclick="app.editExercise(${ex.id})">
-                        <div class="exercise-header">
-                            <div class="exercise-name">${this.escapeHtml(ex.name)}</div>
-                        </div>
-                        
+                        <div class="exercise-name">${this.escapeHtml(ex.name)}</div>
                         <div class="exercise-stats">
                             <div class="stat">
                                 <div class="stat-value">${ex.weight}</div>
@@ -1203,7 +1719,6 @@
                                 <div class="stat-label">Rip.</div>
                             </div>
                         </div>
-                        
                         ${videoId ? `
                             <button class="video-toggle" id="btn-${ex.id}" onclick="app.toggleVideo(${ex.id}, event)">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -1212,19 +1727,9 @@
                                 Video
                             </button>
                             <div class="video-container" id="video-${ex.id}">
-                                <iframe 
-                                    class="video-frame"
-                                    src="https://www.youtube-nocookie.com/embed/${videoId}" 
-                                    title="YouTube video player"
-                                    frameborder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                                    referrerpolicy="strict-origin-when-cross-origin"
-                                    allowfullscreen
-                                    loading="lazy">
-                                </iframe>
+                                <iframe class="video-frame" src="https://www.youtube-nocookie.com/embed/${videoId}" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
                             </div>
                         ` : ''}
-                        
                         <div class="exercise-date">${ex.lastUpdated}</div>
                     </div>
                 `}).join('');
