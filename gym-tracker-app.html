@@ -53,7 +53,6 @@
             transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* Aurora Background */
         .aurora {
             position: fixed;
             inset: 0;
@@ -111,7 +110,6 @@
             }
         }
         
-        /* Glass Effect */
         .glass {
             background: linear-gradient(180deg, var(--glass-bg), var(--glass-bg2));
             backdrop-filter: blur(22px) saturate(160%);
@@ -160,7 +158,6 @@
             border-radius: inherit;
         }
         
-        /* Header */
         .header {
             position: fixed;
             top: 0;
@@ -222,7 +219,6 @@
             box-shadow: 0 8px 24px rgba(0,0,0,.25);
         }
         
-        /* Days Carousel */
         .days-carousel {
             display: flex;
             gap: 8px;
@@ -289,7 +285,6 @@
             }
         }
         
-        /* Main Content */
         .main-content {
             max-width: 600px;
             margin: 0 auto;
@@ -391,15 +386,15 @@
             justify-content: center;
             gap: 8px;
             padding: 14px;
-            background: color-mix(in oklab, #ff453a 12%, transparent);
+            background: color-mix(in oklab, var(--accent) 12%, transparent);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 14px;
-            color: #ff453a;
+            color: var(--accent);
             font-size: 14px;
             font-weight: 600;
             margin-bottom: 12px;
-            border: 1px solid color-mix(in oklab, #ff453a 22%, transparent);
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
             cursor: pointer;
             width: 100%;
             min-height: 44px;
@@ -412,7 +407,7 @@
         
         .video-toggle:hover {
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(255, 69, 58, 0.3);
+            box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 30%, transparent);
         }
         
         .video-container {
@@ -420,7 +415,7 @@
             border-radius: 14px;
             overflow: hidden;
             background: #000;
-            border: 1px solid color-mix(in oklab, #ff453a 22%, transparent);
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
             max-height: 0;
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -471,7 +466,6 @@
             font-weight: 600;
         }
         
-        /* FAB & Indicators */
         .fab {
             position: fixed;
             bottom: calc(env(safe-area-inset-bottom) + 80px);
@@ -540,7 +534,6 @@
             pointer-events: none;
         }
         
-        /* Modal */
         .modal {
             position: fixed;
             top: 0;
@@ -706,14 +699,13 @@
         }
         
         .button-delete {
-            background: color-mix(in oklab, #ff453a 12%, transparent);
+            background: color-mix(in oklab, var(--accent) 12%, transparent);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            color: #ff453a;
-            border: 1px solid color-mix(in oklab, #ff453a 22%, transparent);
+            color: var(--accent);
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
         }
         
-        /* Settings Modal */
         .settings-modal {
             position: fixed;
             top: 0;
@@ -835,44 +827,43 @@
             box-shadow: 0 4px 16px rgba(0,0,0,.2);
         }
         
-        .days-selector {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+        .days-input-wrapper {
+            width: 100%;
         }
         
-        .day-option {
+        .days-input {
+            width: 100%;
             padding: 20px;
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
             background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
             border: 2px solid var(--hairline);
-            border-radius: 14px;
+            border-radius: 16px;
             color: var(--text);
-            font-size: 24px;
-            font-weight: 700;
+            font-size: 40px;
+            font-weight: 800;
             text-align: center;
-            cursor: pointer;
+            font-family: inherit;
             transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-            min-height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            letter-spacing: -1px;
         }
         
-        .day-option:active {
-            transform: scale(0.94);
+        .days-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 20%, transparent);
         }
         
-        .day-option.selected {
-            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
-            border-color: transparent;
-            color: #fff;
-            box-shadow: 0 6px 20px color-mix(in oklab, var(--accent) 40%, transparent);
+        .days-label {
+            font-size: 14px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        /* Import Modal */
         .import-modal {
             position: fixed;
             top: 0;
@@ -1032,12 +1023,6 @@
             }
         }
         
-        @media (max-width: 360px) {
-            .days-selector {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -1059,7 +1044,7 @@
             <div class="header-top">
                 <h1>Gym-Tracker</h1>
                 <div class="header-actions">
-                    <button class="icon-btn" onclick="app.completeWorkout()" aria-label="Complete Workout" title="Complete Workout">
+                    <button class="icon-btn" onclick="app.completeWorkout()" aria-label="Complete Workout">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -1107,16 +1092,16 @@
                 </div>
                 <div class="inline-inputs">
                     <div class="form-group">
-                        <label for="weight">Weight</label>
-                        <input type="number" id="weight" placeholder="0" inputmode="decimal" step="0.5">
-                    </div>
-                    <div class="form-group">
                         <label for="sets">Sets</label>
                         <input type="number" id="sets" placeholder="0" inputmode="numeric">
                     </div>
                     <div class="form-group">
                         <label for="reps">Reps</label>
                         <input type="number" id="reps" placeholder="0" inputmode="numeric">
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">kg</label>
+                        <input type="number" id="weight" placeholder="0" inputmode="decimal" step="0.5">
                     </div>
                 </div>
                 <div class="form-group">
@@ -1138,7 +1123,7 @@
         <div class="settings-content glass specular grain" onclick="event.stopPropagation()">
             <div class="settings-title">Settings</div>
             
-            <div class="settings-section" id="lastWorkoutSection">
+            <div class="settings-section">
                 <div class="section-title">Last Workout</div>
                 <div class="last-workout-info" id="lastWorkoutInfo">
                     <div class="info-text">No workout completed yet</div>
@@ -1151,13 +1136,16 @@
             <div class="settings-section">
                 <div class="section-title">Workout Plan</div>
                 <div class="settings-subtitle">Days per week</div>
-                <div class="days-selector" id="daysSelector"></div>
+                <div class="days-input-wrapper">
+                    <input type="number" id="daysInput" class="days-input" min="1" max="7" inputmode="numeric" value="3">
+                    <div class="days-label">days per week</div>
+                </div>
             </div>
             
             <div class="settings-section">
                 <div class="section-title">Import/Export</div>
                 <button class="import-btn" onclick="app.downloadExampleWorkout()">
-                    ⬇️ Download Example Workout
+                    ⬇️ Download Example
                 </button>
                 <button class="import-btn" onclick="app.openImportModal()">
                     📥 Import Workout
@@ -1167,14 +1155,14 @@
                 </button>
             </div>
             
-            <button class="button button-primary" onclick="app.saveSettings()">Save</button>
+            <button class="button button-primary" onclick="app.saveSettings()">Save Settings</button>
         </div>
     </div>
 
     <div class="import-modal" id="importModal" onclick="app.closeImportOnBackdrop(event)">
         <div class="import-content glass specular grain" onclick="event.stopPropagation()">
             <div class="import-title">Import Workout</div>
-            <div class="import-subtitle">Upload a JSON or CSV file with your exercises</div>
+            <div class="import-subtitle">Upload a JSON or CSV file</div>
             
             <div class="format-options">
                 <button class="format-btn selected" onclick="app.selectFormat('json')" id="jsonBtn">
@@ -1189,8 +1177,8 @@
             
             <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
                 <div class="drop-icon">📁</div>
-                <div class="drop-text">Tap to select</div>
-                <div class="drop-subtext">Or drag and drop file here</div>
+                <div class="drop-text">Tap to select file</div>
+                <div class="drop-subtext">Or drag and drop</div>
             </div>
             
             <div class="file-name hidden" id="fileName"></div>
@@ -1236,7 +1224,6 @@
                     scrollIndicators: document.getElementById('scrollIndicators'),
                     addModal: document.getElementById('addModal'),
                     settingsModal: document.getElementById('settingsModal'),
-                    daysSelector: document.getElementById('daysSelector'),
                     modalTitle: document.getElementById('modalTitle'),
                     deleteBtn: document.getElementById('deleteBtn'),
                     saveButtonText: document.getElementById('saveButtonText'),
@@ -1518,8 +1505,12 @@
             openSettings() {
                 this.dom.settingsModal.classList.add('show');
                 document.body.style.overflow = 'hidden';
-                this.renderDaysSelector();
                 this.renderLastWorkoutInfo();
+                
+                const daysInput = document.getElementById('daysInput');
+                if (daysInput) {
+                    daysInput.value = this.state.workoutDays;
+                }
             },
 
             closeSettings() {
@@ -1534,354 +1525,18 @@
                 if (event.target === this.dom.settingsModal) this.closeSettings();
             },
 
-            openImportModal() {
-                document.getElementById('importModal').classList.add('show');
-                this.setupDropZone();
-            },
-
-            closeImportModal() {
-                document.getElementById('importModal').classList.remove('show');
-                this.state.selectedFile = null;
-                document.getElementById('fileName').classList.add('hidden');
-                document.getElementById('fileInput').value = '';
-            },
-
-            closeImportOnBackdrop(event) {
-                if (event.target === document.getElementById('importModal')) {
-                    this.closeImportModal();
-                }
-            },
-
-            selectFormat(format) {
-                this.state.selectedFormat = format;
-                document.getElementById('jsonBtn').classList.toggle('selected', format === 'json');
-                document.getElementById('csvBtn').classList.toggle('selected', format === 'csv');
-                
-                const fileInput = document.getElementById('fileInput');
-                fileInput.accept = format === 'json' ? '.json' : '.csv';
-            },
-
-            setupDropZone() {
-                const dropZone = document.getElementById('dropZone');
-                
-                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }, false);
-                });
-
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, () => {
-                        dropZone.classList.add('dragover');
-                    }, false);
-                });
-
-                ['dragleave', 'drop'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, () => {
-                        dropZone.classList.remove('dragover');
-                    }, false);
-                });
-
-                dropZone.addEventListener('drop', (e) => {
-                    const files = e.dataTransfer.files;
-                    if (files.length) {
-                        this.processFile(files[0]);
-                    }
-                }, false);
-            },
-
-            handleFileSelect(event) {
-                const file = event.target.files[0];
-                if (file) this.processFile(file);
-            },
-
-            processFile(file) {
-                const ext = file.name.split('.').pop().toLowerCase();
-                
-                if ((ext === 'json' && this.state.selectedFormat !== 'json') ||
-                    (ext === 'csv' && this.state.selectedFormat !== 'csv')) {
-                    this.showMessage(`Please select ${ext.toUpperCase()} format first`);
-                    return;
-                }
-                
-                this.state.selectedFile = file;
-                document.getElementById('fileName').textContent = `📎 ${file.name}`;
-                document.getElementById('fileName').classList.remove('hidden');
-            },
-
-            async importFile() {
-                if (!this.state.selectedFile) {
-                    this.showMessage('Please select a file to import');
-                    return;
-                }
-
-                try {
-                    const text = await this.state.selectedFile.text();
-                    let data;
-
-                    if (this.state.selectedFormat === 'json') {
-                        data = await this.parseJSON(text);
-                    } else {
-                        data = await this.parseCSV(text);
-                    }
-
-                    if (data) {
-                        localStorage.setItem('gymConfig', JSON.stringify({ 
-                            workoutDays: data.giorni 
-                        }));
-                        localStorage.setItem('gymWorkoutData', JSON.stringify(data.esercizi));
-                        
-                        this.closeImportModal();
-                        this.closeSettings();
-                        
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 100);
-                    }
-                } catch (error) {
-                    console.error('Import error:', error);
-                    this.showMessage('Import error: ' + error.message);
-                }
-            },
-
-            showMessage(msg) {
-                alert(msg);
-            },
-
-            async parseJSON(text) {
-                try {
-                    const data = JSON.parse(text);
-                    
-                    if (!data.giorni || !data.esercizi) {
-                        throw new Error('Invalid JSON format: missing "giorni" or "esercizi"');
-                    }
-                    
-                    if (isNaN(parseInt(data.giorni)) || parseInt(data.giorni) < 1 || parseInt(data.giorni) > 7) {
-                        throw new Error('Invalid number of days (must be between 1 and 7)');
-                    }
-
-                    const workoutData = {};
-                    let idCounter = Date.now();
-                    
-                    for (let day in data.esercizi) {
-                        const dayNum = parseInt(day);
-                        
-                        if (isNaN(dayNum) || dayNum < 1) {
-                            console.warn(`Day ${day} ignored: invalid`);
-                            continue;
-                        }
-                        
-                        if (!Array.isArray(data.esercizi[day])) {
-                            console.warn(`Day ${day} ignored: not an array`);
-                            continue;
-                        }
-                        
-                        workoutData[dayNum] = data.esercizi[day]
-                            .filter(ex => ex && (ex.nome || ex.name))
-                            .map(ex => {
-                                idCounter++;
-                                return {
-                                    id: idCounter,
-                                    name: String(ex.nome || ex.name || ''),
-                                    weight: parseFloat(ex.peso || ex.weight || 0) || 0,
-                                    sets: parseInt(ex.serie || ex.sets || 0) || 0,
-                                    reps: parseInt(ex.ripetizioni || ex.reps || 0) || 0,
-                                    videoLink: String(ex.video || ex.videoLink || ''),
-                                    lastUpdated: new Date().toLocaleDateString('en-US')
-                                };
-                            });
-                    }
-                    
-                    const totalExercises = Object.values(workoutData).reduce((sum, arr) => sum + arr.length, 0);
-                    
-                    if (totalExercises === 0) {
-                        throw new Error('No valid exercises found in file');
-                    }
-
-                    return {
-                        giorni: parseInt(data.giorni),
-                        esercizi: workoutData
-                    };
-                } catch (error) {
-                    if (error instanceof SyntaxError) {
-                        throw new Error('Invalid JSON file: ' + error.message);
-                    }
-                    throw error;
-                }
-            },
-
-            async parseCSV(text) {
-                try {
-                    const lines = text.trim().split('\n');
-                    
-                    if (lines.length < 2) {
-                        throw new Error('CSV file is empty or invalid');
-                    }
-                    
-                    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-                    
-                    const hasName = headers.some(h => h.includes('nome') || h.includes('name'));
-                    if (!hasName) {
-                        throw new Error('CSV must contain a "nome" or "name" column');
-                    }
-                    
-                    const workoutData = {};
-                    let maxDay = 0;
-                    let idCounter = Date.now();
-                    let validRows = 0;
-
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i].trim();
-                        if (!line) continue;
-                        
-                        const values = line.split(',').map(v => v.trim());
-                        if (values.length < 2) continue;
-                        
-                        const row = {};
-                        headers.forEach((header, index) => {
-                            row[header] = values[index] || '';
-                        });
-                        
-                        const name = row.nome || row.name;
-                        if (!name) continue;
-                        
-                        const day = parseInt(row.giorno || row.day || 1);
-                        if (isNaN(day) || day < 1 || day > 7) continue;
-                        
-                        if (day > maxDay) maxDay = day;
-                        if (!workoutData[day]) workoutData[day] = [];
-                        
-                        idCounter++;
-                        workoutData[day].push({
-                            id: idCounter,
-                            name: String(name),
-                            weight: parseFloat(row.peso || row.weight || 0) || 0,
-                            sets: parseInt(row.serie || row.sets || 0) || 0,
-                            reps: parseInt(row.ripetizioni || row.reps || row.repetitions || 0) || 0,
-                            videoLink: String(row.video || row.videolink || ''),
-                            lastUpdated: new Date().toLocaleDateString('en-US')
-                        });
-                        validRows++;
-                    }
-                    
-                    if (validRows === 0) {
-                        throw new Error('No valid exercises found in CSV');
-                    }
-
-                    return {
-                        giorni: maxDay,
-                        esercizi: workoutData
-                    };
-                } catch (error) {
-                    if (error.message.includes('found')) {
-                        throw error;
-                    }
-                    throw new Error('Invalid CSV file: ' + error.message);
-                }
-            },
-
-            exportWorkout() {
-                const exportData = {
-                    nome: "My Workout",
-                    giorni: this.state.workoutDays,
-                    esercizi: {}
-                };
-
-                for (let day in this.state.workoutData) {
-                    exportData.esercizi[day] = this.state.workoutData[day].map(ex => ({
-                        nome: ex.name,
-                        peso: ex.weight,
-                        serie: ex.sets,
-                        ripetizioni: ex.reps,
-                        video: ex.videoLink
-                    }));
-                }
-
-                const dataStr = JSON.stringify(exportData, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = `workout_${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            },
-
-            downloadExampleWorkout() {
-                const exampleWorkout = {
-                    "nome": "6-Day Split Workout",
-                    "giorni": 6,
-                    "esercizi": {
-                        "1": [
-                            {"nome": "Barbell Bench Press", "peso": 80, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=rT7DgCr-3pg"},
-                            {"nome": "Incline Dumbbell Press", "peso": 32, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=8iPEnn-ltC8"},
-                            {"nome": "Cable Flyes", "peso": 15, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=taI4XduLpTk"}
-                        ],
-                        "2": [
-                            {"nome": "Pull-ups", "peso": 0, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=eGo4IYlbE5g"},
-                            {"nome": "Barbell Row", "peso": 70, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=T3N-TO4reLQ"},
-                            {"nome": "Lat Pulldown", "peso": 60, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=CAwf7n6Luuc"}
-                        ],
-                        "3": [
-                            {"nome": "Squat", "peso": 100, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=ultWZbUMPL8"},
-                            {"nome": "Leg Press", "peso": 180, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=IZxyjW7MPJQ"},
-                            {"nome": "Leg Curl", "peso": 40, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=1Tq3QdYUuHs"}
-                        ],
-                        "4": [
-                            {"nome": "Military Press", "peso": 50, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=qEwKCR5JCog"},
-                            {"nome": "Lateral Raises", "peso": 12, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=3VcKaXpzqRo"},
-                            {"nome": "Front Raises", "peso": 10, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=qPNiF5c75oc"}
-                        ],
-                        "5": [
-                            {"nome": "Barbell Curl", "peso": 30, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo"},
-                            {"nome": "Skull Crushers", "peso": 25, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=d_KZxkY_0cM"},
-                            {"nome": "Hammer Curls", "peso": 16, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"}
-                        ],
-                        "6": [
-                            {"nome": "Deadlift", "peso": 110, "serie": 4, "ripetizioni": 6, "video": "https://www.youtube.com/watch?v=op9kVnSso6Q"},
-                            {"nome": "Clean and Press", "peso": 50, "serie": 3, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=KwYJTpQ_x5A"},
-                            {"nome": "Plank", "peso": 0, "serie": 3, "ripetizioni": 60, "video": "https://www.youtube.com/watch?v=ASdvN_XEl_c"}
-                        ]
-                    }
-                };
-
-                const dataStr = JSON.stringify(exampleWorkout, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'example-workout-6days.json';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            },
-
-            renderDaysSelector() {
-                const fragment = document.createDocumentFragment();
-                for (let i = 1; i <= 7; i++) {
-                    const option = document.createElement('div');
-                    option.className = 'day-option';
-                    option.classList.toggle('selected', i === this.state.workoutDays);
-                    option.textContent = i;
-                    option.onclick = () => this.selectWorkoutDays(i);
-                    fragment.appendChild(option);
-                }
-                this.dom.daysSelector.innerHTML = '';
-                this.dom.daysSelector.appendChild(fragment);
-            },
-
-            selectWorkoutDays(days) {
-                this.state.workoutDays = days;
-                this.dom.daysSelector.querySelectorAll('.day-option').forEach((opt, i) => {
-                    opt.classList.toggle('selected', i + 1 === days);
-                });
-            },
-
             saveSettings() {
+                const daysInput = document.getElementById('daysInput');
+                if (daysInput) {
+                    const days = parseInt(daysInput.value);
+                    if (isNaN(days) || days < 1 || days > 7) {
+                        alert('Please enter a valid number of days (1-7)');
+                        daysInput.focus();
+                        return;
+                    }
+                    this.state.workoutDays = days;
+                }
+                
                 this.initializeWorkoutData();
                 this.saveData();
                 
@@ -1953,16 +1608,16 @@
                     return;
                 }
 
-                const weight = parseFloat(this.dom.weight.value) || 0;
                 const sets = parseInt(this.dom.sets.value) || 0;
                 const reps = parseInt(this.dom.reps.value) || 0;
+                const weight = parseFloat(this.dom.weight.value) || 0;
 
                 const exercise = {
                     id: this.state.editingId || Date.now(),
                     name,
-                    weight: Math.max(0, weight),
                     sets: Math.max(0, sets),
                     reps: Math.max(0, reps),
+                    weight: Math.max(0, weight),
                     videoLink: this.dom.videoLink.value.trim(),
                     lastUpdated: new Date().toLocaleDateString('en-US')
                 };
@@ -1982,9 +1637,9 @@
 
             clearForm() {
                 this.dom.exerciseName.value = '';
-                this.dom.weight.value = '';
                 this.dom.sets.value = '';
                 this.dom.reps.value = '';
+                this.dom.weight.value = '';
                 this.dom.videoLink.value = '';
                 this.state.editingId = null;
             },
@@ -1994,9 +1649,9 @@
                 if (!exercise) return;
 
                 this.dom.exerciseName.value = exercise.name;
-                this.dom.weight.value = exercise.weight || '';
                 this.dom.sets.value = exercise.sets || '';
                 this.dom.reps.value = exercise.reps || '';
+                this.dom.weight.value = exercise.weight || '';
                 this.dom.videoLink.value = exercise.videoLink || '';
                 this.dom.modalTitle.textContent = 'Edit Exercise';
                 this.dom.deleteBtn.classList.remove('hidden');
@@ -2040,23 +1695,17 @@
                 const button = document.getElementById(`btn-${id}`);
                 if (!container || !button) return;
                 
-                if (container.classList.contains('show')) {
+                const isShowing = container.classList.contains('show');
+                const icon = isShowing ? 
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7L8 5z"/></svg>' :
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>';
+                
+                if (isShowing) {
                     container.classList.remove('show');
-                    button.innerHTML = `
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <path d="M8 5v14l11-7L8 5z" fill="#ff453a"/>
-                        </svg>
-                        Video
-                    `;
+                    button.innerHTML = icon + ' Video';
                 } else {
                     container.classList.add('show');
-                    button.innerHTML = `
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                            <rect x="6" y="5" width="4" height="14" fill="#ff453a"/>
-                            <rect x="14" y="5" width="4" height="14" fill="#ff453a"/>
-                        </svg>
-                        Hide
-                    `;
+                    button.innerHTML = icon + ' Hide';
                 }
             },
 
@@ -2082,10 +1731,6 @@
                         <div class="exercise-name">${this.escapeHtml(ex.name)}</div>
                         <div class="exercise-stats">
                             <div class="stat">
-                                <div class="stat-value">${ex.weight}</div>
-                                <div class="stat-label">kg</div>
-                            </div>
-                            <div class="stat">
                                 <div class="stat-value">${ex.sets}</div>
                                 <div class="stat-label">Sets</div>
                             </div>
@@ -2093,11 +1738,15 @@
                                 <div class="stat-value">${ex.reps}</div>
                                 <div class="stat-label">Reps</div>
                             </div>
+                            <div class="stat">
+                                <div class="stat-value">${ex.weight}</div>
+                                <div class="stat-label">kg</div>
+                            </div>
                         </div>
                         ${videoId ? `
                             <button class="video-toggle" id="btn-${ex.id}" onclick="app.toggleVideo(${ex.id}, event)">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                                    <path d="M8 5v14l11-7L8 5z" fill="#ff453a"/>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M8 5v14l11-7L8 5z"/>
                                 </svg>
                                 Video
                             </button>
@@ -2111,7 +1760,6 @@
                 
                 this.dom.exerciseList.innerHTML = html + '<div class="scroll-spacer"></div>';
                 this.renderScrollIndicators(exercises.length);
-                
                 this.dom.exerciseList.scrollTop = 0;
             },
 
@@ -2158,6 +1806,315 @@
                 dots.forEach((dot, index) => {
                     dot.classList.toggle('active', index === closestIndex);
                 });
+            },
+
+            openImportModal() {
+                document.getElementById('importModal').classList.add('show');
+                this.setupDropZone();
+            },
+
+            closeImportModal() {
+                document.getElementById('importModal').classList.remove('show');
+                this.state.selectedFile = null;
+                document.getElementById('fileName').classList.add('hidden');
+                document.getElementById('fileInput').value = '';
+            },
+
+            closeImportOnBackdrop(event) {
+                if (event.target === document.getElementById('importModal')) {
+                    this.closeImportModal();
+                }
+            },
+
+            selectFormat(format) {
+                this.state.selectedFormat = format;
+                document.getElementById('jsonBtn').classList.toggle('selected', format === 'json');
+                document.getElementById('csvBtn').classList.toggle('selected', format === 'csv');
+                
+                const fileInput = document.getElementById('fileInput');
+                fileInput.accept = format === 'json' ? '.json' : '.csv';
+            },
+
+            setupDropZone() {
+                const dropZone = document.getElementById('dropZone');
+                
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, false);
+                });
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.add('dragover');
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.remove('dragover');
+                    }, false);
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    const files = e.dataTransfer.files;
+                    if (files.length) {
+                        this.processFile(files[0]);
+                    }
+                }, false);
+            },
+
+            handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (file) this.processFile(file);
+            },
+
+            processFile(file) {
+                const ext = file.name.split('.').pop().toLowerCase();
+                
+                if ((ext === 'json' && this.state.selectedFormat !== 'json') ||
+                    (ext === 'csv' && this.state.selectedFormat !== 'csv')) {
+                    alert(`Please select ${ext.toUpperCase()} format first`);
+                    return;
+                }
+                
+                this.state.selectedFile = file;
+                document.getElementById('fileName').textContent = `📎 ${file.name}`;
+                document.getElementById('fileName').classList.remove('hidden');
+            },
+
+            async importFile() {
+                if (!this.state.selectedFile) {
+                    alert('Please select a file to import');
+                    return;
+                }
+
+                try {
+                    const text = await this.state.selectedFile.text();
+                    let data;
+
+                    if (this.state.selectedFormat === 'json') {
+                        data = await this.parseJSON(text);
+                    } else {
+                        data = await this.parseCSV(text);
+                    }
+
+                    if (data) {
+                        localStorage.setItem('gymConfig', JSON.stringify({ 
+                            workoutDays: data.giorni 
+                        }));
+                        localStorage.setItem('gymWorkoutData', JSON.stringify(data.esercizi));
+                        
+                        this.closeImportModal();
+                        this.closeSettings();
+                        
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 100);
+                    }
+                } catch (error) {
+                    console.error('Import error:', error);
+                    alert('Import error: ' + error.message);
+                }
+            },
+
+            async parseJSON(text) {
+                try {
+                    const data = JSON.parse(text);
+                    
+                    if (!data.giorni || !data.esercizi) {
+                        throw new Error('Invalid JSON format: missing "giorni" or "esercizi"');
+                    }
+                    
+                    if (isNaN(parseInt(data.giorni)) || parseInt(data.giorni) < 1 || parseInt(data.giorni) > 7) {
+                        throw new Error('Invalid number of days (must be between 1 and 7)');
+                    }
+
+                    const workoutData = {};
+                    let idCounter = Date.now();
+                    
+                    for (let day in data.esercizi) {
+                        const dayNum = parseInt(day);
+                        
+                        if (isNaN(dayNum) || dayNum < 1) continue;
+                        if (!Array.isArray(data.esercizi[day])) continue;
+                        
+                        workoutData[dayNum] = data.esercizi[day]
+                            .filter(ex => ex && (ex.nome || ex.name))
+                            .map(ex => {
+                                idCounter++;
+                                return {
+                                    id: idCounter,
+                                    name: String(ex.nome || ex.name || ''),
+                                    sets: parseInt(ex.serie || ex.sets || 0) || 0,
+                                    reps: parseInt(ex.ripetizioni || ex.reps || 0) || 0,
+                                    weight: parseFloat(ex.peso || ex.weight || 0) || 0,
+                                    videoLink: String(ex.video || ex.videoLink || ''),
+                                    lastUpdated: new Date().toLocaleDateString('en-US')
+                                };
+                            });
+                    }
+                    
+                    const totalExercises = Object.values(workoutData).reduce((sum, arr) => sum + arr.length, 0);
+                    
+                    if (totalExercises === 0) {
+                        throw new Error('No valid exercises found in file');
+                    }
+
+                    return {
+                        giorni: parseInt(data.giorni),
+                        esercizi: workoutData
+                    };
+                } catch (error) {
+                    if (error instanceof SyntaxError) {
+                        throw new Error('Invalid JSON file: ' + error.message);
+                    }
+                    throw error;
+                }
+            },
+
+            async parseCSV(text) {
+                try {
+                    const lines = text.trim().split('\n');
+                    
+                    if (lines.length < 2) {
+                        throw new Error('CSV file is empty or invalid');
+                    }
+                    
+                    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                    
+                    const hasName = headers.some(h => h.includes('nome') || h.includes('name'));
+                    if (!hasName) {
+                        throw new Error('CSV must contain a "nome" or "name" column');
+                    }
+                    
+                    const workoutData = {};
+                    let maxDay = 0;
+                    let idCounter = Date.now();
+                    let validRows = 0;
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        const values = line.split(',').map(v => v.trim());
+                        if (values.length < 2) continue;
+                        
+                        const row = {};
+                        headers.forEach((header, index) => {
+                            row[header] = values[index] || '';
+                        });
+                        
+                        const name = row.nome || row.name;
+                        if (!name) continue;
+                        
+                        const day = parseInt(row.giorno || row.day || 1);
+                        if (isNaN(day) || day < 1 || day > 7) continue;
+                        
+                        if (day > maxDay) maxDay = day;
+                        if (!workoutData[day]) workoutData[day] = [];
+                        
+                        idCounter++;
+                        workoutData[day].push({
+                            id: idCounter,
+                            name: String(name),
+                            sets: parseInt(row.serie || row.sets || 0) || 0,
+                            reps: parseInt(row.ripetizioni || row.reps || row.repetitions || 0) || 0,
+                            weight: parseFloat(row.peso || row.weight || 0) || 0,
+                            videoLink: String(row.video || row.videolink || ''),
+                            lastUpdated: new Date().toLocaleDateString('en-US')
+                        });
+                        validRows++;
+                    }
+                    
+                    if (validRows === 0) {
+                        throw new Error('No valid exercises found in CSV');
+                    }
+
+                    return {
+                        giorni: maxDay,
+                        esercizi: workoutData
+                    };
+                } catch (error) {
+                    if (error.message.includes('found')) {
+                        throw error;
+                    }
+                    throw new Error('Invalid CSV file: ' + error.message);
+                }
+            },
+
+            exportWorkout() {
+                const exportData = {
+                    nome: "My Workout",
+                    giorni: this.state.workoutDays,
+                    esercizi: {}
+                };
+
+                for (let day in this.state.workoutData) {
+                    exportData.esercizi[day] = this.state.workoutData[day].map(ex => ({
+                        nome: ex.name,
+                        serie: ex.sets,
+                        ripetizioni: ex.reps,
+                        peso: ex.weight,
+                        video: ex.videoLink
+                    }));
+                }
+
+                const dataStr = JSON.stringify(exportData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `workout_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            },
+
+            downloadExampleWorkout() {
+                const exampleWorkout = {
+                    "nome": "6-Day Split",
+                    "giorni": 6,
+                    "esercizi": {
+                        "1": [
+                            {"nome": "Bench Press", "serie": 4, "ripetizioni": 8, "peso": 80, "video": ""},
+                            {"nome": "Incline Press", "serie": 4, "ripetizioni": 10, "peso": 32, "video": ""}
+                        ],
+                        "2": [
+                            {"nome": "Pull-ups", "serie": 4, "ripetizioni": 8, "peso": 0, "video": ""},
+                            {"nome": "Barbell Row", "serie": 4, "ripetizioni": 10, "peso": 70, "video": ""}
+                        ],
+                        "3": [
+                            {"nome": "Squat", "serie": 4, "ripetizioni": 8, "peso": 100, "video": ""},
+                            {"nome": "Leg Press", "serie": 4, "ripetizioni": 12, "peso": 180, "video": ""}
+                        ],
+                        "4": [
+                            {"nome": "Military Press", "serie": 4, "ripetizioni": 8, "peso": 50, "video": ""},
+                            {"nome": "Lateral Raises", "serie": 4, "ripetizioni": 12, "peso": 12, "video": ""}
+                        ],
+                        "5": [
+                            {"nome": "Barbell Curl", "serie": 4, "ripetizioni": 10, "peso": 30, "video": ""},
+                            {"nome": "Skull Crushers", "serie": 4, "ripetizioni": 10, "peso": 25, "video": ""}
+                        ],
+                        "6": [
+                            {"nome": "Deadlift", "serie": 4, "ripetizioni": 6, "peso": 110, "video": ""},
+                            {"nome": "Plank", "serie": 3, "ripetizioni": 60, "peso": 0, "video": ""}
+                        ]
+                    }
+                };
+
+                const dataStr = JSON.stringify(exampleWorkout, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'example-workout.json';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
             },
 
             escapeHtml(text) {
