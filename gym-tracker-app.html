@@ -170,6 +170,25 @@
             min-height: 44px;
             display: flex;
             align-items: center;
+            gap: 6px;
+        }
+        
+        .next-badge {
+            font-size: 16px;
+            margin-right: 4px;
+            animation: pulse 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.15);
+            }
         }
         
         .day-tab.active {
@@ -595,6 +614,33 @@
             margin-bottom: 12px;
         }
         
+        .last-workout-info {
+            background: var(--overlay-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .info-text {
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .info-subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .info-highlight {
+            color: #0a84ff;
+            font-weight: 700;
+        }
+        
         .import-btn {
             width: 100%;
             padding: 16px;
@@ -906,6 +952,16 @@
         <div class="settings-content" onclick="event.stopPropagation()">
             <div class="settings-title">Impostazioni</div>
             
+            <div class="settings-section" id="lastWorkoutSection">
+                <div class="section-title">Ultimo Allenamento</div>
+                <div class="last-workout-info" id="lastWorkoutInfo">
+                    <div class="info-text">Nessun allenamento completato</div>
+                </div>
+                <button class="import-btn" onclick="app.resetWorkoutTracking()" id="resetTrackingBtn" style="margin-top: 12px; display: none;">
+                    🔄 Resetta Tracciamento
+                </button>
+            </div>
+            
             <div class="settings-section">
                 <div class="section-title">Allenamento</div>
                 <div class="settings-subtitle">Giorni a settimana</div>
@@ -1101,6 +1157,11 @@
                 }
             },
 
+            getDayLetter(dayNumber) {
+                // Converte numero in lettera: 1->A, 2->B, etc.
+                return String.fromCharCode(64 + dayNumber);
+            },
+
             getNextWorkoutDay() {
                 // Se non c'è un ultimo allenamento salvato, inizia dal giorno 1
                 if (!this.state.lastWorkoutDay) {
@@ -1132,10 +1193,11 @@
                     const nextDay = this.getNextWorkoutDay();
                     
                     // Mostra messaggio di conferma
-                    const dayCompleted = this.state.currentDay;
+                    const dayCompleted = this.getDayLetter(this.state.currentDay);
+                    const nextDayLetter = this.getDayLetter(nextDay);
                     const message = nextDay === 1 ? 
-                        `Giorno ${dayCompleted} completato! 🎉\nCiclo terminato, si riparte dal Giorno 1!` :
-                        `Giorno ${dayCompleted} completato! 💪\nProssimo: Giorno ${nextDay}`;
+                        `GIORNO ${dayCompleted} completato! 🎉\nCiclo terminato, si riparte dal GIORNO A!` :
+                        `GIORNO ${dayCompleted} completato! 💪\nProssimo: GIORNO ${nextDayLetter}`;
                     
                     alert(message);
                     
@@ -1215,10 +1277,24 @@
 
             renderDaysTabs() {
                 const fragment = document.createDocumentFragment();
+                const nextDay = this.getNextWorkoutDay();
+                
                 for (let i = 1; i <= this.state.workoutDays; i++) {
                     const tab = document.createElement('div');
                     tab.className = 'day-tab';
-                    tab.textContent = `Giorno ${i}`;
+                    
+                    const dayLetter = this.getDayLetter(i);
+                    
+                    // Aggiungi badge "Prossimo" al giorno raccomandato
+                    if (i === nextDay) {
+                        tab.innerHTML = `
+                            <span class="next-badge">⭐</span>
+                            <span>GIORNO ${dayLetter}</span>
+                        `;
+                    } else {
+                        tab.textContent = `GIORNO ${dayLetter}`;
+                    }
+                    
                     tab.onclick = () => this.selectDay(i);
                     fragment.appendChild(tab);
                 }
@@ -1253,11 +1329,65 @@
                 this.dom.settingsModal.classList.add('show');
                 document.body.style.overflow = 'hidden';
                 this.renderDaysSelector();
+                this.renderLastWorkoutInfo();
+            },
+
+            renderLastWorkoutInfo() {
+                const infoElement = document.getElementById('lastWorkoutInfo');
+                const resetBtn = document.getElementById('resetTrackingBtn');
+                if (!infoElement) return;
+                
+                if (!this.state.lastWorkoutDay || !this.state.lastWorkoutDate) {
+                    infoElement.innerHTML = '<div class="info-text">Nessun allenamento completato</div>';
+                    if (resetBtn) resetBtn.style.display = 'none';
+                    return;
+                }
+                
+                const lastDate = new Date(this.state.lastWorkoutDate);
+                const daysPassed = Math.floor((Date.now() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
+                const nextDay = this.getNextWorkoutDay();
+                
+                let timeText = '';
+                if (daysPassed === 0) {
+                    timeText = 'Oggi';
+                } else if (daysPassed === 1) {
+                    timeText = 'Ieri';
+                } else {
+                    timeText = `${daysPassed} giorni fa`;
+                }
+                
+                const lastDayLetter = this.getDayLetter(this.state.lastWorkoutDay);
+                const nextDayLetter = this.getDayLetter(nextDay);
+                
+                infoElement.innerHTML = `
+                    <div class="info-text">GIORNO <span class="info-highlight">${lastDayLetter}</span> completato</div>
+                    <div class="info-subtext">${timeText} • ${lastDate.toLocaleDateString('it-IT')}</div>
+                    <div class="info-subtext" style="margin-top: 8px;">Prossimo: <span class="info-highlight">GIORNO ${nextDayLetter}</span></div>
+                `;
+                
+                if (resetBtn) resetBtn.style.display = 'block';
+            },
+
+            resetWorkoutTracking() {
+                if (confirm('Vuoi resettare il tracciamento degli allenamenti?\nVerrai riportato al GIORNO A.')) {
+                    localStorage.removeItem('gymLastWorkout');
+                    this.state.lastWorkoutDay = null;
+                    this.state.lastWorkoutDate = null;
+                    this.renderLastWorkoutInfo();
+                    this.renderDaysTabs();
+                    this.selectDay(1);
+                    alert('Tracciamento resettato! Si riparte dal GIORNO A 💪');
+                }
             },
 
             closeSettings() {
                 this.dom.settingsModal.classList.remove('show');
                 document.body.style.overflow = '';
+                // Ri-renderizza i tabs per aggiornare il badge del prossimo giorno
+                this.renderDaysTabs();
+                // Riseleziona il giorno corrente per aggiornare la classe active
+                const tabs = this.dom.daysCarousel.querySelectorAll('.day-tab');
+                tabs.forEach((tab, i) => tab.classList.toggle('active', i + 1 === this.state.currentDay));
             },
 
             closeSettingsOnBackdrop(event) {
@@ -1636,6 +1766,15 @@
             saveSettings() {
                 this.initializeWorkoutData();
                 this.saveData();
+                
+                // Se il prossimo giorno raccomandato è oltre il nuovo numero di giorni, resetta
+                const nextDay = this.getNextWorkoutDay();
+                if (nextDay > this.state.workoutDays) {
+                    localStorage.removeItem('gymLastWorkout');
+                    this.state.lastWorkoutDay = null;
+                    this.state.lastWorkoutDate = null;
+                }
+                
                 this.renderDaysTabs();
                 this.selectDay(Math.min(this.state.currentDay, this.state.workoutDays));
                 this.closeSettings();
