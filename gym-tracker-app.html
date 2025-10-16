@@ -208,6 +208,17 @@
             margin: 0 auto;
             padding: 0 20px;
             padding-top: calc(140px + env(safe-area-inset-top));
+            height: calc(100vh - 140px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 90px);
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .main-content::-webkit-scrollbar {
+            display: none;
         }
         
         .exercise-item {
@@ -222,6 +233,11 @@
             animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: calc(100vh - 140px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 114px);
+            display: flex;
+            flex-direction: column;
         }
         
         .exercise-item:active {
@@ -336,6 +352,11 @@
             box-shadow: 0 8px 32px var(--shadow);
             border: 1px solid var(--border-subtle);
             margin-top: 20px;
+            min-height: calc(100vh - 160px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 114px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         .empty-state-icon {
@@ -352,7 +373,7 @@
         
         .fab {
             position: fixed;
-            bottom: calc(env(safe-area-inset-bottom) + 24px);
+            bottom: calc(env(safe-area-inset-bottom) + 80px);
             left: 50%;
             transform: translateX(-50%);
             width: 60px;
@@ -371,6 +392,38 @@
         
         .fab:active {
             transform: translateX(-50%) scale(0.92);
+        }
+        
+        .scroll-indicators {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom) + 32px);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 40;
+            padding: 8px 16px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 4px 16px var(--shadow);
+        }
+        
+        .scroll-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-tertiary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scroll-dot.active {
+            width: 24px;
+            border-radius: 4px;
+            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            box-shadow: 0 2px 8px var(--accent-glow);
         }
         
         .modal {
@@ -900,6 +953,8 @@
     
     <div class="main-content" id="exerciseList"></div>
 
+    <div class="scroll-indicators" id="scrollIndicators"></div>
+
     <button class="fab" onclick="app.openAddModal()" aria-label="Aggiungi">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
@@ -1049,6 +1104,7 @@
                 this.dom = {
                     daysCarousel: document.getElementById('daysCarousel'),
                     exerciseList: document.getElementById('exerciseList'),
+                    scrollIndicators: document.getElementById('scrollIndicators'),
                     addModal: document.getElementById('addModal'),
                     settingsModal: document.getElementById('settingsModal'),
                     daysSelector: document.getElementById('daysSelector'),
@@ -1262,6 +1318,11 @@
                         this.updateThemeIcon(!e.matches);
                     }
                 });
+                
+                // Listener per lo scroll degli esercizi
+                this.dom.exerciseList.addEventListener('scroll', () => {
+                    this.updateScrollIndicators();
+                }, { passive: true });
             },
 
             handleSwipe() {
@@ -1900,13 +1961,14 @@
                             <div class="empty-state-text">Nessun esercizio</div>
                         </div>
                     `;
+                    this.dom.scrollIndicators.style.display = 'none';
                     return;
                 }
                 
-                const html = exercises.map(ex => {
+                const html = exercises.map((ex, index) => {
                     const videoId = this.getYouTubeVideoId(ex.videoLink);
                     return `
-                    <div class="exercise-item" onclick="app.editExercise(${ex.id})">
+                    <div class="exercise-item" data-exercise-index="${index}" onclick="app.editExercise(${ex.id})">
                         <div class="exercise-name">${this.escapeHtml(ex.name)}</div>
                         <div class="exercise-stats">
                             <div class="stat">
@@ -1933,11 +1995,63 @@
                                 <iframe class="video-frame" src="https://www.youtube-nocookie.com/embed/${videoId}" title="Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen loading="lazy"></iframe>
                             </div>
                         ` : ''}
-                        <div class="exercise-date">${ex.lastUpdated}</div>
+                        <div class="exercise-date" style="margin-top: auto;">${ex.lastUpdated}</div>
                     </div>
                 `}).join('');
                 
                 this.dom.exerciseList.innerHTML = html;
+                this.renderScrollIndicators(exercises.length);
+                
+                // Reset scroll position
+                this.dom.exerciseList.scrollTop = 0;
+            },
+
+            renderScrollIndicators(count) {
+                if (count <= 1) {
+                    this.dom.scrollIndicators.style.display = 'none';
+                    return;
+                }
+                
+                this.dom.scrollIndicators.style.display = 'flex';
+                const dots = Array.from({ length: count }, (_, i) => 
+                    `<div class="scroll-dot ${i === 0 ? 'active' : ''}" data-dot-index="${i}"></div>`
+                ).join('');
+                
+                this.dom.scrollIndicators.innerHTML = dots;
+            },
+
+            updateScrollIndicators() {
+                const exercises = this.state.workoutData[this.state.currentDay] || [];
+                if (exercises.length <= 1) return;
+                
+                const container = this.dom.exerciseList;
+                const items = container.querySelectorAll('.exercise-item');
+                
+                if (items.length === 0) return;
+                
+                // Calcola quale esercizio è più vicino al centro dello schermo
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.top + containerRect.height / 2;
+                
+                let closestIndex = 0;
+                let closestDistance = Infinity;
+                
+                items.forEach((item, index) => {
+                    const itemRect = item.getBoundingClientRect();
+                    const itemCenter = itemRect.top + itemRect.height / 2;
+                    const distance = Math.abs(itemCenter - containerCenter);
+                    
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestIndex = index;
+                    }
+                });
+                
+                // Aggiorna gli indicatori
+                const dots = this.dom.scrollIndicators.querySelectorAll('.scroll-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === closestIndex);
+                });
             },
 
             escapeHtml(text) {
