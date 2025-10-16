@@ -1,59 +1,41 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gym-Tracker">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0b0d12">
     <title>Gym-Tracker</title>
     <style>
+        :root {
+            --bg: #0b0d12;
+            --text: #eaf0ff;
+            --muted: #c9d2ea;
+            --radius: 20px;
+            --hairline: rgba(255,255,255,.35);
+            --accent: oklch(0.78 0.12 240);
+            --glass-bg: color-mix(in oklab, #ffffff 12%, transparent);
+            --glass-bg2: color-mix(in oklab, #ffffff 6%, transparent);
+            --glass-border: color-mix(in oklab, #fff 22%, transparent);
+        }
+        
+        body.light-mode {
+            --bg: #e9ecf5;
+            --text: #1a1f2b;
+            --muted: #5a6b8f;
+            --hairline: rgba(0,0,0,.2);
+            --glass-bg: color-mix(in oklab, #ffffff 85%, transparent);
+            --glass-bg2: color-mix(in oklab, #ffffff 75%, transparent);
+            --glass-border: color-mix(in oklab, #000 15%, transparent);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-        }
-        
-        :root {
-            --bg-primary: #000;
-            --bg-secondary: rgba(28, 28, 30, 0.8);
-            --bg-tertiary: #2c2c2e;
-            --bg-glass: rgba(28, 28, 30, 0.7);
-            --text-primary: #fff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --text-tertiary: rgba(255, 255, 255, 0.4);
-            --border-color: rgba(255, 255, 255, 0.12);
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --overlay-bg: rgba(255, 255, 255, 0.1);
-            --overlay-hover: rgba(255, 255, 255, 0.15);
-            --shadow: rgba(0, 0, 0, 0.5);
-            --stat-bg: rgba(10, 132, 255, 0.12);
-            --stat-border: rgba(10, 132, 255, 0.2);
-            --video-bg: rgba(255, 59, 48, 0.12);
-            --video-border: rgba(255, 59, 48, 0.2);
-            --accent-glow: rgba(10, 132, 255, 0.3);
-        }
-        
-        body.light-mode {
-            --bg-primary: #f5f5f7;
-            --bg-secondary: rgba(255, 255, 255, 0.85);
-            --bg-tertiary: #fff;
-            --bg-glass: rgba(255, 255, 255, 0.75);
-            --text-primary: #000;
-            --text-secondary: rgba(0, 0, 0, 0.6);
-            --text-tertiary: rgba(0, 0, 0, 0.4);
-            --border-color: rgba(0, 0, 0, 0.08);
-            --border-subtle: rgba(0, 0, 0, 0.04);
-            --overlay-bg: rgba(0, 0, 0, 0.05);
-            --overlay-hover: rgba(0, 0, 0, 0.08);
-            --shadow: rgba(0, 0, 0, 0.08);
-            --stat-bg: rgba(10, 132, 255, 0.08);
-            --stat-border: rgba(10, 132, 255, 0.15);
-            --video-bg: rgba(255, 59, 48, 0.08);
-            --video-border: rgba(255, 59, 48, 0.2);
-            --accent-glow: rgba(10, 132, 255, 0.2);
         }
         
         html {
@@ -62,27 +44,130 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
-            background: var(--bg-primary);
-            padding-bottom: calc(env(safe-area-inset-bottom) + 90px);
-            padding-left: env(safe-area-inset-left);
-            padding-right: env(safe-area-inset-right);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            color: var(--text-primary);
-            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
+        /* Aurora Background */
+        .aurora {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(80% 60% at 10% 20%, #9be7ff55, transparent 60%),
+                radial-gradient(70% 50% at 90% 10%, #ff9bf855, transparent 60%),
+                radial-gradient(60% 70% at 50% 90%, #baff9b44, transparent 60%),
+                var(--bg);
+            filter: saturate(120%);
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        body.light-mode .aurora {
+            opacity: 0.4;
+        }
+        
+        .aurora .blob {
+            position: absolute;
+            width: 45vmax;
+            height: 45vmax;
+            filter: blur(60px);
+            opacity: 0.5;
+            border-radius: 50%;
+            will-change: transform;
+            animation: drift var(--t, 14s) ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        
+        .aurora .b1 {
+            left: -10vmax;
+            top: -10vmax;
+            background: #6dd6ff55;
+            --t: 16s;
+        }
+        
+        .aurora .b2 {
+            right: -12vmax;
+            top: -8vmax;
+            background: #ff87f755;
+            --t: 18s;
+        }
+        
+        .aurora .b3 {
+            left: 10vmax;
+            bottom: -12vmax;
+            background: #9bffa655;
+            --t: 20s;
+        }
+        
+        @keyframes drift {
+            to {
+                transform: translate3d(30px, -20px, 0) scale(1.06);
+            }
+        }
+        
+        /* Glass Effect */
+        .glass {
+            background: linear-gradient(180deg, var(--glass-bg), var(--glass-bg2));
+            backdrop-filter: blur(22px) saturate(160%);
+            -webkit-backdrop-filter: blur(22px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 1px 0 0 rgba(255,255,255,.35) inset,
+                0 20px 40px rgba(0,0,0,.25);
+        }
+        
+        body.light-mode .glass {
+            box-shadow:
+                0 1px 0 0 rgba(255,255,255,.5) inset,
+                0 10px 30px rgba(0,0,0,.12);
+        }
+        
+        .specular {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .specular::before {
+            content: "";
+            position: absolute;
+            inset: -35%;
+            background: radial-gradient(100% 60% at 0% 0%, rgba(255,255,255,.35), transparent 60%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+        
+        body.light-mode .specular::before {
+            opacity: 0.5;
+        }
+        
+        .grain {
+            position: relative;
+        }
+        
+        .grain::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="100%%" height="100%%" filter="url(%23n)" opacity="0.05"/></svg>');
+            mix-blend-mode: overlay;
+            border-radius: inherit;
+        }
+        
+        /* Header */
         .header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 10;
-            background: var(--bg-secondary);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--hairline);
         }
         
         .header-content {
@@ -101,8 +186,8 @@
         
         .header h1 {
             font-size: clamp(28px, 7vw, 32px);
-            font-weight: 700;
-            color: var(--text-primary);
+            font-weight: 800;
+            color: var(--text);
             letter-spacing: -0.8px;
         }
         
@@ -113,30 +198,31 @@
         }
         
         .icon-btn {
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
             width: 44px;
             height: 44px;
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            -webkit-touch-callout: none;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            color: var(--text);
         }
         
         .icon-btn:active {
-            transform: scale(0.94);
-            background: var(--overlay-hover);
+            transform: scale(0.94) translateY(1px);
         }
         
-        .icon-btn svg {
-            color: var(--text-primary);
+        .icon-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.25);
         }
         
+        /* Days Carousel */
         .days-carousel {
             display: flex;
             gap: 8px;
@@ -156,16 +242,16 @@
         .day-tab {
             flex-shrink: 0;
             padding: 11px 20px;
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-secondary);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
+            border-radius: 14px;
+            color: var(--text);
             font-weight: 600;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             white-space: nowrap;
             min-height: 44px;
             display: flex;
@@ -173,10 +259,22 @@
             gap: 6px;
         }
         
+        .day-tab.active {
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 40%, transparent);
+            transform: scale(1.02);
+        }
+        
+        .day-tab:active {
+            transform: scale(0.96);
+        }
+        
         .next-badge {
             font-size: 16px;
             margin-right: 4px;
-            animation: pulse 2s ease-in-out infinite;
+            animation: pulse 2s ease-in-out infinite alternate;
             filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
         }
         
@@ -191,18 +289,7 @@
             }
         }
         
-        .day-tab.active {
-            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 4px 16px var(--accent-glow);
-            transform: scale(1.02);
-        }
-        
-        .day-tab:active {
-            transform: scale(0.96);
-        }
-        
+        /* Main Content */
         .main-content {
             max-width: 600px;
             margin: 0 auto;
@@ -224,17 +311,12 @@
         }
         
         .exercise-item {
-            background: var(--bg-glass);
-            backdrop-filter: blur(30px) saturate(160%);
-            -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 18px;
+            border-radius: var(--radius);
             margin-bottom: 24px;
             padding: 24px;
-            box-shadow: 0 8px 32px var(--shadow);
-            border: 1px solid var(--border-subtle);
             animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             scroll-snap-align: start;
             scroll-snap-stop: always;
             min-height: 400px;
@@ -249,49 +331,57 @@
         
         .exercise-item:active {
             transform: scale(0.98);
-            box-shadow: 0 4px 16px var(--shadow);
+        }
+        
+        .exercise-item:hover {
+            transform: translateY(-2px);
         }
         
         .exercise-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-            letter-spacing: -0.4px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.6px;
             line-height: 1.3;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
         
         .exercise-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
         
         .stat {
-            background: var(--stat-bg);
+            background: color-mix(in oklab, var(--accent) 12%, transparent);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-radius: 14px;
-            padding: 12px 10px;
+            border-radius: 16px;
+            padding: 16px 12px;
             text-align: center;
-            border: 1px solid var(--stat-border);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px color-mix(in oklab, var(--accent) 20%, transparent);
         }
         
         .stat-value {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.6px;
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.8px;
         }
         
         .stat-label {
-            font-size: 10px;
-            color: var(--text-secondary);
-            margin-top: 3px;
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
             font-weight: 600;
         }
         
@@ -300,32 +390,37 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 13px;
-            background: var(--video-bg);
+            padding: 14px;
+            background: color-mix(in oklab, #ff453a 12%, transparent);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: 14px;
             color: #ff453a;
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 10px;
-            border: 1px solid var(--video-border);
+            margin-bottom: 12px;
+            border: 1px solid color-mix(in oklab, #ff453a 22%, transparent);
             cursor: pointer;
             width: 100%;
             min-height: 44px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
         
         .video-toggle:active {
             transform: scale(0.97);
         }
         
+        .video-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(255, 69, 58, 0.3);
+        }
+        
         .video-container {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             border-radius: 14px;
             overflow: hidden;
             background: #000;
-            border: 1px solid var(--video-border);
+            border: 1px solid color-mix(in oklab, #ff453a 22%, transparent);
             max-height: 0;
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -343,63 +438,66 @@
         }
         
         .exercise-date {
-            font-size: 11px;
-            color: var(--text-tertiary);
+            font-size: 12px;
+            color: var(--muted);
             text-align: right;
             font-weight: 500;
+            margin-top: auto;
         }
         
         .empty-state {
-            background: var(--bg-glass);
-            backdrop-filter: blur(30px) saturate(160%);
-            -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 18px;
+            border-radius: var(--radius);
             padding: 60px 24px;
             text-align: center;
-            box-shadow: 0 8px 32px var(--shadow);
-            border: 1px solid var(--border-subtle);
-            margin-top: calc(180px + env(safe-area-inset-top));
             min-height: 400px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             scroll-snap-align: start;
+            margin-top: calc(180px + env(safe-area-inset-top));
         }
         
         .empty-state-icon {
-            font-size: 48px;
+            font-size: 64px;
             margin-bottom: 16px;
-            opacity: 0.4;
+            opacity: 0.5;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
         }
         
         .empty-state-text {
-            font-size: 16px;
-            color: var(--text-secondary);
-            font-weight: 500;
+            font-size: 18px;
+            color: var(--muted);
+            font-weight: 600;
         }
         
+        /* FAB & Indicators */
         .fab {
             position: fixed;
             bottom: calc(env(safe-area-inset-bottom) + 80px);
             left: 50%;
             transform: translateX(-50%);
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
             border: none;
             border-radius: 50%;
-            box-shadow: 0 12px 40px var(--accent-glow);
+            box-shadow: 0 12px 40px color-mix(in oklab, var(--accent) 40%, transparent);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             z-index: 50;
         }
         
         .fab:active {
             transform: translateX(-50%) scale(0.92);
+        }
+        
+        .fab:hover {
+            transform: translateX(-50%) translateY(-2px) scale(1.05);
+            box-shadow: 0 16px 48px color-mix(in oklab, var(--accent) 50%, transparent);
         }
         
         .scroll-indicators {
@@ -410,28 +508,30 @@
             display: flex;
             gap: 8px;
             z-index: 40;
-            padding: 8px 16px;
-            background: var(--bg-glass);
+            padding: 10px 18px;
             backdrop-filter: blur(20px) saturate(160%);
             -webkit-backdrop-filter: blur(20px) saturate(160%);
+            background: linear-gradient(180deg, var(--glass-bg), var(--glass-bg2));
             border-radius: 20px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: 0 4px 16px var(--shadow);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 24px rgba(0,0,0,.2);
         }
         
         .scroll-dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--text-tertiary);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--muted);
+            opacity: 0.5;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
         
         .scroll-dot.active {
-            width: 24px;
-            border-radius: 4px;
-            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
-            box-shadow: 0 2px 8px var(--accent-glow);
+            width: 28px;
+            border-radius: 6px;
+            background: var(--accent);
+            opacity: 1;
+            box-shadow: 0 2px 10px var(--accent);
         }
         
         .scroll-spacer {
@@ -440,13 +540,14 @@
             pointer-events: none;
         }
         
+        /* Modal */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: var(--bg-primary);
+            background: var(--bg);
             z-index: 100;
             transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -462,10 +563,7 @@
             left: 0;
             right: 0;
             z-index: 10;
-            background: var(--bg-secondary);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            border-bottom: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--hairline);
         }
         
         .modal-header-content {
@@ -480,15 +578,15 @@
         .modal-title {
             font-size: clamp(24px, 6vw, 28px);
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text);
             letter-spacing: -0.8px;
         }
         
         .close-btn {
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
             width: 44px;
             height: 44px;
             border-radius: 12px;
@@ -496,8 +594,8 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            color: var(--text-primary);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            color: var(--text);
             font-size: 22px;
         }
         
@@ -512,19 +610,17 @@
         }
         
         .form-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(30px) saturate(160%);
-            -webkit-backdrop-filter: blur(30px) saturate(160%);
-            border-radius: 18px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 32px var(--shadow);
-            border: 1px solid var(--border-subtle);
             margin-bottom: 16px;
         }
         
         .form-group {
-            border-bottom: 0.5px solid var(--border-color);
-            padding: 16px 18px;
+            border-bottom: 0.5px solid var(--hairline);
+            padding: 18px 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
         }
         
         .form-group:last-child {
@@ -533,23 +629,26 @@
         
         .form-group label {
             display: block;
-            font-size: 12px;
-            color: var(--text-secondary);
+            font-size: 13px;
+            color: var(--muted);
             margin-bottom: 8px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .form-group input {
             width: 100%;
             border: none;
             font-size: 17px;
-            color: var(--text-primary);
+            color: var(--text);
             background: transparent;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
+            font-family: inherit;
         }
         
         .form-group input::placeholder {
-            color: var(--text-tertiary);
+            color: var(--muted);
+            opacity: 0.6;
         }
         
         .form-group input:focus {
@@ -563,7 +662,7 @@
         
         .inline-inputs .form-group {
             border-bottom: none;
-            border-right: 0.5px solid var(--border-color);
+            border-right: 0.5px solid var(--hairline);
         }
         
         .inline-inputs .form-group:last-child {
@@ -573,41 +672,48 @@
         .inline-inputs input {
             text-align: center;
             font-weight: 700;
-            font-size: 22px;
+            font-size: 24px;
         }
         
         .button {
             width: 100%;
-            padding: 17px;
-            border: none;
-            border-radius: 14px;
+            padding: 18px;
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
             font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 16px var(--shadow);
-            min-height: 54px;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            min-height: 56px;
         }
         
         .button:active {
             transform: scale(0.97);
         }
         
+        .button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.25);
+        }
+        
         .button-primary {
-            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
             color: #fff;
             margin-bottom: 12px;
+            border-color: transparent;
+            box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 40%, transparent);
         }
         
         .button-delete {
-            background: var(--video-bg);
+            background: color-mix(in oklab, #ff453a 12%, transparent);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             color: #ff453a;
-            border: 1px solid var(--video-border);
+            border: 1px solid color-mix(in oklab, #ff453a 22%, transparent);
         }
         
+        /* Settings Modal */
         .settings-modal {
             position: fixed;
             top: 0;
@@ -633,18 +739,13 @@
         }
         
         .settings-content {
-            background: var(--bg-glass);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
             border-radius: 24px;
-            padding: 28px;
-            max-width: 400px;
+            padding: 32px;
+            max-width: 420px;
             width: 100%;
-            box-shadow: 0 20px 60px var(--shadow);
-            border: 1px solid var(--border-subtle);
             transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 80vh;
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            max-height: 85vh;
             overflow-y: auto;
         }
         
@@ -653,87 +754,125 @@
         }
         
         .settings-title {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
             text-align: center;
-            letter-spacing: -0.6px;
+            letter-spacing: -0.8px;
         }
         
         .settings-subtitle {
             font-size: 15px;
-            color: var(--text-secondary);
-            margin-bottom: 28px;
+            color: var(--muted);
+            margin-bottom: 20px;
             text-align: center;
         }
         
         .settings-section {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
         
         .section-title {
             font-size: 13px;
             font-weight: 700;
-            color: var(--text-secondary);
+            color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         
         .last-workout-info {
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 16px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            padding: 18px;
             text-align: center;
         }
         
         .info-text {
-            font-size: 15px;
-            color: var(--text-primary);
+            font-size: 16px;
+            color: var(--text);
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
         
         .info-subtext {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--muted);
         }
         
         .info-highlight {
-            color: #0a84ff;
+            color: var(--accent);
             font-weight: 700;
         }
         
         .import-btn {
             width: 100%;
             padding: 16px;
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--border-color);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
             border-radius: 14px;
-            color: var(--text-primary);
+            color: var(--text);
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             text-align: center;
             margin-bottom: 12px;
         }
         
         .import-btn:active {
             transform: scale(0.97);
-            background: var(--overlay-hover);
         }
         
-        .file-input {
-            display: none;
+        .import-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0,0,0,.2);
         }
         
+        .days-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .day-option {
+            padding: 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 2px solid var(--hairline);
+            border-radius: 14px;
+            color: var(--text);
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .day-option:active {
+            transform: scale(0.94);
+        }
+        
+        .day-option.selected {
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 20px color-mix(in oklab, var(--accent) 40%, transparent);
+        }
+        
+        /* Import Modal */
         .import-modal {
             position: fixed;
             top: 0;
@@ -759,17 +898,12 @@
         }
         
         .import-content {
-            background: var(--bg-glass);
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
             border-radius: 24px;
-            padding: 28px;
-            max-width: 400px;
+            padding: 32px;
+            max-width: 420px;
             width: 100%;
-            box-shadow: 0 20px 60px var(--shadow);
-            border: 1px solid var(--border-subtle);
             transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         }
         
         .import-modal.show .import-content {
@@ -777,9 +911,9 @@
         }
         
         .import-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 700;
-            color: var(--text-primary);
+            color: var(--text);
             margin-bottom: 12px;
             text-align: center;
             letter-spacing: -0.6px;
@@ -787,10 +921,10 @@
         
         .import-subtitle {
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--muted);
             margin-bottom: 24px;
             text-align: center;
-            line-height: 1.4;
+            line-height: 1.5;
         }
         
         .format-options {
@@ -802,16 +936,16 @@
         
         .format-btn {
             padding: 20px 16px;
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid var(--border-color);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 2px solid var(--hairline);
             border-radius: 14px;
-            color: var(--text-secondary);
+            color: var(--text);
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             text-align: center;
         }
         
@@ -820,33 +954,33 @@
         }
         
         .format-btn.selected {
-            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
             border-color: transparent;
             color: #fff;
-            box-shadow: 0 6px 20px var(--accent-glow);
+            box-shadow: 0 6px 20px color-mix(in oklab, var(--accent) 40%, transparent);
         }
         
         .drop-zone {
             padding: 40px 20px;
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px dashed var(--border-color);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 2px dashed var(--hairline);
             border-radius: 16px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
             margin-bottom: 16px;
         }
         
         .drop-zone:hover {
-            border-color: #0a84ff;
-            background: var(--overlay-hover);
+            border-color: var(--accent);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
         }
         
         .drop-zone.dragover {
-            border-color: #0a84ff;
-            background: var(--overlay-hover);
+            border-color: var(--accent);
+            background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.1));
             transform: scale(1.02);
         }
         
@@ -858,60 +992,29 @@
         .drop-text {
             font-size: 16px;
             font-weight: 600;
-            color: var(--text-primary);
+            color: var(--text);
             margin-bottom: 6px;
         }
         
         .drop-subtext {
             font-size: 13px;
-            color: var(--text-secondary);
+            color: var(--muted);
         }
         
         .file-name {
             font-size: 14px;
-            color: var(--text-secondary);
+            color: var(--muted);
             text-align: center;
             margin-bottom: 16px;
             padding: 12px;
-            background: var(--overlay-bg);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
             border-radius: 10px;
         }
         
-        .days-selector {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 28px;
-        }
-        
-        .day-option {
-            padding: 20px;
-            background: var(--overlay-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 2px solid var(--border-color);
-            border-radius: 14px;
-            color: var(--text-secondary);
-            font-size: 24px;
-            font-weight: 700;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .day-option:active {
-            transform: scale(0.94);
-        }
-        
-        .day-option.selected {
-            background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
-            border-color: transparent;
-            color: #fff;
-            box-shadow: 0 6px 20px var(--accent-glow);
+        .file-input {
+            display: none;
         }
         
         .hidden {
@@ -934,25 +1037,39 @@
                 grid-template-columns: repeat(3, 1fr);
             }
         }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="aurora" aria-hidden="true">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+    </div>
+
+    <div class="header glass specular">
         <div class="header-content">
             <div class="header-top">
                 <h1>Gym-Tracker</h1>
                 <div class="header-actions">
-                    <button class="icon-btn" onclick="app.completeWorkout()" aria-label="Completa Allenamento" title="Completa Allenamento">
+                    <button class="icon-btn" onclick="app.completeWorkout()" aria-label="Complete Workout" title="Complete Workout">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <button class="icon-btn" onclick="app.toggleTheme()" aria-label="Cambia tema">
+                    <button class="icon-btn" onclick="app.toggleTheme()" aria-label="Toggle theme">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="themeIcon">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                         </svg>
                     </button>
-                    <button class="icon-btn" onclick="app.openSettings()" aria-label="Impostazioni">
+                    <button class="icon-btn" onclick="app.openSettings()" aria-label="Settings">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="5" r="2" fill="currentColor"/>
                             <circle cx="12" cy="12" r="2" fill="currentColor"/>
@@ -969,21 +1086,21 @@
 
     <div class="scroll-indicators" id="scrollIndicators"></div>
 
-    <button class="fab" onclick="app.openAddModal()" aria-label="Aggiungi">
+    <button class="fab" onclick="app.openAddModal()" aria-label="Add">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
         </svg>
     </button>
 
     <div class="modal" id="addModal">
-                    <div class="modal-header">
+        <div class="modal-header glass specular">
             <div class="modal-header-content">
                 <h2 class="modal-title" id="modalTitle">Add Exercise</h2>
                 <button class="close-btn" onclick="app.closeAddModal()">✕</button>
             </div>
         </div>
         <div class="modal-content">
-            <div class="form-card">
+            <div class="form-card glass specular grain">
                 <div class="form-group">
                     <label for="exerciseName">Exercise Name</label>
                     <input type="text" id="exerciseName" placeholder="e.g. Bench Press" autocomplete="off">
@@ -1018,7 +1135,7 @@
     </div>
 
     <div class="settings-modal" id="settingsModal" onclick="app.closeSettingsOnBackdrop(event)">
-        <div class="settings-content" onclick="event.stopPropagation()">
+        <div class="settings-content glass specular grain" onclick="event.stopPropagation()">
             <div class="settings-title">Settings</div>
             
             <div class="settings-section" id="lastWorkoutSection">
@@ -1055,7 +1172,7 @@
     </div>
 
     <div class="import-modal" id="importModal" onclick="app.closeImportOnBackdrop(event)">
-        <div class="import-content" onclick="event.stopPropagation()">
+        <div class="import-content glass specular grain" onclick="event.stopPropagation()">
             <div class="import-title">Import Workout</div>
             <div class="import-subtitle">Upload a JSON or CSV file with your exercises</div>
             
@@ -1108,8 +1225,6 @@
                 this.loadTheme();
                 this.setupEventListeners();
                 this.renderDaysTabs();
-                
-                // Seleziona il giorno corretto in base all'ultimo allenamento
                 const dayToSelect = this.getNextWorkoutDay();
                 this.selectDay(dayToSelect);
             },
@@ -1144,7 +1259,7 @@
                         this.updateThemeIcon(true);
                     }
                 } catch (e) {
-                    console.error('Errore tema:', e);
+                    console.error('Theme error:', e);
                 }
             },
 
@@ -1154,13 +1269,15 @@
                 try {
                     localStorage.setItem('gymTheme', isLight ? 'light' : 'dark');
                 } catch (e) {
-                    console.error('Errore salvataggio tema:', e);
+                    console.error('Theme save error:', e);
                 }
             },
 
             updateThemeIcon(isLight) {
                 const icon = document.getElementById('themeIcon');
                 if (!icon) return;
+                
+                const metaTheme = document.querySelector('meta[name="theme-color"]');
                 
                 if (isLight) {
                     icon.innerHTML = `
@@ -1174,25 +1291,23 @@
                         <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                     `;
+                    if (metaTheme) metaTheme.setAttribute('content', '#e9ecf5');
                 } else {
                     icon.innerHTML = `
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                     `;
+                    if (metaTheme) metaTheme.setAttribute('content', '#0b0d12');
                 }
-                
-                document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isLight ? '#f5f5f7' : '#000000');
             },
 
             loadData() {
                 try {
-                    // Carica configurazione
                     const config = localStorage.getItem('gymConfig');
                     if (config) {
                         const parsed = JSON.parse(config);
                         this.state.workoutDays = parsed.workoutDays || 3;
                     }
                     
-                    // Carica dati allenamenti
                     const data = localStorage.getItem('gymWorkoutData');
                     if (data) {
                         const parsed = JSON.parse(data);
@@ -1202,7 +1317,6 @@
                         }, {});
                     }
                     
-                    // Carica ultimo allenamento
                     const lastWorkout = localStorage.getItem('gymLastWorkout');
                     if (lastWorkout) {
                         const lastData = JSON.parse(lastWorkout);
@@ -1231,22 +1345,17 @@
             },
 
             getDayLetter(dayNumber) {
-                // Converte numero in lettera: 1->A, 2->B, etc.
                 return String.fromCharCode(64 + dayNumber);
             },
 
             getNextWorkoutDay() {
-                // Se non c'è un ultimo allenamento salvato, inizia dal giorno 1
                 if (!this.state.lastWorkoutDay) {
                     return 1;
                 }
-                
-                // Calcola il prossimo giorno (con wrap-around)
                 let nextDay = this.state.lastWorkoutDay + 1;
                 if (nextDay > this.state.workoutDays) {
                     nextDay = 1;
                 }
-                
                 return nextDay;
             },
 
@@ -1307,7 +1416,6 @@
             setupEventListeners() {
                 let touchStartTime = 0;
                 
-                // Touch handlers per swipe tra giorni
                 document.addEventListener('touchstart', (e) => {
                     this.state.touchStartX = e.changedTouches[0].screenX;
                     this.state.touchStartY = e.changedTouches[0].screenY;
@@ -1327,7 +1435,6 @@
                     if (this.state.isSwiping && touchDuration < 300) this.handleSwipe();
                 }, { passive: true });
 
-                // Theme change listener
                 const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
                 if (mediaQuery) {
                     mediaQuery.addEventListener('change', (e) => {
@@ -1338,7 +1445,6 @@
                     });
                 }
                 
-                // Scroll indicators update con throttling
                 let scrollTimeout;
                 this.dom.exerciseList.addEventListener('scroll', () => {
                     if (scrollTimeout) return;
@@ -1370,7 +1476,6 @@
                     
                     const dayLetter = this.getDayLetter(i);
                     
-                    // Aggiungi badge "Prossimo" al giorno raccomandato
                     if (i === nextDay) {
                         tab.innerHTML = `
                             <span class="next-badge">⭐</span>
@@ -1417,60 +1522,10 @@
                 this.renderLastWorkoutInfo();
             },
 
-            renderLastWorkoutInfo() {
-                const infoElement = document.getElementById('lastWorkoutInfo');
-                const resetBtn = document.getElementById('resetTrackingBtn');
-                if (!infoElement) return;
-                
-                if (!this.state.lastWorkoutDay || !this.state.lastWorkoutDate) {
-                    infoElement.innerHTML = '<div class="info-text">No workout completed yet</div>';
-                    if (resetBtn) resetBtn.style.display = 'none';
-                    return;
-                }
-                
-                const lastDate = new Date(this.state.lastWorkoutDate);
-                const daysPassed = Math.floor((Date.now() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
-                const nextDay = this.getNextWorkoutDay();
-                
-                let timeText = '';
-                if (daysPassed === 0) {
-                    timeText = 'Today';
-                } else if (daysPassed === 1) {
-                    timeText = 'Yesterday';
-                } else {
-                    timeText = `${daysPassed} days ago`;
-                }
-                
-                const lastDayLetter = this.getDayLetter(this.state.lastWorkoutDay);
-                const nextDayLetter = this.getDayLetter(nextDay);
-                
-                infoElement.innerHTML = `
-                    <div class="info-text">DAY <span class="info-highlight">${lastDayLetter}</span> completed</div>
-                    <div class="info-subtext">${timeText} • ${lastDate.toLocaleDateString('en-US')}</div>
-                    <div class="info-subtext" style="margin-top: 8px;">Next: <span class="info-highlight">DAY ${nextDayLetter}</span></div>
-                `;
-                
-                if (resetBtn) resetBtn.style.display = 'block';
-            },
-
-            resetWorkoutTracking() {
-                if (confirm('Do you want to reset workout tracking?\nYou will restart from DAY A.')) {
-                    localStorage.removeItem('gymLastWorkout');
-                    this.state.lastWorkoutDay = null;
-                    this.state.lastWorkoutDate = null;
-                    this.renderLastWorkoutInfo();
-                    this.renderDaysTabs();
-                    this.selectDay(1);
-                    alert('Tracking reset! Starting from DAY A 💪');
-                }
-            },
-
             closeSettings() {
                 this.dom.settingsModal.classList.remove('show');
                 document.body.style.overflow = '';
-                // Ri-renderizza i tabs per aggiornare il badge del prossimo giorno
                 this.renderDaysTabs();
-                // Riseleziona il giorno corrente per aggiornare la classe active
                 const tabs = this.dom.daysCarousel.querySelectorAll('.day-tab');
                 tabs.forEach((tab, i) => tab.classList.toggle('active', i + 1 === this.state.currentDay));
             },
@@ -1572,17 +1627,14 @@
                     }
 
                     if (data) {
-                        // Save directly to localStorage
                         localStorage.setItem('gymConfig', JSON.stringify({ 
                             workoutDays: data.giorni 
                         }));
                         localStorage.setItem('gymWorkoutData', JSON.stringify(data.esercizi));
                         
-                        // Close modals
                         this.closeImportModal();
                         this.closeSettings();
                         
-                        // Reload after saving
                         setTimeout(() => {
                             window.location.reload();
                         }, 100);
@@ -1601,7 +1653,6 @@
                 try {
                     const data = JSON.parse(text);
                     
-                    // Validate data
                     if (!data.giorni || !data.esercizi) {
                         throw new Error('Invalid JSON format: missing "giorni" or "esercizi"');
                     }
@@ -1732,7 +1783,7 @@
 
             exportWorkout() {
                 const exportData = {
-                    nome: "Il Mio Allenamento",
+                    nome: "My Workout",
                     giorni: this.state.workoutDays,
                     esercizi: {}
                 };
@@ -1752,7 +1803,7 @@
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `allenamento_${new Date().toISOString().split('T')[0]}.json`;
+                link.download = `workout_${new Date().toISOString().split('T')[0]}.json`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -1761,56 +1812,38 @@
 
             downloadExampleWorkout() {
                 const exampleWorkout = {
-                    "nome": "Scheda Split 6 Giorni",
+                    "nome": "6-Day Split Workout",
                     "giorni": 6,
                     "esercizi": {
                         "1": [
-                            {"nome": "Panca Piana Bilanciere", "peso": 80, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=rT7DgCr-3pg"},
-                            {"nome": "Panca Inclinata Manubri", "peso": 32, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=8iPEnn-ltC8"},
-                            {"nome": "Croci ai Cavi", "peso": 15, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=taI4XduLpTk"},
-                            {"nome": "Panca Piana Manubri", "peso": 36, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=VmB1G1K7v94"},
-                            {"nome": "Chest Press", "peso": 50, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=xUm0BiZCWlQ"},
-                            {"nome": "Push Up", "peso": 0, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=IODxDxX7oi4"}
+                            {"nome": "Barbell Bench Press", "peso": 80, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=rT7DgCr-3pg"},
+                            {"nome": "Incline Dumbbell Press", "peso": 32, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=8iPEnn-ltC8"},
+                            {"nome": "Cable Flyes", "peso": 15, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=taI4XduLpTk"}
                         ],
                         "2": [
-                            {"nome": "Trazioni alla Sbarra", "peso": 0, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=eGo4IYlbE5g"},
-                            {"nome": "Rematore con Bilanciere", "peso": 70, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=T3N-TO4reLQ"},
-                            {"nome": "Lat Machine", "peso": 60, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=CAwf7n6Luuc"},
-                            {"nome": "Rematore Manubrio", "peso": 32, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=roCP6wCXPqo"},
-                            {"nome": "Pulley Basso", "peso": 55, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=UCXxvVItLoM"},
-                            {"nome": "Face Pull", "peso": 25, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=rep-qVOkqgk"}
+                            {"nome": "Pull-ups", "peso": 0, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=eGo4IYlbE5g"},
+                            {"nome": "Barbell Row", "peso": 70, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=T3N-TO4reLQ"},
+                            {"nome": "Lat Pulldown", "peso": 60, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=CAwf7n6Luuc"}
                         ],
                         "3": [
                             {"nome": "Squat", "peso": 100, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=ultWZbUMPL8"},
                             {"nome": "Leg Press", "peso": 180, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=IZxyjW7MPJQ"},
-                            {"nome": "Affondi con Manubri", "peso": 20, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=QOVaHwm-Q6U"},
-                            {"nome": "Leg Curl", "peso": 40, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=1Tq3QdYUuHs"},
-                            {"nome": "Leg Extension", "peso": 50, "serie": 4, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=YyvSfEjZIho"},
-                            {"nome": "Calf Raise", "peso": 80, "serie": 4, "ripetizioni": 20, "video": "https://www.youtube.com/watch?v=gwLzBJYoWlI"}
+                            {"nome": "Leg Curl", "peso": 40, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=1Tq3QdYUuHs"}
                         ],
                         "4": [
                             {"nome": "Military Press", "peso": 50, "serie": 4, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=qEwKCR5JCog"},
-                            {"nome": "Alzate Laterali", "peso": 12, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=3VcKaXpzqRo"},
-                            {"nome": "Alzate Frontali", "peso": 10, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=qPNiF5c75oc"},
-                            {"nome": "Arnold Press", "peso": 20, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=6Z15_WdXmVw"},
-                            {"nome": "Scrollate con Manubri", "peso": 36, "serie": 4, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=cJRVVxmytaM"},
-                            {"nome": "Alzate Posteriori", "peso": 8, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=ttvfGg9d76c"}
+                            {"nome": "Lateral Raises", "peso": 12, "serie": 4, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=3VcKaXpzqRo"},
+                            {"nome": "Front Raises", "peso": 10, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=qPNiF5c75oc"}
                         ],
                         "5": [
-                            {"nome": "Curl con Bilanciere", "peso": 30, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo"},
-                            {"nome": "French Press", "peso": 25, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=d_KZxkY_0cM"},
-                            {"nome": "Curl Martello", "peso": 16, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"},
-                            {"nome": "Dip alle Parallele", "peso": 0, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=2z8JmcrW-As"},
-                            {"nome": "Curl ai Cavi", "peso": 20, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=4bRU5cXgb-E"},
-                            {"nome": "Pushdown ai Cavi", "peso": 30, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=2-LAMcpzODU"}
+                            {"nome": "Barbell Curl", "peso": 30, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=ykJmrZ5v0Oo"},
+                            {"nome": "Skull Crushers", "peso": 25, "serie": 4, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=d_KZxkY_0cM"},
+                            {"nome": "Hammer Curls", "peso": 16, "serie": 3, "ripetizioni": 12, "video": "https://www.youtube.com/watch?v=zC3nLlEvin4"}
                         ],
                         "6": [
-                            {"nome": "Stacco da Terra", "peso": 110, "serie": 4, "ripetizioni": 6, "video": "https://www.youtube.com/watch?v=op9kVnSso6Q"},
+                            {"nome": "Deadlift", "peso": 110, "serie": 4, "ripetizioni": 6, "video": "https://www.youtube.com/watch?v=op9kVnSso6Q"},
                             {"nome": "Clean and Press", "peso": 50, "serie": 3, "ripetizioni": 8, "video": "https://www.youtube.com/watch?v=KwYJTpQ_x5A"},
-                            {"nome": "Thruster", "peso": 40, "serie": 3, "ripetizioni": 10, "video": "https://www.youtube.com/watch?v=L219ltL15zk"},
-                            {"nome": "Burpees", "peso": 0, "serie": 3, "ripetizioni": 15, "video": "https://www.youtube.com/watch?v=TU8QYVW0gDU"},
-                            {"nome": "Plank", "peso": 0, "serie": 3, "ripetizioni": 60, "video": "https://www.youtube.com/watch?v=ASdvN_XEl_c"},
-                            {"nome": "Russian Twist", "peso": 10, "serie": 3, "ripetizioni": 20, "video": "https://www.youtube.com/watch?v=wkD8rjkodUI"}
+                            {"nome": "Plank", "peso": 0, "serie": 3, "ripetizioni": 60, "video": "https://www.youtube.com/watch?v=ASdvN_XEl_c"}
                         ]
                     }
                 };
@@ -1820,7 +1853,7 @@
                 const url = URL.createObjectURL(dataBlob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = 'scheda-esempio-6giorni.json';
+                link.download = 'example-workout-6days.json';
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -1852,7 +1885,6 @@
                 this.initializeWorkoutData();
                 this.saveData();
                 
-                // Se il prossimo giorno raccomandato è oltre il nuovo numero di giorni, resetta
                 const nextDay = this.getNextWorkoutDay();
                 if (nextDay > this.state.workoutDays) {
                     localStorage.removeItem('gymLastWorkout');
@@ -1863,6 +1895,54 @@
                 this.renderDaysTabs();
                 this.selectDay(Math.min(this.state.currentDay, this.state.workoutDays));
                 this.closeSettings();
+            },
+
+            renderLastWorkoutInfo() {
+                const infoElement = document.getElementById('lastWorkoutInfo');
+                const resetBtn = document.getElementById('resetTrackingBtn');
+                if (!infoElement) return;
+                
+                if (!this.state.lastWorkoutDay || !this.state.lastWorkoutDate) {
+                    infoElement.innerHTML = '<div class="info-text">No workout completed yet</div>';
+                    if (resetBtn) resetBtn.style.display = 'none';
+                    return;
+                }
+                
+                const lastDate = new Date(this.state.lastWorkoutDate);
+                const daysPassed = Math.floor((Date.now() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
+                const nextDay = this.getNextWorkoutDay();
+                
+                let timeText = '';
+                if (daysPassed === 0) {
+                    timeText = 'Today';
+                } else if (daysPassed === 1) {
+                    timeText = 'Yesterday';
+                } else {
+                    timeText = `${daysPassed} days ago`;
+                }
+                
+                const lastDayLetter = this.getDayLetter(this.state.lastWorkoutDay);
+                const nextDayLetter = this.getDayLetter(nextDay);
+                
+                infoElement.innerHTML = `
+                    <div class="info-text">DAY <span class="info-highlight">${lastDayLetter}</span> completed</div>
+                    <div class="info-subtext">${timeText} • ${lastDate.toLocaleDateString('en-US')}</div>
+                    <div class="info-subtext" style="margin-top: 8px;">Next: <span class="info-highlight">DAY ${nextDayLetter}</span></div>
+                `;
+                
+                if (resetBtn) resetBtn.style.display = 'block';
+            },
+
+            resetWorkoutTracking() {
+                if (confirm('Do you want to reset workout tracking?\nYou will restart from DAY A.')) {
+                    localStorage.removeItem('gymLastWorkout');
+                    this.state.lastWorkoutDay = null;
+                    this.state.lastWorkoutDate = null;
+                    this.renderLastWorkoutInfo();
+                    this.renderDaysTabs();
+                    this.selectDay(1);
+                    alert('Tracking reset! Starting from DAY A 💪');
+                }
             },
 
             saveExercise() {
@@ -1975,7 +2055,7 @@
                             <rect x="6" y="5" width="4" height="14" fill="#ff453a"/>
                             <rect x="14" y="5" width="4" height="14" fill="#ff453a"/>
                         </svg>
-                        Nascondi
+                        Hide
                     `;
                 }
             },
@@ -1985,7 +2065,7 @@
                 
                 if (exercises.length === 0) {
                     this.dom.exerciseList.innerHTML = `
-                        <div class="empty-state">
+                        <div class="empty-state glass specular grain">
                             <div class="empty-state-icon">💪</div>
                             <div class="empty-state-text">No exercises</div>
                         </div>
@@ -1998,7 +2078,7 @@
                 const html = exercises.map((ex, index) => {
                     const videoId = this.getYouTubeVideoId(ex.videoLink);
                     return `
-                    <div class="exercise-item" data-exercise-index="${index}" onclick="app.editExercise(${ex.id})">
+                    <div class="exercise-item glass specular grain" data-exercise-index="${index}" onclick="app.editExercise(${ex.id})">
                         <div class="exercise-name">${this.escapeHtml(ex.name)}</div>
                         <div class="exercise-stats">
                             <div class="stat">
@@ -2007,11 +2087,11 @@
                             </div>
                             <div class="stat">
                                 <div class="stat-value">${ex.sets}</div>
-                                <div class="stat-label">Serie</div>
+                                <div class="stat-label">Sets</div>
                             </div>
                             <div class="stat">
                                 <div class="stat-value">${ex.reps}</div>
-                                <div class="stat-label">Rip.</div>
+                                <div class="stat-label">Reps</div>
                             </div>
                         </div>
                         ${videoId ? `
@@ -2032,7 +2112,6 @@
                 this.dom.exerciseList.innerHTML = html + '<div class="scroll-spacer"></div>';
                 this.renderScrollIndicators(exercises.length);
                 
-                // Reset scroll position
                 this.dom.exerciseList.scrollTop = 0;
             },
 
@@ -2059,7 +2138,6 @@
                 
                 if (items.length === 0) return;
                 
-                // Calcola quale esercizio è più vicino alla posizione di snap (inizio container)
                 const containerTop = container.getBoundingClientRect().top;
                 const snapPosition = containerTop + (parseInt(getComputedStyle(container).scrollPaddingTop) || 0);
                 
@@ -2076,7 +2154,6 @@
                     }
                 });
                 
-                // Aggiorna gli indicatori
                 const dots = this.dom.scrollIndicators.querySelectorAll('.scroll-dot');
                 dots.forEach((dot, index) => {
                     dot.classList.toggle('active', index === closestIndex);
