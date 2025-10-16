@@ -207,8 +207,9 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 0 20px;
-            padding-top: calc(140px + env(safe-area-inset-top));
-            height: calc(100vh - 140px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 90px);
+            padding-top: calc(180px + env(safe-area-inset-top));
+            padding-bottom: 120px;
+            height: calc(100vh - 180px - env(safe-area-inset-top));
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
@@ -226,18 +227,19 @@
             backdrop-filter: blur(30px) saturate(160%);
             -webkit-backdrop-filter: blur(30px) saturate(160%);
             border-radius: 18px;
-            margin-bottom: 12px;
-            padding: 16px;
+            margin-bottom: 20px;
+            padding: 20px;
             box-shadow: 0 8px 32px var(--shadow);
             border: 1px solid var(--border-subtle);
             animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            scroll-snap-align: start;
+            scroll-snap-align: center;
             scroll-snap-stop: always;
-            min-height: calc(100vh - 140px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 114px);
+            min-height: calc(100vh - 400px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
         }
         
         .exercise-item:active {
@@ -351,12 +353,12 @@
             text-align: center;
             box-shadow: 0 8px 32px var(--shadow);
             border: 1px solid var(--border-subtle);
-            margin-top: 20px;
-            min-height: calc(100vh - 160px - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 114px);
+            min-height: calc(100vh - 400px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            scroll-snap-align: center;
         }
         
         .empty-state-icon {
