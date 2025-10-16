@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Palestra">
+    <meta name="apple-mobile-web-app-title" content="Gym-Tracker">
     <meta name="theme-color" content="#000000">
-    <title>Palestra</title>
+    <title>Gym-Tracker</title>
     <style>
         * {
             margin: 0;
@@ -207,15 +207,16 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 0 20px;
-            padding-top: calc(180px + env(safe-area-inset-top));
-            padding-bottom: 120px;
-            height: calc(100vh - 180px - env(safe-area-inset-top));
+            padding-bottom: 140px;
+            height: 100vh;
             overflow-y: scroll;
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             -ms-overflow-style: none;
+            scroll-padding-top: calc(180px + env(safe-area-inset-top));
+            scroll-padding-bottom: 140px;
         }
         
         .main-content::-webkit-scrollbar {
@@ -227,19 +228,23 @@
             backdrop-filter: blur(30px) saturate(160%);
             -webkit-backdrop-filter: blur(30px) saturate(160%);
             border-radius: 18px;
-            margin-bottom: 20px;
-            padding: 20px;
+            margin-bottom: 24px;
+            padding: 24px;
             box-shadow: 0 8px 32px var(--shadow);
             border: 1px solid var(--border-subtle);
             animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            scroll-snap-align: center;
+            scroll-snap-align: start;
             scroll-snap-stop: always;
-            min-height: calc(100vh - 400px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+        }
+        
+        .exercise-item:first-child {
+            margin-top: calc(180px + env(safe-area-inset-top));
         }
         
         .exercise-item:active {
@@ -353,12 +358,13 @@
             text-align: center;
             box-shadow: 0 8px 32px var(--shadow);
             border: 1px solid var(--border-subtle);
-            min-height: calc(100vh - 400px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+            margin-top: calc(180px + env(safe-area-inset-top));
+            min-height: 400px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            scroll-snap-align: center;
+            scroll-snap-align: start;
         }
         
         .empty-state-icon {
@@ -426,6 +432,12 @@
             border-radius: 4px;
             background: linear-gradient(135deg, #0a84ff 0%, #0066cc 100%);
             box-shadow: 0 2px 8px var(--accent-glow);
+        }
+        
+        .scroll-spacer {
+            height: 140px;
+            flex-shrink: 0;
+            pointer-events: none;
         }
         
         .modal {
@@ -928,7 +940,7 @@
     <div class="header">
         <div class="header-content">
             <div class="header-top">
-                <h1>Palestra</h1>
+                <h1>Gym-Tracker</h1>
                 <div class="header-actions">
                     <button class="icon-btn" onclick="app.completeWorkout()" aria-label="Completa Allenamento" title="Completa Allenamento">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -964,88 +976,88 @@
     </button>
 
     <div class="modal" id="addModal">
-        <div class="modal-header">
+                    <div class="modal-header">
             <div class="modal-header-content">
-                <h2 class="modal-title" id="modalTitle">Aggiungi</h2>
+                <h2 class="modal-title" id="modalTitle">Add Exercise</h2>
                 <button class="close-btn" onclick="app.closeAddModal()">✕</button>
             </div>
         </div>
         <div class="modal-content">
             <div class="form-card">
                 <div class="form-group">
-                    <label for="exerciseName">Nome Esercizio</label>
-                    <input type="text" id="exerciseName" placeholder="es. Panca piana" autocomplete="off">
+                    <label for="exerciseName">Exercise Name</label>
+                    <input type="text" id="exerciseName" placeholder="e.g. Bench Press" autocomplete="off">
                 </div>
                 <div class="inline-inputs">
                     <div class="form-group">
-                        <label for="weight">Peso</label>
+                        <label for="weight">Weight</label>
                         <input type="number" id="weight" placeholder="0" inputmode="decimal" step="0.5">
                     </div>
                     <div class="form-group">
-                        <label for="sets">Serie</label>
+                        <label for="sets">Sets</label>
                         <input type="number" id="sets" placeholder="0" inputmode="numeric">
                     </div>
                     <div class="form-group">
-                        <label for="reps">Rip.</label>
+                        <label for="reps">Reps</label>
                         <input type="number" id="reps" placeholder="0" inputmode="numeric">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="videoLink">Link YouTube</label>
+                    <label for="videoLink">YouTube Link</label>
                     <input type="url" id="videoLink" placeholder="https://youtube.com/..." inputmode="url">
                 </div>
             </div>
             
             <button class="button button-primary" onclick="app.saveExercise()">
-                <span id="saveButtonText">Salva</span>
+                <span id="saveButtonText">Save</span>
             </button>
             <button class="button button-delete hidden" id="deleteBtn" onclick="app.confirmDelete()">
-                Elimina Esercizio
+                Delete Exercise
             </button>
         </div>
     </div>
 
     <div class="settings-modal" id="settingsModal" onclick="app.closeSettingsOnBackdrop(event)">
         <div class="settings-content" onclick="event.stopPropagation()">
-            <div class="settings-title">Impostazioni</div>
+            <div class="settings-title">Settings</div>
             
             <div class="settings-section" id="lastWorkoutSection">
-                <div class="section-title">Ultimo Allenamento</div>
+                <div class="section-title">Last Workout</div>
                 <div class="last-workout-info" id="lastWorkoutInfo">
-                    <div class="info-text">Nessun allenamento completato</div>
+                    <div class="info-text">No workout completed yet</div>
                 </div>
                 <button class="import-btn" onclick="app.resetWorkoutTracking()" id="resetTrackingBtn" style="margin-top: 12px; display: none;">
-                    🔄 Resetta Tracciamento
+                    🔄 Reset Tracking
                 </button>
             </div>
             
             <div class="settings-section">
-                <div class="section-title">Allenamento</div>
-                <div class="settings-subtitle">Giorni a settimana</div>
+                <div class="section-title">Workout Plan</div>
+                <div class="settings-subtitle">Days per week</div>
                 <div class="days-selector" id="daysSelector"></div>
             </div>
             
             <div class="settings-section">
-                <div class="section-title">Importa/Esporta</div>
+                <div class="section-title">Import/Export</div>
                 <button class="import-btn" onclick="app.downloadExampleWorkout()">
-                    ⬇️ Scarica Scheda Esempio
+                    ⬇️ Download Example Workout
                 </button>
                 <button class="import-btn" onclick="app.openImportModal()">
-                    📥 Importa Allenamento
+                    📥 Import Workout
                 </button>
                 <button class="import-btn" onclick="app.exportWorkout()">
-                    📤 Esporta Allenamento
+                    📤 Export Workout
                 </button>
             </div>
             
-            <button class="button button-primary" onclick="app.saveSettings()">Salva</button>
+            <button class="button button-primary" onclick="app.saveSettings()">Save</button>
         </div>
     </div>
 
     <div class="import-modal" id="importModal" onclick="app.closeImportOnBackdrop(event)">
         <div class="import-content" onclick="event.stopPropagation()">
-            <div class="import-title">Importa Allenamento</div>
-            <div class="import-subtitle">Carica un file JSON o CSV con i tuoi esercizi</div>
+            <div class="import-title">Import Workout</div>
+            <div class="import-subtitle">Upload a JSON or CSV file with your exercises</div>
             
             <div class="format-options">
                 <button class="format-btn selected" onclick="app.selectFormat('json')" id="jsonBtn">
@@ -1060,14 +1072,14 @@
             
             <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
                 <div class="drop-icon">📁</div>
-                <div class="drop-text">Tocca per selezionare</div>
-                <div class="drop-subtext">Oppure trascina il file qui</div>
+                <div class="drop-text">Tap to select</div>
+                <div class="drop-subtext">Or drag and drop file here</div>
             </div>
             
             <div class="file-name hidden" id="fileName"></div>
             
-            <button class="button button-primary" onclick="app.importFile()">Importa</button>
-            <button class="button button-delete" onclick="app.closeImportModal()">Annulla</button>
+            <button class="button button-primary" onclick="app.importFile()">Import</button>
+            <button class="button button-delete" onclick="app.closeImportModal()">Cancel</button>
         </div>
     </div>
 
@@ -1173,21 +1185,24 @@
 
             loadData() {
                 try {
+                    // Carica configurazione
                     const config = localStorage.getItem('gymConfig');
                     if (config) {
-                        this.state.workoutDays = JSON.parse(config).workoutDays || 3;
+                        const parsed = JSON.parse(config);
+                        this.state.workoutDays = parsed.workoutDays || 3;
                     }
                     
+                    // Carica dati allenamenti
                     const data = localStorage.getItem('gymWorkoutData');
                     if (data) {
                         const parsed = JSON.parse(data);
-                        this.state.workoutData = {};
-                        for (let key in parsed) {
-                            this.state.workoutData[parseInt(key)] = parsed[key];
-                        }
+                        this.state.workoutData = Object.keys(parsed).reduce((acc, key) => {
+                            acc[parseInt(key)] = parsed[key];
+                            return acc;
+                        }, {});
                     }
                     
-                    // Carica l'ultimo giorno di allenamento
+                    // Carica ultimo allenamento
                     const lastWorkout = localStorage.getItem('gymLastWorkout');
                     if (lastWorkout) {
                         const lastData = JSON.parse(lastWorkout);
@@ -1197,7 +1212,7 @@
                     
                     this.initializeWorkoutData();
                 } catch (e) {
-                    console.error('Errore caricamento:', e);
+                    console.error('Error loading data:', e);
                     this.initializeWorkoutData();
                 }
             },
@@ -1236,7 +1251,6 @@
             },
 
             completeWorkout() {
-                // Salva l'allenamento corrente come completato
                 const workoutData = {
                     day: this.state.currentDay,
                     date: new Date().toISOString()
@@ -1247,54 +1261,53 @@
                     this.state.lastWorkoutDay = this.state.currentDay;
                     this.state.lastWorkoutDate = workoutData.date;
                     
-                    // Passa al giorno successivo
                     const nextDay = this.getNextWorkoutDay();
-                    
-                    // Mostra messaggio di conferma
                     const dayCompleted = this.getDayLetter(this.state.currentDay);
                     const nextDayLetter = this.getDayLetter(nextDay);
+                    
                     const message = nextDay === 1 ? 
-                        `GIORNO ${dayCompleted} completato! 🎉\nCiclo terminato, si riparte dal GIORNO A!` :
-                        `GIORNO ${dayCompleted} completato! 💪\nProssimo: GIORNO ${nextDayLetter}`;
+                        `DAY ${dayCompleted} completed! 🎉\nCycle finished, starting from DAY A!` :
+                        `DAY ${dayCompleted} completed! 💪\nNext: DAY ${nextDayLetter}`;
                     
                     alert(message);
-                    
-                    // Seleziona il giorno successivo
                     this.selectDay(nextDay);
                 } catch (e) {
-                    console.error('Errore salvataggio allenamento:', e);
-                    alert('Errore nel salvare il completamento');
+                    console.error('Error saving workout completion:', e);
+                    alert('Error saving workout completion');
                 }
             },
 
             saveData: (() => {
                 let timeout;
                 return function(immediate = false) {
-                    if (immediate) {
-                        try {
-                            localStorage.setItem('gymConfig', JSON.stringify({ workoutDays: this.state.workoutDays }));
-                            localStorage.setItem('gymWorkoutData', JSON.stringify(this.state.workoutData));
-                        } catch (e) {
-                            console.error('Errore salvataggio:', e);
-                        }
-                        return;
-                    }
-                    
                     clearTimeout(timeout);
-                    timeout = setTimeout(() => {
+                    
+                    const save = () => {
                         try {
-                            localStorage.setItem('gymConfig', JSON.stringify({ workoutDays: this.state.workoutDays }));
+                            localStorage.setItem('gymConfig', JSON.stringify({ 
+                                workoutDays: this.state.workoutDays 
+                            }));
                             localStorage.setItem('gymWorkoutData', JSON.stringify(this.state.workoutData));
                         } catch (e) {
-                            console.error('Errore salvataggio:', e);
+                            console.error('Error saving data:', e);
+                            if (e.name === 'QuotaExceededError') {
+                                alert('Storage limit exceeded. Please delete some exercises.');
+                            }
                         }
-                    }, 300);
+                    };
+                    
+                    if (immediate) {
+                        save();
+                    } else {
+                        timeout = setTimeout(save, 300);
+                    }
                 };
             })(),
 
             setupEventListeners() {
                 let touchStartTime = 0;
                 
+                // Touch handlers per swipe tra giorni
                 document.addEventListener('touchstart', (e) => {
                     this.state.touchStartX = e.changedTouches[0].screenX;
                     this.state.touchStartY = e.changedTouches[0].screenY;
@@ -1314,16 +1327,25 @@
                     if (this.state.isSwiping && touchDuration < 300) this.handleSwipe();
                 }, { passive: true });
 
-                window.matchMedia?.('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-                    if (!localStorage.getItem('gymTheme')) {
-                        document.body.classList.toggle('light-mode', !e.matches);
-                        this.updateThemeIcon(!e.matches);
-                    }
-                });
+                // Theme change listener
+                const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
+                if (mediaQuery) {
+                    mediaQuery.addEventListener('change', (e) => {
+                        if (!localStorage.getItem('gymTheme')) {
+                            document.body.classList.toggle('light-mode', !e.matches);
+                            this.updateThemeIcon(!e.matches);
+                        }
+                    });
+                }
                 
-                // Listener per lo scroll degli esercizi
+                // Scroll indicators update con throttling
+                let scrollTimeout;
                 this.dom.exerciseList.addEventListener('scroll', () => {
-                    this.updateScrollIndicators();
+                    if (scrollTimeout) return;
+                    scrollTimeout = setTimeout(() => {
+                        this.updateScrollIndicators();
+                        scrollTimeout = null;
+                    }, 100);
                 }, { passive: true });
             },
 
@@ -1352,10 +1374,10 @@
                     if (i === nextDay) {
                         tab.innerHTML = `
                             <span class="next-badge">⭐</span>
-                            <span>GIORNO ${dayLetter}</span>
+                            <span>DAY ${dayLetter}</span>
                         `;
                     } else {
-                        tab.textContent = `GIORNO ${dayLetter}`;
+                        tab.textContent = `DAY ${dayLetter}`;
                     }
                     
                     tab.onclick = () => this.selectDay(i);
@@ -1375,9 +1397,9 @@
 
             openAddModal() {
                 this.dom.addModal.classList.add('show');
-                this.dom.modalTitle.textContent = 'Aggiungi';
+                this.dom.modalTitle.textContent = 'Add Exercise';
                 this.dom.deleteBtn.classList.add('hidden');
-                this.dom.saveButtonText.textContent = 'Salva';
+                this.dom.saveButtonText.textContent = 'Save';
                 document.body.style.overflow = 'hidden';
                 setTimeout(() => this.dom.exerciseName.focus(), 350);
             },
@@ -1401,7 +1423,7 @@
                 if (!infoElement) return;
                 
                 if (!this.state.lastWorkoutDay || !this.state.lastWorkoutDate) {
-                    infoElement.innerHTML = '<div class="info-text">Nessun allenamento completato</div>';
+                    infoElement.innerHTML = '<div class="info-text">No workout completed yet</div>';
                     if (resetBtn) resetBtn.style.display = 'none';
                     return;
                 }
@@ -1412,34 +1434,34 @@
                 
                 let timeText = '';
                 if (daysPassed === 0) {
-                    timeText = 'Oggi';
+                    timeText = 'Today';
                 } else if (daysPassed === 1) {
-                    timeText = 'Ieri';
+                    timeText = 'Yesterday';
                 } else {
-                    timeText = `${daysPassed} giorni fa`;
+                    timeText = `${daysPassed} days ago`;
                 }
                 
                 const lastDayLetter = this.getDayLetter(this.state.lastWorkoutDay);
                 const nextDayLetter = this.getDayLetter(nextDay);
                 
                 infoElement.innerHTML = `
-                    <div class="info-text">GIORNO <span class="info-highlight">${lastDayLetter}</span> completato</div>
-                    <div class="info-subtext">${timeText} • ${lastDate.toLocaleDateString('it-IT')}</div>
-                    <div class="info-subtext" style="margin-top: 8px;">Prossimo: <span class="info-highlight">GIORNO ${nextDayLetter}</span></div>
+                    <div class="info-text">DAY <span class="info-highlight">${lastDayLetter}</span> completed</div>
+                    <div class="info-subtext">${timeText} • ${lastDate.toLocaleDateString('en-US')}</div>
+                    <div class="info-subtext" style="margin-top: 8px;">Next: <span class="info-highlight">DAY ${nextDayLetter}</span></div>
                 `;
                 
                 if (resetBtn) resetBtn.style.display = 'block';
             },
 
             resetWorkoutTracking() {
-                if (confirm('Vuoi resettare il tracciamento degli allenamenti?\nVerrai riportato al GIORNO A.')) {
+                if (confirm('Do you want to reset workout tracking?\nYou will restart from DAY A.')) {
                     localStorage.removeItem('gymLastWorkout');
                     this.state.lastWorkoutDay = null;
                     this.state.lastWorkoutDate = null;
                     this.renderLastWorkoutInfo();
                     this.renderDaysTabs();
                     this.selectDay(1);
-                    alert('Tracciamento resettato! Si riparte dal GIORNO A 💪');
+                    alert('Tracking reset! Starting from DAY A 💪');
                 }
             },
 
@@ -1524,7 +1546,7 @@
                 
                 if ((ext === 'json' && this.state.selectedFormat !== 'json') ||
                     (ext === 'csv' && this.state.selectedFormat !== 'csv')) {
-                    this.showMessage(`Seleziona prima il formato ${ext.toUpperCase()}`);
+                    this.showMessage(`Please select ${ext.toUpperCase()} format first`);
                     return;
                 }
                 
@@ -1535,7 +1557,7 @@
 
             async importFile() {
                 if (!this.state.selectedFile) {
-                    this.showMessage('Seleziona un file da importare');
+                    this.showMessage('Please select a file to import');
                     return;
                 }
 
@@ -1550,24 +1572,24 @@
                     }
 
                     if (data) {
-                        // Salva DIRETTAMENTE in localStorage
+                        // Save directly to localStorage
                         localStorage.setItem('gymConfig', JSON.stringify({ 
                             workoutDays: data.giorni 
                         }));
                         localStorage.setItem('gymWorkoutData', JSON.stringify(data.esercizi));
                         
-                        // Chiudi modal
+                        // Close modals
                         this.closeImportModal();
                         this.closeSettings();
                         
-                        // Reload dopo aver salvato
+                        // Reload after saving
                         setTimeout(() => {
                             window.location.reload();
                         }, 100);
                     }
                 } catch (error) {
-                    console.error('Errore import:', error);
-                    this.showMessage('Errore nell\'importazione: ' + error.message);
+                    console.error('Import error:', error);
+                    this.showMessage('Import error: ' + error.message);
                 }
             },
 
@@ -1579,13 +1601,13 @@
                 try {
                     const data = JSON.parse(text);
                     
-                    // Validazione dati
+                    // Validate data
                     if (!data.giorni || !data.esercizi) {
-                        throw new Error('Formato JSON non valido: mancano "giorni" o "esercizi"');
+                        throw new Error('Invalid JSON format: missing "giorni" or "esercizi"');
                     }
                     
                     if (isNaN(parseInt(data.giorni)) || parseInt(data.giorni) < 1 || parseInt(data.giorni) > 7) {
-                        throw new Error('Numero di giorni non valido (deve essere tra 1 e 7)');
+                        throw new Error('Invalid number of days (must be between 1 and 7)');
                     }
 
                     const workoutData = {};
@@ -1595,12 +1617,12 @@
                         const dayNum = parseInt(day);
                         
                         if (isNaN(dayNum) || dayNum < 1) {
-                            console.warn(`Giorno ${day} ignorato: non valido`);
+                            console.warn(`Day ${day} ignored: invalid`);
                             continue;
                         }
                         
                         if (!Array.isArray(data.esercizi[day])) {
-                            console.warn(`Giorno ${day} ignorato: non è un array`);
+                            console.warn(`Day ${day} ignored: not an array`);
                             continue;
                         }
                         
@@ -1615,7 +1637,7 @@
                                     sets: parseInt(ex.serie || ex.sets || 0) || 0,
                                     reps: parseInt(ex.ripetizioni || ex.reps || 0) || 0,
                                     videoLink: String(ex.video || ex.videoLink || ''),
-                                    lastUpdated: new Date().toLocaleDateString('it-IT')
+                                    lastUpdated: new Date().toLocaleDateString('en-US')
                                 };
                             });
                     }
@@ -1623,7 +1645,7 @@
                     const totalExercises = Object.values(workoutData).reduce((sum, arr) => sum + arr.length, 0);
                     
                     if (totalExercises === 0) {
-                        throw new Error('Nessun esercizio valido trovato nel file');
+                        throw new Error('No valid exercises found in file');
                     }
 
                     return {
@@ -1632,7 +1654,7 @@
                     };
                 } catch (error) {
                     if (error instanceof SyntaxError) {
-                        throw new Error('File JSON non valido: ' + error.message);
+                        throw new Error('Invalid JSON file: ' + error.message);
                     }
                     throw error;
                 }
@@ -1643,14 +1665,14 @@
                     const lines = text.trim().split('\n');
                     
                     if (lines.length < 2) {
-                        throw new Error('File CSV vuoto o invalido');
+                        throw new Error('CSV file is empty or invalid');
                     }
                     
                     const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
                     
                     const hasName = headers.some(h => h.includes('nome') || h.includes('name'));
                     if (!hasName) {
-                        throw new Error('CSV deve contenere una colonna "nome" o "name"');
+                        throw new Error('CSV must contain a "nome" or "name" column');
                     }
                     
                     const workoutData = {};
@@ -1687,13 +1709,13 @@
                             sets: parseInt(row.serie || row.sets || 0) || 0,
                             reps: parseInt(row.ripetizioni || row.reps || row.repetitions || 0) || 0,
                             videoLink: String(row.video || row.videolink || ''),
-                            lastUpdated: new Date().toLocaleDateString('it-IT')
+                            lastUpdated: new Date().toLocaleDateString('en-US')
                         });
                         validRows++;
                     }
                     
                     if (validRows === 0) {
-                        throw new Error('Nessun esercizio valido trovato nel CSV');
+                        throw new Error('No valid exercises found in CSV');
                     }
 
                     return {
@@ -1701,10 +1723,10 @@
                         esercizi: workoutData
                     };
                 } catch (error) {
-                    if (error.message.includes('trovato')) {
+                    if (error.message.includes('found')) {
                         throw error;
                     }
-                    throw new Error('File CSV non valido: ' + error.message);
+                    throw new Error('Invalid CSV file: ' + error.message);
                 }
             },
 
@@ -1846,18 +1868,23 @@
             saveExercise() {
                 const name = this.dom.exerciseName.value.trim();
                 if (!name) {
+                    alert('Please enter an exercise name');
                     this.dom.exerciseName.focus();
                     return;
                 }
 
+                const weight = parseFloat(this.dom.weight.value) || 0;
+                const sets = parseInt(this.dom.sets.value) || 0;
+                const reps = parseInt(this.dom.reps.value) || 0;
+
                 const exercise = {
                     id: this.state.editingId || Date.now(),
                     name,
-                    weight: parseFloat(this.dom.weight.value) || 0,
-                    sets: parseInt(this.dom.sets.value) || 0,
-                    reps: parseInt(this.dom.reps.value) || 0,
+                    weight: Math.max(0, weight),
+                    sets: Math.max(0, sets),
+                    reps: Math.max(0, reps),
                     videoLink: this.dom.videoLink.value.trim(),
-                    lastUpdated: new Date().toLocaleDateString('it-IT')
+                    lastUpdated: new Date().toLocaleDateString('en-US')
                 };
 
                 const exercises = this.state.workoutData[this.state.currentDay];
@@ -1891,9 +1918,9 @@
                 this.dom.sets.value = exercise.sets || '';
                 this.dom.reps.value = exercise.reps || '';
                 this.dom.videoLink.value = exercise.videoLink || '';
-                this.dom.modalTitle.textContent = 'Modifica';
+                this.dom.modalTitle.textContent = 'Edit Exercise';
                 this.dom.deleteBtn.classList.remove('hidden');
-                this.dom.saveButtonText.textContent = 'Salva';
+                this.dom.saveButtonText.textContent = 'Save';
                 this.state.editingId = id;
                 
                 this.dom.addModal.classList.add('show');
@@ -1901,7 +1928,7 @@
             },
 
             confirmDelete() {
-                if (confirm('Eliminare questo esercizio?')) {
+                if (confirm('Delete this exercise?')) {
                     this.deleteExercise(this.state.editingId);
                     this.closeAddModal();
                 }
@@ -1960,8 +1987,9 @@
                     this.dom.exerciseList.innerHTML = `
                         <div class="empty-state">
                             <div class="empty-state-icon">💪</div>
-                            <div class="empty-state-text">Nessun esercizio</div>
+                            <div class="empty-state-text">No exercises</div>
                         </div>
+                        <div class="scroll-spacer"></div>
                     `;
                     this.dom.scrollIndicators.style.display = 'none';
                     return;
@@ -2001,7 +2029,7 @@
                     </div>
                 `}).join('');
                 
-                this.dom.exerciseList.innerHTML = html;
+                this.dom.exerciseList.innerHTML = html + '<div class="scroll-spacer"></div>';
                 this.renderScrollIndicators(exercises.length);
                 
                 // Reset scroll position
@@ -2023,25 +2051,24 @@
             },
 
             updateScrollIndicators() {
-                const exercises = this.state.workoutData[this.state.currentDay] || [];
-                if (exercises.length <= 1) return;
+                const exercises = this.state.workoutData[this.state.currentDay];
+                if (!exercises || exercises.length <= 1) return;
                 
                 const container = this.dom.exerciseList;
                 const items = container.querySelectorAll('.exercise-item');
                 
                 if (items.length === 0) return;
                 
-                // Calcola quale esercizio è più vicino al centro dello schermo
-                const containerRect = container.getBoundingClientRect();
-                const containerCenter = containerRect.top + containerRect.height / 2;
+                // Calcola quale esercizio è più vicino alla posizione di snap (inizio container)
+                const containerTop = container.getBoundingClientRect().top;
+                const snapPosition = containerTop + (parseInt(getComputedStyle(container).scrollPaddingTop) || 0);
                 
                 let closestIndex = 0;
                 let closestDistance = Infinity;
                 
                 items.forEach((item, index) => {
-                    const itemRect = item.getBoundingClientRect();
-                    const itemCenter = itemRect.top + itemRect.height / 2;
-                    const distance = Math.abs(itemCenter - containerCenter);
+                    const itemTop = item.getBoundingClientRect().top;
+                    const distance = Math.abs(itemTop - snapPosition);
                     
                     if (distance < closestDistance) {
                         closestDistance = distance;
