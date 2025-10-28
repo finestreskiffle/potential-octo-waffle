@@ -1,0 +1,3990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gym-Tracker">
+    <meta name="theme-color" content="#0b0d12">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiR3ltIFRyYWNrZXIgUHJvIiwic2hvcnRfbmFtZSI6Ikd5bVRyYWNrZXIiLCJkZXNjcmlwdGlvbiI6IlRyYWNrIHlvdXIgd29ya291dCBwcm9ncmVzcyIsInN0YXJ0X3VybCI6Ii8iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGIwZDEyIiwidGhlbWVfY29sb3IiOiIjMGIwZDEyIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSFpwWlhkQ2IzZzlJakFnTUNBeE9USWdNVGt5SWo0OGNtVmpkQ0IzYVdSMGFEMGlNVGt5SWlCb1pXbG5hSFE5SWpFNU1pSWdabWxzYkQwaUl6QjNNQ0l2UGp4MFpYaDBJSGc5SWprMklpQjVQU0k1TmlJZ1ptbHNiRDBpSTJabVppSWdabTl1ZEMxemFYcGxQU0kyTkNJZ1ptOXVkQzEzWldsbmFIUTlJakV3TUNBZ1ltOXNaQ0kr8J+SqjwvZEdWNGRENDhMMk4yWno0PSIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn0seyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSFpwWlhkQ2IzZzlJakFnTUNBMU1USWdOVEV5SWo0OGNtVmpkQ0IzYVdSMGFEMGlOVEV5SWlCb1pXbG5hSFE5SWpVeE1pSWdabWxzYkQwaUl6QjNNQ0l2UGp4MFpYaDBJSGc5SWpJMU5pSWdlVDBpTWpVMklpQm1hV3hzUFNJalptWm1JaUJtYjI1MExYTnBlbVU5SWpFMk1DSWdabTl1ZEMxM1pXbG5hSFE5SWpFd01DSWdkR1Y0ZEMxaGJtTm9iM0k5SW0xcFpHUnNaU0krOvCfkqo8TDkwWlhoMFBqd3ZjM1puUGc9PSIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <title>Gym-Tracker</title>
+    <style>
+        :root {
+            --bg: #0b0d12;
+            --text: #eaf0ff;
+            --muted: #c9d2ea;
+            --radius: 20px;
+            --hairline: rgba(255,255,255,.35);
+            --accent: oklch(0.78 0.12 240);
+            --glass-bg: color-mix(in oklab, #ffffff 12%, transparent);
+            --glass-bg2: color-mix(in oklab, #ffffff 6%, transparent);
+            --glass-border: color-mix(in oklab, #fff 22%, transparent);
+        }
+        
+        body.light-mode {
+            --bg: #e9ecf5;
+            --text: #1a1f2b;
+            --muted: #5a6b8f;
+            --hairline: rgba(0,0,0,.2);
+            --glass-bg: color-mix(in oklab, #ffffff 85%, transparent);
+            --glass-bg2: color-mix(in oklab, #ffffff 75%, transparent);
+            --glass-border: color-mix(in oklab, #000 15%, transparent);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+        
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .aurora {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(80% 60% at 10% 20%, #9be7ff55, transparent 60%),
+                radial-gradient(70% 50% at 90% 10%, #ff9bf855, transparent 60%),
+                radial-gradient(60% 70% at 50% 90%, #baff9b44, transparent 60%),
+                var(--bg);
+            filter: saturate(120%);
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        body.light-mode .aurora {
+            opacity: 0.4;
+        }
+        
+        .aurora .blob {
+            position: absolute;
+            width: 45vmax;
+            height: 45vmax;
+            filter: blur(60px);
+            opacity: 0.5;
+            border-radius: 50%;
+            will-change: transform;
+            animation: drift var(--t, 14s) ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+        
+        .aurora .b1 {
+            left: -10vmax;
+            top: -10vmax;
+            background: #6dd6ff55;
+            --t: 16s;
+        }
+        
+        .aurora .b2 {
+            right: -12vmax;
+            top: -8vmax;
+            background: #ff87f755;
+            --t: 18s;
+        }
+        
+        .aurora .b3 {
+            left: 10vmax;
+            bottom: -12vmax;
+            background: #9bffa655;
+            --t: 20s;
+        }
+        
+        @keyframes drift {
+            to {
+                transform: translate3d(30px, -20px, 0) scale(1.06);
+            }
+        }
+        
+        .glass {
+            background: linear-gradient(180deg, var(--glass-bg), var(--glass-bg2));
+            backdrop-filter: blur(22px) saturate(160%);
+            -webkit-backdrop-filter: blur(22px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            box-shadow:
+                0 1px 0 0 rgba(255,255,255,.35) inset,
+                0 20px 40px rgba(0,0,0,.25);
+        }
+        
+        body.light-mode .glass {
+            box-shadow:
+                0 1px 0 0 rgba(255,255,255,.5) inset,
+                0 10px 30px rgba(0,0,0,.12);
+        }
+        
+        .specular {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .specular::before {
+            content: "";
+            position: absolute;
+            inset: -35%;
+            background: radial-gradient(100% 60% at 0% 0%, rgba(255,255,255,.35), transparent 60%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+        
+        body.light-mode .specular::before {
+            opacity: 0.5;
+        }
+        
+        .grain {
+            position: relative;
+        }
+        
+        .grain::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2"/></filter><rect width="100%%" height="100%%" filter="url(%23n)" opacity="0.05"/></svg>');
+            mix-blend-mode: overlay;
+            border-radius: inherit;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            border-bottom: 1px solid var(--hairline);
+        }
+        
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: calc(env(safe-area-inset-top) + 16px) 20px 16px 20px;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            min-height: 44px;
+        }
+        
+        .header h1 {
+            font-size: clamp(28px, 7vw, 32px);
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.8px;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .icon-btn {
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            color: var(--text);
+        }
+        
+        .icon-btn:active {
+            transform: scale(0.94) translateY(1px);
+        }
+        
+        .icon-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.25);
+        }
+        
+        .days-carousel {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0 0 12px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .days-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .day-tab {
+            flex-shrink: 0;
+            padding: 11px 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
+            border-radius: 14px;
+            color: var(--text);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            white-space: nowrap;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .day-tab.active {
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 40%, transparent);
+            transform: scale(1.02);
+        }
+        
+        .day-tab:active {
+            transform: scale(0.96);
+        }
+        
+        .next-badge {
+            font-size: 16px;
+            margin-right: 4px;
+            animation: pulse 2s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.15);
+            }
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            25% {
+                transform: translateY(-10px);
+            }
+            50% {
+                transform: translateY(0);
+            }
+            75% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .main-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+            padding-bottom: 140px;
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-padding-top: calc(180px + env(safe-area-inset-top));
+            scroll-padding-bottom: 140px;
+        }
+        
+        .main-content::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .exercise-item {
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            padding: 24px;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .exercise-item:first-child {
+            margin-top: calc(180px + env(safe-area-inset-top));
+        }
+        
+        .exercise-item:active {
+            transform: scale(0.98);
+        }
+        
+        .exercise-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        .exercise-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.6px;
+            line-height: 1.3;
+            margin-bottom: 16px;
+        }
+        
+        .exercise-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stat {
+            background: color-mix(in oklab, var(--accent) 12%, transparent);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px color-mix(in oklab, var(--accent) 20%, transparent);
+        }
+        
+        .stat-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -0.8px;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .video-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px;
+            background: color-mix(in oklab, var(--accent) 12%, transparent);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 14px;
+            color: var(--accent);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+            cursor: pointer;
+            width: 100%;
+            min-height: 44px;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .video-toggle:active {
+            transform: scale(0.97);
+        }
+        
+        .video-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 30%, transparent);
+        }
+        
+        .video-container {
+            margin-bottom: 12px;
+            border-radius: 14px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .video-container.show {
+            max-height: 600px;
+            opacity: 1;
+        }
+        
+        .video-frame {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: none;
+        }
+        
+        .exercise-date {
+            font-size: 12px;
+            color: var(--muted);
+            text-align: right;
+            font-weight: 500;
+            margin-top: auto;
+        }
+        
+        .empty-state {
+            border-radius: var(--radius);
+            padding: 60px 24px;
+            text-align: center;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: start;
+            margin-top: calc(180px + env(safe-area-inset-top));
+        }
+        
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+        }
+        
+        .empty-state-text {
+            font-size: 18px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+        
+        .fab {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom) + 80px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 12px 40px color-mix(in oklab, var(--accent) 40%, transparent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 50;
+        }
+        
+        .fab:active {
+            transform: translateX(-50%) scale(0.92);
+        }
+        
+        .fab:hover {
+            transform: translateX(-50%) translateY(-2px) scale(1.05);
+            box-shadow: 0 16px 48px color-mix(in oklab, var(--accent) 50%, transparent);
+        }
+        
+        .scroll-indicators {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom) + 32px);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 40;
+            padding: 10px 18px;
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            background: linear-gradient(180deg, var(--glass-bg), var(--glass-bg2));
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 24px rgba(0,0,0,.2);
+        }
+        
+        .scroll-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--muted);
+            opacity: 0.5;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .scroll-dot.active {
+            width: 28px;
+            border-radius: 6px;
+            background: var(--accent);
+            opacity: 1;
+            box-shadow: 0 2px 10px var(--accent);
+        }
+        
+        .scroll-spacer {
+            height: 140px;
+            flex-shrink: 0;
+            pointer-events: none;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 100;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .modal.show {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            border-bottom: 1px solid var(--hairline);
+        }
+        
+        .modal-header-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: calc(env(safe-area-inset-top) + 16px) 20px 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: clamp(24px, 6vw, 28px);
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.8px;
+        }
+        
+        .close-btn {
+            backdrop-filter: blur(16px) saturate(140%);
+            -webkit-backdrop-filter: blur(16px) saturate(140%);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            color: var(--text);
+            font-size: 22px;
+        }
+        
+        .close-btn:active {
+            transform: scale(0.94);
+        }
+        
+        .modal-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: calc(env(safe-area-inset-top) + 80px) 20px calc(env(safe-area-inset-bottom) + 40px) 20px;
+        }
+        
+        .form-card {
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .form-group {
+            border-bottom: 0.5px solid var(--hairline);
+            padding: 18px 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+        }
+        
+        .form-group:last-child {
+            border-bottom: none;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            border: none;
+            font-size: 17px;
+            color: var(--text);
+            background: transparent;
+            font-family: inherit;
+        }
+        
+        .form-group input::placeholder {
+            color: var(--muted);
+            opacity: 0.6;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+        }
+        
+        .inline-inputs input.valid {
+            outline: 3px solid #4ade80 !important;
+            outline-offset: -3px;
+            background: color-mix(in oklab, #4ade80 8%, transparent) !important;
+        }
+        
+        .inline-inputs input.invalid {
+            outline: 3px solid #f87171 !important;
+            outline-offset: -3px;
+            background: color-mix(in oklab, #f87171 8%, transparent) !important;
+        }
+        
+        .form-group input[type="url"].valid {
+            background: color-mix(in oklab, #4ade80 8%, transparent) !important;
+            border-left: 4px solid #4ade80 !important;
+            padding-left: 16px;
+        }
+        
+        .form-group input[type="url"].invalid {
+            background: color-mix(in oklab, #f87171 8%, transparent) !important;
+            border-left: 4px solid #f87171 !important;
+            padding-left: 16px;
+        }
+        
+        .inline-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+        
+        .inline-inputs .form-group {
+            border-bottom: none;
+            border-right: 0.5px solid var(--hairline);
+        }
+        
+        .inline-inputs .form-group:last-child {
+            border-right: none;
+        }
+        
+        .inline-inputs input {
+            text-align: center;
+            font-weight: 700;
+            font-size: 24px;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 18px;
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            min-height: 56px;
+        }
+        
+        .button:active {
+            transform: scale(0.97);
+        }
+        
+        .button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .button-loading {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .button-loading::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 50%;
+            left: 50%;
+            margin-left: -10px;
+            margin-top: -10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spinner 0.8s linear infinite;
+        }
+        
+        @keyframes spinner {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast-container {
+            position: fixed;
+            bottom: calc(env(safe-area-inset-bottom) + 160px);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            pointer-events: none;
+            width: calc(100% - 40px);
+            max-width: 400px;
+        }
+        
+        .toast {
+            padding: 16px 24px;
+            backdrop-filter: blur(20px) saturate(160%);
+            -webkit-backdrop-filter: blur(20px) saturate(160%);
+            background: linear-gradient(180deg, var(--glass-bg), var(--glass-bg2));
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,.3);
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: all;
+            line-height: 1.4;
+            min-width: 200px;
+            max-width: 100%;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        
+        .toast.success {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            color: #fff;
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        .toast.error {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            color: #fff;
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        .toast.warning {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #fff;
+            border-color: rgba(255,255,255,0.3);
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes slideOutDown {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+        }
+        
+        .offline-badge {
+            position: fixed;
+            top: calc(env(safe-area-inset-top) + 12px);
+            right: 20px;
+            z-index: 999;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,.3);
+            display: none;
+            align-items: center;
+            gap: 6px;
+            animation: slideInDown 0.3s ease;
+        }
+        
+        .offline-badge.show {
+            display: flex;
+        }
+        
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .stats-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+        
+        .stats-modal.show {
+            transform: translateX(0);
+        }
+        
+        .stats-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: calc(env(safe-area-inset-top) + 80px) 20px calc(env(safe-area-inset-bottom) + 40px) 20px;
+        }
+        
+        .stat-card {
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 16px;
+            letter-spacing: -0.4px;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stat-box {
+            background: color-mix(in oklab, var(--accent) 12%, transparent);
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: -1px;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        
+        .pr-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .pr-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: color-mix(in oklab, var(--accent) 8%, transparent);
+            border-radius: 12px;
+            border: 1px solid color-mix(in oklab, var(--accent) 15%, transparent);
+        }
+        
+        .pr-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .pr-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+        
+        .chart-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .chart-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        .chart-bar-fill {
+            height: 32px;
+            background: linear-gradient(90deg, var(--accent), color-mix(in oklab, var(--accent) 70%, #000));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 12px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            min-width: 40px;
+            transition: all 0.3s ease;
+        }
+        
+        .empty-stats {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted);
+        }
+        
+        .empty-stats-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        
+        .empty-stats-text {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .reset-stats-btn {
+            width: 100%;
+            padding: 18px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
+        }
+        
+        .reset-stats-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .reset-stats-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
+        }
+        
+        .reset-stats-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.25);
+        }
+        
+        .button-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
+            color: #fff;
+            margin-bottom: 12px;
+            border-color: transparent;
+            box-shadow: 0 4px 16px color-mix(in oklab, var(--accent) 40%, transparent);
+        }
+        
+        .button-delete {
+            background: color-mix(in oklab, var(--accent) 12%, transparent);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            color: var(--accent);
+            border: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+        }
+        
+        .settings-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .settings-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .settings-content {
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 420px;
+            width: 100%;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        .settings-modal.show .settings-content {
+            transform: scale(1);
+        }
+        
+        .settings-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+            text-align: center;
+            letter-spacing: -0.8px;
+        }
+        
+        .settings-subtitle {
+            font-size: 15px;
+            color: var(--muted);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .settings-section {
+            margin-bottom: 28px;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+        
+        .last-workout-info {
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            padding: 18px;
+            text-align: center;
+        }
+        
+        .info-text {
+            font-size: 16px;
+            color: var(--text);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        
+        .info-subtext {
+            font-size: 13px;
+            color: var(--muted);
+        }
+        
+        .info-highlight {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .import-btn {
+            width: 100%;
+            padding: 16px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.06));
+            border: 1px solid var(--hairline);
+            border-radius: 14px;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        
+        .import-btn:active {
+            transform: scale(0.97);
+        }
+        
+        .import-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(0,0,0,.2);
+        }
+        
+        .days-input-wrapper {
+            width: 100%;
+        }
+        
+        .days-input {
+            width: 100%;
+            padding: 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 2px solid var(--hairline);
+            border-radius: 16px;
+            color: var(--text);
+            font-size: 40px;
+            font-weight: 800;
+            text-align: center;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            letter-spacing: -1px;
+        }
+        
+        .days-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 20%, transparent);
+        }
+        
+        .days-label {
+            font-size: 14px;
+            color: var(--muted);
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .import-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .import-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .import-content {
+            border-radius: 24px;
+            padding: 32px;
+            max-width: 420px;
+            width: 100%;
+            transform: scale(0.9);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .import-modal.show .import-content {
+            transform: scale(1);
+        }
+        
+        .import-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            text-align: center;
+            letter-spacing: -0.6px;
+        }
+        
+        .import-subtitle {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 24px;
+            text-align: center;
+            line-height: 1.5;
+        }
+        
+        .format-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        
+        .format-btn {
+            padding: 20px 16px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 2px solid var(--hairline);
+            border-radius: 14px;
+            color: var(--text);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            text-align: center;
+        }
+        
+        .format-btn:active {
+            transform: scale(0.94);
+        }
+        
+        .format-btn.selected {
+            background: linear-gradient(135deg, var(--accent) 0%, color-mix(in oklab, var(--accent) 80%, #000) 100%);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 20px color-mix(in oklab, var(--accent) 40%, transparent);
+        }
+        
+        .drop-zone {
+            padding: 40px 20px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border: 2px dashed var(--hairline);
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+            margin-bottom: 16px;
+        }
+        
+        .drop-zone:hover {
+            border-color: var(--accent);
+            background: linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.08));
+        }
+        
+        .drop-zone.dragover {
+            border-color: var(--accent);
+            background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.1));
+            transform: scale(1.02);
+        }
+        
+        .drop-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+        
+        .drop-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        
+        .drop-subtext {
+            font-size: 13px;
+            color: var(--muted);
+        }
+        
+        .file-name {
+            font-size: 14px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 16px;
+            padding: 12px;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+            border-radius: 10px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="aurora" aria-hidden="true">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="blob b3"></div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="offline-badge" id="offlineBadge">
+        <span>📡</span>
+        <span>Offline</span>
+    </div>
+
+    <div class="header glass specular">
+        <div class="header-content">
+            <div class="header-top">
+                <h1>Gym-Tracker</h1>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="app.completeWorkout()" aria-label="Complete Workout">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" onclick="app.openStats()" aria-label="Statistics">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18 9l-5 5-4-4-2 2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" onclick="app.openAchievements()" aria-label="Achievements">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" onclick="app.toggleTheme()" aria-label="Toggle theme">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" id="themeIcon">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" onclick="app.openSettings()" aria-label="Settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="5" r="2" fill="currentColor"/>
+                            <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                            <circle cx="12" cy="19" r="2" fill="currentColor"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="days-carousel" id="daysCarousel"></div>
+        </div>
+    </div>
+    
+    <div class="main-content" id="exerciseList"></div>
+
+    <div class="scroll-indicators" id="scrollIndicators"></div>
+
+    <button class="fab" onclick="app.openAddModal()" aria-label="Add">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+            <path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+    </button>
+
+    <div class="modal" id="addModal">
+        <div class="modal-header glass specular">
+            <div class="modal-header-content">
+                <h2 class="modal-title" id="modalTitle">Add Exercise</h2>
+                <button class="close-btn" onclick="app.closeAddModal()">✕</button>
+            </div>
+        </div>
+        <div class="modal-content">
+            <div class="form-card glass specular grain">
+                <div class="form-group">
+                    <label for="exerciseName">Exercise Name</label>
+                    <input type="text" id="exerciseName" placeholder="e.g. Bench Press" autocomplete="off">
+                </div>
+                <div class="inline-inputs">
+                    <div class="form-group">
+                        <label for="sets">Sets</label>
+                        <input type="number" id="sets" placeholder="0" inputmode="numeric">
+                    </div>
+                    <div class="form-group">
+                        <label for="reps">Reps</label>
+                        <input type="number" id="reps" placeholder="0" inputmode="numeric">
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">kg</label>
+                        <input type="number" id="weight" placeholder="0" inputmode="decimal" step="0.5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="videoLink">YouTube Link</label>
+                    <input type="url" id="videoLink" placeholder="https://youtube.com/..." inputmode="url">
+                </div>
+            </div>
+            
+            <button class="button button-primary" onclick="app.saveExercise()">
+                <span id="saveButtonText">Save</span>
+            </button>
+            <button class="button button-delete hidden" id="deleteBtn" onclick="app.confirmDelete()">
+                Delete Exercise
+            </button>
+        </div>
+    </div>
+
+    <div class="settings-modal" id="settingsModal" onclick="app.closeSettingsOnBackdrop(event)">
+        <div class="settings-content glass specular grain" onclick="event.stopPropagation()">
+            <div class="settings-title">Settings</div>
+            
+            <div class="settings-section" id="installSection" style="display: none;">
+                <div class="section-title">Progressive Web App</div>
+                <button class="import-btn" onclick="app.installPWA()" id="installAppBtn" style="display: none;">
+                    📱 Install App
+                </button>
+            </div>
+            
+            <div class="settings-section">
+                <div class="section-title">Last Workout</div>
+                <div class="last-workout-info" id="lastWorkoutInfo">
+                    <div class="info-text">No workout completed yet</div>
+                </div>
+                <button class="import-btn" onclick="app.resetWorkoutTracking()" id="resetTrackingBtn" style="margin-top: 12px; display: none;">
+                    🔄 Reset Tracking
+                </button>
+                <button class="import-btn" onclick="app.resetAchievements()" id="resetAchievementsBtn" style="margin-top: 12px; background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);">
+                    🏆 Reset Achievements
+                </button>
+            </div>
+            
+            <div class="settings-section">
+                <div class="section-title">Workout Plan</div>
+                <div class="settings-subtitle">Days per week</div>
+                <div class="days-input-wrapper">
+                    <input type="number" id="daysInput" class="days-input" min="1" max="7" inputmode="numeric" value="3">
+                    <div class="days-label">days per week</div>
+                </div>
+            </div>
+            
+            <div class="settings-section">
+                <div class="section-title">Import/Export</div>
+                <button class="import-btn" onclick="app.downloadExampleWorkout(event)">
+                    ⬇️ Download Example
+                </button>
+                <button class="import-btn" onclick="app.openImportModal()">
+                    📥 Import Workout
+                </button>
+                <button class="import-btn" onclick="app.exportWorkout(event)">
+                    📤 Export JSON
+                </button>
+                <button class="import-btn" onclick="app.exportWorkoutCSV(event)">
+                    📊 Export CSV
+                </button>
+            </div>
+            
+            <button class="button button-primary" onclick="app.saveSettings()">Save Settings</button>
+        </div>
+    </div>
+
+    <div class="import-modal" id="importModal" onclick="app.closeImportOnBackdrop(event)">
+        <div class="import-content glass specular grain" onclick="event.stopPropagation()">
+            <div class="import-title">Import Workout</div>
+            <div class="import-subtitle">Upload a JSON or CSV file</div>
+            
+            <div class="format-options">
+                <button class="format-btn selected" onclick="app.selectFormat('json')" id="jsonBtn">
+                    📄 JSON
+                </button>
+                <button class="format-btn" onclick="app.selectFormat('csv')" id="csvBtn">
+                    📊 CSV
+                </button>
+            </div>
+            
+            <input type="file" id="fileInput" class="file-input" accept=".json,.csv" onchange="app.handleFileSelect(event)">
+            
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+                <div class="drop-icon">📁</div>
+                <div class="drop-text">Tap to select file</div>
+                <div class="drop-subtext">Or drag and drop</div>
+            </div>
+            
+            <div class="file-name hidden" id="fileName"></div>
+            
+            <button class="button button-primary" onclick="app.importFile()">Import</button>
+            <button class="button button-delete" onclick="app.closeImportModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div class="stats-modal" id="statsModal">
+        <div class="modal-header glass specular">
+            <div class="modal-header-content">
+                <h2 class="modal-title">Statistics</h2>
+                <button class="close-btn" onclick="app.closeStats()">✕</button>
+            </div>
+        </div>
+        <div class="stats-content" id="statsContent">
+            <!-- Stats will be rendered here -->
+        </div>
+    </div>
+
+    <!-- 🏆 Achievements Modal -->
+    <div class="stats-modal" id="achievementsModal">
+        <div class="modal-header glass specular">
+            <div class="modal-header-content">
+                <h2 class="modal-title">🏆 Achievements</h2>
+                <button class="close-btn" onclick="app.closeAchievements()">✕</button>
+            </div>
+        </div>
+        <div class="stats-content" id="achievementsContent">
+            <!-- Achievements will be rendered here -->
+        </div>
+    </div>
+
+    <script>
+        const app = {
+            state: {
+                workoutDays: 3,
+                currentDay: 1,
+                workoutData: {},
+                editingId: null,
+                touchStartX: 0,
+                touchEndX: 0,
+                touchStartY: 0,
+                isSwiping: false,
+                selectedFormat: 'json',
+                selectedFile: null,
+                lastWorkoutDay: null,
+                lastWorkoutDate: null,
+                deferredPrompt: null,
+                workoutHistory: [],
+                achievements: [],
+                unlockedAchievements: []
+            },
+
+            dom: {},
+
+            // 🆕 STEP 4: Safe localStorage wrapper con error handling
+            safeLocalStorage: {
+                getItem(key) {
+                    try {
+                        return localStorage.getItem(key);
+                    } catch (e) {
+                        console.error('❌ localStorage read error:', e);
+                        if (e.name === 'SecurityError') {
+                            console.warn('⚠️ localStorage blocked by browser security');
+                        }
+                        return null;
+                    }
+                },
+                
+                setItem(key, value) {
+                    try {
+                        localStorage.setItem(key, value);
+                        return true;
+                    } catch (e) {
+                        console.error('❌ localStorage write error:', e);
+                        
+                        if (e.name === 'QuotaExceededError') {
+                            // Calcola dimensione approssimativa dei dati
+                            const dataSize = new Blob([value]).size;
+                            const dataSizeKB = (dataSize / 1024).toFixed(2);
+                            
+                            alert(`⚠️ Storage Full!\n\nYou've reached the storage limit.\nTrying to save: ${dataSizeKB} KB\n\nPlease:\n• Delete some exercises\n• Export your workout data\n• Clear old data`);
+                        } else if (e.name === 'SecurityError') {
+                            alert('⚠️ Storage Blocked\n\nYour browser is blocking data storage.\nPlease check your privacy settings.');
+                        } else {
+                            alert('⚠️ Save Error\n\nCouldn\'t save data. Please try again.');
+                        }
+                        
+                        return false;
+                    }
+                },
+                
+                removeItem(key) {
+                    try {
+                        localStorage.removeItem(key);
+                        return true;
+                    } catch (e) {
+                        console.error('❌ localStorage remove error:', e);
+                        return false;
+                    }
+                }
+            },
+
+            // 🆕 STEP 3: Utility debounce function
+            debounce(fn, delay) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => fn.apply(this, args), delay);
+                };
+            },
+
+            // 🆕 STEP 6: Toast notification system
+            showToast(message, type = 'info', duration = 3000) {
+                const container = document.getElementById('toastContainer');
+                if (!container) return;
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                
+                container.appendChild(toast);
+                
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    toast.classList.add('show');
+                });
+                
+                // Auto remove
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }, duration);
+            },
+
+            init() {
+                this.cacheDom();
+                this.loadData();
+                this.loadTheme();
+                this.initializeAchievements();
+                this.loadAchievements();
+                this.setupEventListeners();
+                this.setupInputValidation();
+                this.setupVideoObserver();
+                this.setupPWAFeatures();
+                this.renderDaysTabs();
+                const dayToSelect = this.getNextWorkoutDay();
+                this.selectDay(dayToSelect);
+            },
+
+            cacheDom() {
+                this.dom = {
+                    daysCarousel: document.getElementById('daysCarousel'),
+                    exerciseList: document.getElementById('exerciseList'),
+                    scrollIndicators: document.getElementById('scrollIndicators'),
+                    addModal: document.getElementById('addModal'),
+                    settingsModal: document.getElementById('settingsModal'),
+                    modalTitle: document.getElementById('modalTitle'),
+                    deleteBtn: document.getElementById('deleteBtn'),
+                    saveButtonText: document.getElementById('saveButtonText'),
+                    exerciseName: document.getElementById('exerciseName'),
+                    weight: document.getElementById('weight'),
+                    sets: document.getElementById('sets'),
+                    reps: document.getElementById('reps'),
+                    videoLink: document.getElementById('videoLink')
+                };
+            },
+
+            // 🆕 STEP 9: Setup PWA features (senza Service Worker che richiede deployment su server)
+            setupPWAFeatures() {
+                // Listener per quando torniamo online
+                window.addEventListener('online', () => {
+                    this.showToast('🌐 You are back online!', 'success');
+                    const badge = document.getElementById('offlineBadge');
+                    if (badge) badge.classList.remove('show');
+                });
+
+                // Listener per quando andiamo offline
+                window.addEventListener('offline', () => {
+                    this.showToast('📡 You are offline. Changes are saved locally', 'warning', 4000);
+                    const badge = document.getElementById('offlineBadge');
+                    if (badge) badge.classList.add('show');
+                });
+
+                // Check stato iniziale
+                if (!navigator.onLine) {
+                    const badge = document.getElementById('offlineBadge');
+                    if (badge) badge.classList.add('show');
+                }
+
+                // 🆕 STEP 9: Capture install prompt per PWA
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    this.state.deferredPrompt = e;
+                    
+                    // Mostra sezione e bottone install
+                    const installSection = document.getElementById('installSection');
+                    const installBtn = document.getElementById('installAppBtn');
+                    if (installSection) installSection.style.display = 'block';
+                    if (installBtn) installBtn.style.display = 'block';
+                    
+                    console.log('📱 PWA install prompt captured');
+                    this.showToast('💡 You can install this app for quick access!', 'info', 4000);
+                });
+
+                // Listener per quando l'app viene installata
+                window.addEventListener('appinstalled', () => {
+                    this.showToast('✅ App installed successfully!', 'success', 4000);
+                    this.state.deferredPrompt = null;
+                    
+                    const installSection = document.getElementById('installSection');
+                    const installBtn = document.getElementById('installAppBtn');
+                    if (installSection) installSection.style.display = 'none';
+                    if (installBtn) installBtn.style.display = 'none';
+                });
+
+                // Check se già installata (standalone mode)
+                if (window.matchMedia('(display-mode: standalone)').matches) {
+                    console.log('✅ App running in standalone mode (installed)');
+                } else if (window.navigator.standalone) {
+                    console.log('✅ App running in standalone mode (iOS)');
+                }
+            },
+
+            // 🆕 STEP 9: Install PWA
+            async installPWA() {
+                if (!this.state.deferredPrompt) {
+                    this.showToast('ℹ️ App is already installed or not installable', 'info');
+                    return;
+                }
+
+                const promptEvent = this.state.deferredPrompt;
+                promptEvent.prompt();
+
+                const { outcome } = await promptEvent.userChoice;
+                
+                if (outcome === 'accepted') {
+                    this.showToast('✅ Installing app...', 'success');
+                } else {
+                    this.showToast('ℹ️ Installation cancelled', 'info');
+                }
+
+                this.state.deferredPrompt = null;
+                
+                const installBtn = document.getElementById('installAppBtn');
+                if (installBtn) {
+                    installBtn.style.display = 'none';
+                }
+            },
+
+            loadTheme() {
+                try {
+                    const savedTheme = this.safeLocalStorage.getItem('gymTheme');
+                    if (savedTheme === 'light') {
+                        document.body.classList.add('light-mode');
+                        this.updateThemeIcon(true);
+                    } else if (!savedTheme && window.matchMedia?.('(prefers-color-scheme: light)').matches) {
+                        document.body.classList.add('light-mode');
+                        this.updateThemeIcon(true);
+                    }
+                } catch (e) {
+                    console.error('Theme error:', e);
+                }
+            },
+
+            toggleTheme() {
+                const isLight = document.body.classList.toggle('light-mode');
+                this.updateThemeIcon(isLight);
+                this.safeLocalStorage.setItem('gymTheme', isLight ? 'light' : 'dark');
+            },
+
+            updateThemeIcon(isLight) {
+                const icon = document.getElementById('themeIcon');
+                if (!icon) return;
+                
+                const metaTheme = document.querySelector('meta[name="theme-color"]');
+                
+                if (isLight) {
+                    icon.innerHTML = `
+                        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    `;
+                    if (metaTheme) metaTheme.setAttribute('content', '#e9ecf5');
+                } else {
+                    icon.innerHTML = `
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    `;
+                    if (metaTheme) metaTheme.setAttribute('content', '#0b0d12');
+                }
+            },
+
+            loadData() {
+                try {
+                    const config = this.safeLocalStorage.getItem('gymConfig');
+                    if (config) {
+                        const parsed = JSON.parse(config);
+                        this.state.workoutDays = parsed.workoutDays || 3;
+                    }
+                    
+                    const data = this.safeLocalStorage.getItem('gymWorkoutData');
+                    if (data) {
+                        const parsed = JSON.parse(data);
+                        this.state.workoutData = Object.keys(parsed).reduce((acc, key) => {
+                            acc[parseInt(key)] = parsed[key];
+                            return acc;
+                        }, {});
+                    }
+                    
+                    const lastWorkout = this.safeLocalStorage.getItem('gymLastWorkout');
+                    if (lastWorkout) {
+                        const lastData = JSON.parse(lastWorkout);
+                        this.state.lastWorkoutDay = lastData.day;
+                        this.state.lastWorkoutDate = lastData.date;
+                    }
+                    
+                    // 🆕 STEP 10: Load workout history
+                    const history = this.safeLocalStorage.getItem('gymWorkoutHistory');
+                    if (history) {
+                        this.state.workoutHistory = JSON.parse(history);
+                    }
+                    
+                    this.initializeWorkoutData();
+                } catch (e) {
+                    console.error('❌ Error loading data:', e);
+                    this.initializeWorkoutData();
+                }
+            },
+
+            initializeWorkoutData() {
+                for (let i = 1; i <= this.state.workoutDays; i++) {
+                    if (!this.state.workoutData[i]) {
+                        this.state.workoutData[i] = [];
+                    }
+                }
+                for (let day in this.state.workoutData) {
+                    if (parseInt(day) > this.state.workoutDays) {
+                        delete this.state.workoutData[day];
+                    }
+                }
+            },
+
+            getDayLetter(dayNumber) {
+                return String.fromCharCode(64 + dayNumber);
+            },
+
+            getNextWorkoutDay() {
+                if (!this.state.lastWorkoutDay) {
+                    return 1;
+                }
+                let nextDay = this.state.lastWorkoutDay + 1;
+                if (nextDay > this.state.workoutDays) {
+                    nextDay = 1;
+                }
+                return nextDay;
+            },
+
+            completeWorkout() {
+                const workoutData = {
+                    day: this.state.currentDay,
+                    date: new Date().toISOString()
+                };
+                
+                const success = this.safeLocalStorage.setItem('gymLastWorkout', JSON.stringify(workoutData));
+                
+                if (success) {
+                    this.state.lastWorkoutDay = this.state.currentDay;
+                    this.state.lastWorkoutDate = workoutData.date;
+                    
+                    // 🆕 STEP 10: Save to workout history
+                    const historyEntry = {
+                        day: this.state.currentDay,
+                        date: workoutData.date,
+                        exercises: JSON.parse(JSON.stringify(this.state.workoutData[this.state.currentDay] || []))
+                    };
+                    
+                    this.state.workoutHistory.push(historyEntry);
+                    
+                    // Keep last 100 workouts only
+                    if (this.state.workoutHistory.length > 100) {
+                        this.state.workoutHistory = this.state.workoutHistory.slice(-100);
+                    }
+                    
+                    this.safeLocalStorage.setItem('gymWorkoutHistory', JSON.stringify(this.state.workoutHistory));
+                    
+                    // 🏆 Check for newly unlocked achievements
+                    this.checkAchievements();
+                    
+                    const nextDay = this.getNextWorkoutDay();
+                    const dayCompleted = this.getDayLetter(this.state.currentDay);
+                    const nextDayLetter = this.getDayLetter(nextDay);
+                    
+                    const message = nextDay === 1 ? 
+                        `DAY ${dayCompleted} completed! 🎉 Cycle finished!` :
+                        `DAY ${dayCompleted} completed! 💪 Next: DAY ${nextDayLetter}`;
+                    
+                    this.showToast(message, 'success', 4000);
+                    this.renderDaysTabs();
+                    this.selectDay(nextDay);
+                } else {
+                    this.showToast('⚠️ Error saving workout completion', 'error');
+                }
+            },
+
+            saveData: (() => {
+                let timeout;
+                return function(immediate = false) {
+                    clearTimeout(timeout);
+                    
+                    const save = () => {
+                        const configSuccess = this.safeLocalStorage.setItem('gymConfig', JSON.stringify({ 
+                            workoutDays: this.state.workoutDays 
+                        }));
+                        
+                        const dataSuccess = this.safeLocalStorage.setItem('gymWorkoutData', JSON.stringify(this.state.workoutData));
+                        
+                        if (!configSuccess || !dataSuccess) {
+                            console.warn('⚠️ Some data could not be saved');
+                        }
+                    };
+                    
+                    if (immediate) {
+                        save();
+                    } else {
+                        timeout = setTimeout(save, 300);
+                    }
+                };
+            })(),
+
+            setupEventListeners() {
+                let touchStartTime = 0;
+                
+                document.addEventListener('touchstart', (e) => {
+                    this.state.touchStartX = e.changedTouches[0].screenX;
+                    this.state.touchStartY = e.changedTouches[0].screenY;
+                    touchStartTime = Date.now();
+                    this.state.isSwiping = false;
+                }, { passive: true });
+
+                document.addEventListener('touchmove', (e) => {
+                    const deltaX = Math.abs(e.changedTouches[0].screenX - this.state.touchStartX);
+                    const deltaY = Math.abs(e.changedTouches[0].screenY - this.state.touchStartY);
+                    if (deltaX > 20 && deltaX > deltaY) this.state.isSwiping = true;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    this.state.touchEndX = e.changedTouches[0].screenX;
+                    const touchDuration = Date.now() - touchStartTime;
+                    if (this.state.isSwiping && touchDuration < 300) this.handleSwipe();
+                }, { passive: true });
+
+                const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
+                if (mediaQuery) {
+                    mediaQuery.addEventListener('change', (e) => {
+                        if (!this.safeLocalStorage.getItem('gymTheme')) {
+                            document.body.classList.toggle('light-mode', !e.matches);
+                            this.updateThemeIcon(!e.matches);
+                        }
+                    });
+                }
+                
+                let scrollTimeout;
+                this.dom.exerciseList.addEventListener('scroll', () => {
+                    if (scrollTimeout) return;
+                    scrollTimeout = setTimeout(() => {
+                        this.updateScrollIndicators();
+                        scrollTimeout = null;
+                    }, 100);
+                }, { passive: true });
+
+                // 🆕 STEP 1: Ottimizzazione Aurora - Pausa animazioni quando app non visibile
+                document.addEventListener('visibilitychange', () => {
+                    const aurora = document.querySelector('.aurora');
+                    const blobs = aurora?.querySelectorAll('.blob');
+                    
+                    if (document.hidden) {
+                        // Pausa le animazioni quando l'app non è visibile
+                        blobs?.forEach(blob => {
+                            blob.style.animationPlayState = 'paused';
+                        });
+                    } else {
+                        // Riprendi le animazioni quando l'app torna visibile
+                        blobs?.forEach(blob => {
+                            blob.style.animationPlayState = 'running';
+                        });
+                    }
+                });
+            },
+
+            // 🆕 STEP 2: Intersection Observer per lazy loading video
+            setupVideoObserver() {
+                const observerOptions = {
+                    root: null,
+                    rootMargin: '100px',
+                    threshold: 0.1
+                };
+
+                this.videoObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const container = entry.target;
+                            const videoId = container.dataset.videoId;
+                            
+                            if (videoId && !container.dataset.loaded) {
+                                const iframe = document.createElement('iframe');
+                                iframe.className = 'video-frame';
+                                iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}`;
+                                iframe.title = 'Video';
+                                iframe.frameBorder = '0';
+                                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                                iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+                                iframe.allowFullscreen = true;
+                                iframe.loading = 'lazy';
+                                
+                                container.innerHTML = '';
+                                container.appendChild(iframe);
+                                container.dataset.loaded = 'true';
+                            }
+                        }
+                    });
+                }, observerOptions);
+            },
+
+            // 🆕 STEP 3: Setup input validation con debounce
+            setupInputValidation() {
+                // Funzione di validazione
+                const validateInput = (input, min, max) => {
+                    const value = parseFloat(input.value);
+                    
+                    // Rimuovi classi precedenti
+                    input.classList.remove('valid', 'invalid');
+                    
+                    // Se vuoto, non mostrare nulla
+                    if (input.value.trim() === '') {
+                        return;
+                    }
+                    
+                    // Valida in base ai limiti
+                    if (isNaN(value) || value < min || value > max) {
+                        input.classList.add('invalid');
+                    } else {
+                        input.classList.add('valid');
+                    }
+                };
+
+                // Crea funzioni debounced
+                const validateSets = this.debounce(() => {
+                    validateInput(this.dom.sets, 1, 20);
+                }, 400);
+
+                const validateReps = this.debounce(() => {
+                    validateInput(this.dom.reps, 1, 100);
+                }, 400);
+
+                const validateWeight = this.debounce(() => {
+                    validateInput(this.dom.weight, 0, 500);
+                }, 400);
+
+                // 🆕 STEP 7: Validazione YouTube URL in tempo reale
+                const validateYouTubeURL = this.debounce(() => {
+                    const url = this.dom.videoLink.value.trim();
+                    
+                    // Rimuovi classi precedenti
+                    this.dom.videoLink.classList.remove('valid', 'invalid');
+                    
+                    // Se vuoto, non mostrare nulla (è opzionale)
+                    if (!url) {
+                        return;
+                    }
+                    
+                    // Valida URL YouTube
+                    const videoId = this.getYouTubeVideoId(url);
+                    if (videoId) {
+                        this.dom.videoLink.classList.add('valid');
+                    } else {
+                        this.dom.videoLink.classList.add('invalid');
+                    }
+                }, 600);
+
+                // Aggiungi event listeners
+                this.dom.sets.addEventListener('input', validateSets);
+                this.dom.reps.addEventListener('input', validateReps);
+                this.dom.weight.addEventListener('input', validateWeight);
+                this.dom.videoLink.addEventListener('input', validateYouTubeURL);
+            },
+
+            handleSwipe() {
+                const diff = this.state.touchStartX - this.state.touchEndX;
+                if (Math.abs(diff) < 60) return;
+                
+                if (diff > 0 && this.state.currentDay < this.state.workoutDays) {
+                    this.selectDay(this.state.currentDay + 1);
+                } else if (diff < 0 && this.state.currentDay > 1) {
+                    this.selectDay(this.state.currentDay - 1);
+                }
+            },
+
+            renderDaysTabs() {
+                const fragment = document.createDocumentFragment();
+                const nextDay = this.getNextWorkoutDay();
+                
+                for (let i = 1; i <= this.state.workoutDays; i++) {
+                    const tab = document.createElement('div');
+                    tab.className = 'day-tab';
+                    
+                    const dayLetter = this.getDayLetter(i);
+                    
+                    if (i === nextDay) {
+                        tab.innerHTML = `
+                            <span class="next-badge">⭐</span>
+                            <span>DAY ${dayLetter}</span>
+                        `;
+                    } else {
+                        tab.textContent = `DAY ${dayLetter}`;
+                    }
+                    
+                    tab.onclick = () => this.selectDay(i);
+                    fragment.appendChild(tab);
+                }
+                this.dom.daysCarousel.innerHTML = '';
+                this.dom.daysCarousel.appendChild(fragment);
+            },
+
+            selectDay(day) {
+                this.state.currentDay = day;
+                const tabs = this.dom.daysCarousel.querySelectorAll('.day-tab');
+                tabs.forEach((tab, i) => tab.classList.toggle('active', i + 1 === day));
+                
+                // Scroll manuale del carousel invece di scrollIntoView per evitare scroll dell'header
+                const selectedTab = tabs[day - 1];
+                if (selectedTab) {
+                    const carousel = this.dom.daysCarousel;
+                    const tabLeft = selectedTab.offsetLeft;
+                    const tabWidth = selectedTab.offsetWidth;
+                    const carouselWidth = carousel.offsetWidth;
+                    const scrollLeft = tabLeft - (carouselWidth / 2) + (tabWidth / 2);
+                    
+                    carousel.scrollTo({
+                        left: scrollLeft,
+                        behavior: 'smooth'
+                    });
+                }
+                
+                this.renderExercises();
+            },
+
+            openAddModal() {
+                this.dom.addModal.classList.add('show');
+                this.dom.modalTitle.textContent = 'Add Exercise';
+                this.dom.deleteBtn.classList.add('hidden');
+                this.dom.saveButtonText.textContent = 'Save';
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => this.dom.exerciseName.focus(), 350);
+            },
+
+            closeAddModal() {
+                this.dom.addModal.classList.remove('show');
+                document.body.style.overflow = '';
+                this.clearForm();
+            },
+
+            openSettings() {
+                this.dom.settingsModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                this.renderLastWorkoutInfo();
+                
+                const daysInput = document.getElementById('daysInput');
+                if (daysInput) {
+                    daysInput.value = this.state.workoutDays;
+                }
+            },
+
+            closeSettings() {
+                this.dom.settingsModal.classList.remove('show');
+                document.body.style.overflow = '';
+                this.renderDaysTabs();
+                const tabs = this.dom.daysCarousel.querySelectorAll('.day-tab');
+                tabs.forEach((tab, i) => tab.classList.toggle('active', i + 1 === this.state.currentDay));
+            },
+
+            closeSettingsOnBackdrop(event) {
+                if (event.target === this.dom.settingsModal) this.closeSettings();
+            },
+
+            saveSettings() {
+                const daysInput = document.getElementById('daysInput');
+                if (daysInput) {
+                    const days = parseInt(daysInput.value);
+                    if (isNaN(days) || days < 1 || days > 7) {
+                        this.showToast('Please enter a valid number of days (1-7)', 'error');
+                        daysInput.focus();
+                        return;
+                    }
+                    this.state.workoutDays = days;
+                }
+                
+                // 🆕 STEP 5: Show loading state
+                const saveBtn = document.querySelector('#settingsModal .button-primary');
+                const originalText = saveBtn.textContent;
+                saveBtn.disabled = true;
+                saveBtn.classList.add('button-loading');
+                saveBtn.textContent = 'Saving...';
+                
+                setTimeout(() => {
+                    this.initializeWorkoutData();
+                    this.saveData();
+                    
+                    const nextDay = this.getNextWorkoutDay();
+                    if (nextDay > this.state.workoutDays) {
+                        this.safeLocalStorage.removeItem('gymLastWorkout');
+                        this.state.lastWorkoutDay = null;
+                        this.state.lastWorkoutDate = null;
+                    }
+                    
+                    this.renderDaysTabs();
+                    this.selectDay(Math.min(this.state.currentDay, this.state.workoutDays));
+                    
+                    // Reset button state
+                    saveBtn.disabled = false;
+                    saveBtn.classList.remove('button-loading');
+                    saveBtn.textContent = originalText;
+                    
+                    this.closeSettings();
+                    
+                    // 🆕 STEP 6: Success toast
+                    this.showToast('✅ Settings saved!', 'success');
+                }, 300);
+            },
+
+            renderLastWorkoutInfo() {
+                const infoElement = document.getElementById('lastWorkoutInfo');
+                const resetBtn = document.getElementById('resetTrackingBtn');
+                if (!infoElement) return;
+                
+                if (!this.state.lastWorkoutDay || !this.state.lastWorkoutDate) {
+                    infoElement.innerHTML = '<div class="info-text">No workout completed yet</div>';
+                    if (resetBtn) resetBtn.style.display = 'none';
+                    return;
+                }
+                
+                const lastDate = new Date(this.state.lastWorkoutDate);
+                const daysPassed = Math.floor((Date.now() - lastDate.getTime()) / (1000 * 60 * 60 * 24));
+                const nextDay = this.getNextWorkoutDay();
+                
+                let timeText = '';
+                if (daysPassed === 0) {
+                    timeText = 'Today';
+                } else if (daysPassed === 1) {
+                    timeText = 'Yesterday';
+                } else {
+                    timeText = `${daysPassed} days ago`;
+                }
+                
+                const lastDayLetter = this.getDayLetter(this.state.lastWorkoutDay);
+                const nextDayLetter = this.getDayLetter(nextDay);
+                
+                infoElement.innerHTML = `
+                    <div class="info-text">DAY <span class="info-highlight">${lastDayLetter}</span> completed</div>
+                    <div class="info-subtext">${timeText} • ${lastDate.toLocaleDateString('en-US')}</div>
+                    <div class="info-subtext" style="margin-top: 8px;">Next: <span class="info-highlight">DAY ${nextDayLetter}</span></div>
+                `;
+                
+                if (resetBtn) resetBtn.style.display = 'block';
+            },
+
+            resetWorkoutTracking() {
+                if (confirm('Do you want to reset workout tracking?\nYou will restart from DAY A.')) {
+                    this.safeLocalStorage.removeItem('gymLastWorkout');
+                    this.state.lastWorkoutDay = null;
+                    this.state.lastWorkoutDate = null;
+                    this.renderLastWorkoutInfo();
+                    this.renderDaysTabs();
+                    this.selectDay(1);
+                    
+                    // 🆕 STEP 6: Success toast
+                    this.showToast('✅ Tracking reset! Starting from DAY A 💪', 'success', 4000);
+                }
+            },
+
+            resetAchievements() {
+                if (confirm('⚠️ RESET ALL ACHIEVEMENTS?\n\nThis will:\n• Delete all unlocked achievements\n• Keep your workout history\n• Keep your current exercises\n\nYou can earn them all again! Continue?')) {
+                    this.state.unlockedAchievements = [];
+                    this.safeLocalStorage.removeItem('gymAchievements');
+                    
+                    // Reinitialize achievements
+                    this.initializeAchievements();
+                    
+                    // If achievements modal is open, refresh it
+                    const achievementsModal = document.getElementById('achievementsModal');
+                    if (achievementsModal && achievementsModal.classList.contains('show')) {
+                        this.renderAchievements();
+                    }
+                    
+                    this.showToast('🏆 Achievements reset! Time to earn them again! 💪', 'success', 4000);
+                }
+            },
+
+            // 🆕 STEP 10: Open statistics modal
+            openStats() {
+                document.getElementById('statsModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+                this.renderStats();
+            },
+
+            // 🆕 STEP 10: Close statistics modal
+            closeStats() {
+                document.getElementById('statsModal').classList.remove('show');
+                document.body.style.overflow = '';
+            },
+
+            // 🏆 ACHIEVEMENTS SYSTEM - SAFE IMPLEMENTATION
+
+            openAchievements() {
+                document.getElementById('achievementsModal').classList.add('show');
+                document.body.style.overflow = 'hidden';
+                this.renderAchievements();
+            },
+
+            closeAchievements() {
+                document.getElementById('achievementsModal').classList.remove('show');
+                document.body.style.overflow = '';
+            },
+
+            initializeAchievements() {
+                // Helper function to safely calculate stats
+                const safeGetStats = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) {
+                            return { currentStreak: 0, totalVolume: 0, totalWorkouts: 0, maxWeight: 0 };
+                        }
+                        return this.calculateStats();
+                    } catch (e) {
+                        console.error('Error in safeGetStats:', e);
+                        return { currentStreak: 0, totalVolume: 0, totalWorkouts: 0, maxWeight: 0 };
+                    }
+                };
+
+                // Helper to count unique exercises safely
+                const countUniqueExercises = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) return 0;
+                        const uniqueExercises = new Set();
+                        this.state.workoutHistory.forEach(w => {
+                            if (w.exercises && Array.isArray(w.exercises)) {
+                                w.exercises.forEach(ex => {
+                                    if (ex && ex.name) uniqueExercises.add(ex.name);
+                                });
+                            }
+                        });
+                        return uniqueExercises.size;
+                    } catch (e) {
+                        console.error('Error counting exercises:', e);
+                        return 0;
+                    }
+                };
+
+                // Helper to check if all days completed
+                const allDaysCompleted = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) return false;
+                        const completedDays = new Set(this.state.workoutHistory.map(w => w.day));
+                        return completedDays.size >= this.state.workoutDays;
+                    } catch (e) {
+                        console.error('Error checking days:', e);
+                        return false;
+                    }
+                };
+
+                // Helper to get max weight lifted in a single exercise
+                const getMaxWeight = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) return 0;
+                        let maxWeight = 0;
+                        this.state.workoutHistory.forEach(w => {
+                            if (w.exercises && Array.isArray(w.exercises)) {
+                                w.exercises.forEach(ex => {
+                                    if (ex && ex.weight) {
+                                        maxWeight = Math.max(maxWeight, parseFloat(ex.weight) || 0);
+                                    }
+                                });
+                            }
+                        });
+                        return maxWeight;
+                    } catch (e) {
+                        return 0;
+                    }
+                };
+
+                // Helper to check morning workouts (before 10 AM)
+                const getMorningWorkouts = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) return 0;
+                        return this.state.workoutHistory.filter(w => {
+                            const hour = new Date(w.date).getHours();
+                            return hour >= 5 && hour < 10;
+                        }).length;
+                    } catch (e) {
+                        return 0;
+                    }
+                };
+
+                // Helper to check late night workouts (after 9 PM)
+                const getNightWorkouts = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) return 0;
+                        return this.state.workoutHistory.filter(w => {
+                            const hour = new Date(w.date).getHours();
+                            return hour >= 21 || hour < 5;
+                        }).length;
+                    } catch (e) {
+                        return 0;
+                    }
+                };
+
+                // Helper to count weekly consistency (workout at least 3 times per week for X weeks)
+                const getConsistentWeeks = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) return 0;
+                        const weekWorkouts = {};
+                        this.state.workoutHistory.forEach(w => {
+                            const date = new Date(w.date);
+                            const year = date.getFullYear();
+                            const week = this.getWeekNumber(date);
+                            const key = `${year}-W${week}`;
+                            weekWorkouts[key] = (weekWorkouts[key] || 0) + 1;
+                        });
+                        return Object.values(weekWorkouts).filter(count => count >= 3).length;
+                    } catch (e) {
+                        return 0;
+                    }
+                };
+
+                // Helper to get total sets completed
+                const getTotalSets = () => {
+                    try {
+                        if (!this.state.workoutHistory || this.state.workoutHistory.length === 0) return 0;
+                        let totalSets = 0;
+                        this.state.workoutHistory.forEach(w => {
+                            if (w.exercises && Array.isArray(w.exercises)) {
+                                w.exercises.forEach(ex => {
+                                    totalSets += parseInt(ex.sets) || 0;
+                                });
+                            }
+                        });
+                        return totalSets;
+                    } catch (e) {
+                        return 0;
+                    }
+                };
+
+                this.state.achievements = [
+                    // 🔥 STREAK ACHIEVEMENTS (Extended levels)
+                    { id: 'streak_3', name: 'Getting Started', desc: 'Complete 3 workouts in a row', icon: '🔥', tier: 'bronze', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 3 },
+                    { id: 'streak_7', name: 'Week Warrior', desc: 'Maintain a 7-day streak', icon: '🔥', tier: 'silver', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 7 },
+                    { id: 'streak_14', name: 'Two Week Wonder', desc: 'Maintain a 14-day streak', icon: '🔥🔥', tier: 'gold', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 14 },
+                    { id: 'streak_30', name: 'Monthly Master', desc: 'Maintain a 30-day streak', icon: '🔥🔥🔥', tier: 'platinum', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 30 },
+                    { id: 'streak_60', name: 'Unstoppable Force', desc: 'Maintain a 60-day streak', icon: '🔥🔥🔥', tier: 'diamond', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 60 },
+                    { id: 'streak_90', name: 'Three Month Legend', desc: 'Maintain a 90-day streak', icon: '🔥🔥🔥🔥', tier: 'legendary', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 90 },
+                    { id: 'streak_180', name: 'Half Year Hero', desc: 'Maintain a 180-day streak', icon: '🔥🔥🔥🔥🔥', tier: 'mythic', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 180 },
+                    { id: 'streak_365', name: 'Year Long Champion', desc: 'Maintain a 365-day streak', icon: '👑🔥', tier: 'ultimate', category: 'streak',
+                      condition: () => safeGetStats().currentStreak >= 365 },
+                    
+                    // 💪 VOLUME ACHIEVEMENTS (Extended levels)
+                    { id: 'volume_1k', name: 'Beginner Lifter', desc: 'Lift 1,000 kg total', icon: '💪', tier: 'bronze', category: 'volume',
+                      condition: () => safeGetStats().totalVolume >= 1000 },
+                    { id: 'volume_10k', name: 'Intermediate Lifter', desc: 'Lift 10,000 kg total', icon: '💪', tier: 'silver', category: 'volume',
+                      condition: () => safeGetStats().totalVolume >= 10000 },
+                    { id: 'volume_50k', name: 'Advanced Lifter', desc: 'Lift 50,000 kg total', icon: '💪💪', tier: 'gold', category: 'volume',
+                      condition: () => safeGetStats().totalVolume >= 50000 },
+                    { id: 'volume_100k', name: 'Elite Lifter', desc: 'Lift 100,000 kg total', icon: '💪💪💪', tier: 'platinum', category: 'volume',
+                      condition: () => safeGetStats().totalVolume >= 100000 },
+                    { id: 'volume_250k', name: 'Master Lifter', desc: 'Lift 250,000 kg total', icon: '💪💪💪', tier: 'diamond', category: 'volume',
+                      condition: () => safeGetStats().totalVolume >= 250000 },
+                    { id: 'volume_500k', name: 'Iron Legend', desc: 'Lift 500,000 kg total', icon: '💪💪💪💪', tier: 'legendary', category: 'volume',
+                      condition: () => safeGetStats().totalVolume >= 500000 },
+                    { id: 'volume_1m', name: 'Titan', desc: 'Lift 1,000,000 kg total', icon: '💪👑', tier: 'ultimate', category: 'volume',
+                      condition: () => safeGetStats().totalVolume >= 1000000 },
+                    
+                    // 🎯 CONSISTENCY ACHIEVEMENTS (Extended levels)
+                    { id: 'workouts_10', name: 'Consistent Starter', desc: 'Complete 10 workouts', icon: '🎯', tier: 'bronze', category: 'consistency',
+                      condition: () => safeGetStats().totalWorkouts >= 10 },
+                    { id: 'workouts_25', name: 'Regular Trainer', desc: 'Complete 25 workouts', icon: '🎯', tier: 'silver', category: 'consistency',
+                      condition: () => safeGetStats().totalWorkouts >= 25 },
+                    { id: 'workouts_50', name: 'Dedicated Athlete', desc: 'Complete 50 workouts', icon: '🎯🎯', tier: 'gold', category: 'consistency',
+                      condition: () => safeGetStats().totalWorkouts >= 50 },
+                    { id: 'workouts_100', name: 'Century Club', desc: 'Complete 100 workouts', icon: '🎯🎯🎯', tier: 'platinum', category: 'consistency',
+                      condition: () => safeGetStats().totalWorkouts >= 100 },
+                    { id: 'workouts_250', name: 'Gym Veteran', desc: 'Complete 250 workouts', icon: '🎯🎯🎯', tier: 'diamond', category: 'consistency',
+                      condition: () => safeGetStats().totalWorkouts >= 250 },
+                    { id: 'workouts_500', name: 'Training Legend', desc: 'Complete 500 workouts', icon: '🎯🎯🎯🎯', tier: 'legendary', category: 'consistency',
+                      condition: () => safeGetStats().totalWorkouts >= 500 },
+                    { id: 'workouts_1000', name: 'Immortal', desc: 'Complete 1,000 workouts', icon: '🎯👑', tier: 'ultimate', category: 'consistency',
+                      condition: () => safeGetStats().totalWorkouts >= 1000 },
+                    
+                    // 🏋️ VARIETY ACHIEVEMENTS (Extended levels)
+                    { id: 'exercises_5', name: 'Experimenter', desc: 'Try 5 different exercises', icon: '🏋️', tier: 'bronze', category: 'variety',
+                      condition: () => countUniqueExercises() >= 5 },
+                    { id: 'exercises_15', name: 'Exercise Explorer', desc: 'Try 15 different exercises', icon: '🏋️', tier: 'silver', category: 'variety',
+                      condition: () => countUniqueExercises() >= 15 },
+                    { id: 'exercises_30', name: 'Movement Master', desc: 'Try 30 different exercises', icon: '🏋️🏋️', tier: 'gold', category: 'variety',
+                      condition: () => countUniqueExercises() >= 30 },
+                    { id: 'exercises_50', name: 'Versatile Athlete', desc: 'Try 50 different exercises', icon: '🏋️🏋️', tier: 'platinum', category: 'variety',
+                      condition: () => countUniqueExercises() >= 50 },
+                    { id: 'exercises_100', name: 'Movement Encyclopedia', desc: 'Try 100 different exercises', icon: '🏋️🏋️🏋️', tier: 'diamond', category: 'variety',
+                      condition: () => countUniqueExercises() >= 100 },
+                    
+                    // 🏆 PERSONAL RECORDS (PR)
+                    { id: 'pr_50kg', name: 'Fifty Club', desc: 'Lift 50kg in a single exercise', icon: '🏆', tier: 'bronze', category: 'pr',
+                      condition: () => getMaxWeight() >= 50 },
+                    { id: 'pr_100kg', name: 'Hundred Hero', desc: 'Lift 100kg in a single exercise', icon: '🏆', tier: 'silver', category: 'pr',
+                      condition: () => getMaxWeight() >= 100 },
+                    { id: 'pr_150kg', name: 'Power Lifter', desc: 'Lift 150kg in a single exercise', icon: '🏆🏆', tier: 'gold', category: 'pr',
+                      condition: () => getMaxWeight() >= 150 },
+                    { id: 'pr_200kg', name: 'Beast Mode', desc: 'Lift 200kg in a single exercise', icon: '🏆🏆🏆', tier: 'platinum', category: 'pr',
+                      condition: () => getMaxWeight() >= 200 },
+                    { id: 'pr_250kg', name: 'Superhuman', desc: 'Lift 250kg in a single exercise', icon: '🏆🏆🏆', tier: 'diamond', category: 'pr',
+                      condition: () => getMaxWeight() >= 250 },
+                    
+                    // ⏰ TIME-BASED ACHIEVEMENTS
+                    { id: 'morning_5', name: 'Early Bird', desc: 'Complete 5 morning workouts', icon: '🌅', tier: 'bronze', category: 'time',
+                      condition: () => getMorningWorkouts() >= 5 },
+                    { id: 'morning_25', name: 'Dawn Warrior', desc: 'Complete 25 morning workouts', icon: '🌅', tier: 'silver', category: 'time',
+                      condition: () => getMorningWorkouts() >= 25 },
+                    { id: 'morning_50', name: 'Sunrise Champion', desc: 'Complete 50 morning workouts', icon: '🌅🌅', tier: 'gold', category: 'time',
+                      condition: () => getMorningWorkouts() >= 50 },
+                    { id: 'night_5', name: 'Night Owl', desc: 'Complete 5 late night workouts', icon: '🌙', tier: 'bronze', category: 'time',
+                      condition: () => getNightWorkouts() >= 5 },
+                    { id: 'night_25', name: 'Midnight Warrior', desc: 'Complete 25 late night workouts', icon: '🌙', tier: 'silver', category: 'time',
+                      condition: () => getNightWorkouts() >= 25 },
+                    { id: 'night_50', name: 'Nocturnal Legend', desc: 'Complete 50 late night workouts', icon: '🌙🌙', tier: 'gold', category: 'time',
+                      condition: () => getNightWorkouts() >= 50 },
+                    
+                    // 📅 WEEKLY CONSISTENCY
+                    { id: 'weeks_4', name: 'Monthly Regular', desc: '3+ workouts/week for 4 weeks', icon: '📅', tier: 'bronze', category: 'weekly',
+                      condition: () => getConsistentWeeks() >= 4 },
+                    { id: 'weeks_12', name: 'Quarterly Consistent', desc: '3+ workouts/week for 12 weeks', icon: '📅', tier: 'silver', category: 'weekly',
+                      condition: () => getConsistentWeeks() >= 12 },
+                    { id: 'weeks_26', name: 'Half Year Regular', desc: '3+ workouts/week for 26 weeks', icon: '📅📅', tier: 'gold', category: 'weekly',
+                      condition: () => getConsistentWeeks() >= 26 },
+                    { id: 'weeks_52', name: 'Year Round Athlete', desc: '3+ workouts/week for 52 weeks', icon: '📅📅📅', tier: 'platinum', category: 'weekly',
+                      condition: () => getConsistentWeeks() >= 52 },
+                    
+                    // 🔢 SETS MILESTONES
+                    { id: 'sets_100', name: 'Hundred Sets', desc: 'Complete 100 total sets', icon: '🔢', tier: 'bronze', category: 'sets',
+                      condition: () => getTotalSets() >= 100 },
+                    { id: 'sets_500', name: 'Five Hundred Sets', desc: 'Complete 500 total sets', icon: '🔢', tier: 'silver', category: 'sets',
+                      condition: () => getTotalSets() >= 500 },
+                    { id: 'sets_1000', name: 'Thousand Sets', desc: 'Complete 1,000 total sets', icon: '🔢🔢', tier: 'gold', category: 'sets',
+                      condition: () => getTotalSets() >= 1000 },
+                    { id: 'sets_5000', name: 'Set Master', desc: 'Complete 5,000 total sets', icon: '🔢🔢🔢', tier: 'platinum', category: 'sets',
+                      condition: () => getTotalSets() >= 5000 },
+                    
+                    // ⭐ SPECIAL ACHIEVEMENTS
+                    { id: 'first_workout', name: 'First Step', desc: 'Complete your first workout', icon: '⭐', tier: 'special', category: 'special',
+                      condition: () => (this.state.workoutHistory && this.state.workoutHistory.length >= 1) },
+                    { id: 'all_days', name: 'Full Cycle', desc: 'Complete all workout days once', icon: '🔄', tier: 'special', category: 'special',
+                      condition: () => allDaysCompleted() },
+                    { id: 'comeback', name: 'Comeback King', desc: 'Return after 30+ day break', icon: '💫', tier: 'special', category: 'special',
+                      condition: () => {
+                          if (!this.state.workoutHistory || this.state.workoutHistory.length < 2) return false;
+                          const sorted = [...this.state.workoutHistory].sort((a,b) => new Date(a.date) - new Date(b.date));
+                          for (let i = 1; i < sorted.length; i++) {
+                              const daysDiff = (new Date(sorted[i].date) - new Date(sorted[i-1].date)) / (1000*60*60*24);
+                              if (daysDiff > 30) return true;
+                          }
+                          return false;
+                      }
+                    },
+                    { id: 'perfect_week', name: 'Perfect Week', desc: 'Complete all workout days in 7 days', icon: '✨', tier: 'special', category: 'special',
+                      condition: () => {
+                          if (!this.state.workoutHistory || this.state.workoutHistory.length < this.state.workoutDays) return false;
+                          const recent = this.state.workoutHistory.slice(-this.state.workoutDays);
+                          const firstDate = new Date(recent[0].date);
+                          const lastDate = new Date(recent[recent.length - 1].date);
+                          const daysDiff = (lastDate - firstDate) / (1000*60*60*24);
+                          return daysDiff <= 7;
+                      }
+                    }
+                ];
+            },
+
+            // Helper function to get ISO week number
+            getWeekNumber(date) {
+                const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+                const dayNum = d.getUTCDay() || 7;
+                d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+                const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+                return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+            },
+
+            renderAchievements() {
+                const container = document.getElementById('achievementsContent');
+                
+                if (!container) {
+                    console.error('Achievements container not found');
+                    return;
+                }
+                
+                // Initialize achievements if not done
+                if (!this.state.achievements || this.state.achievements.length === 0) {
+                    this.initializeAchievements();
+                }
+                
+                // Safe stats calculation
+                let stats = { currentStreak: 0, totalVolume: 0, totalWorkouts: 0 };
+                try {
+                    if (this.state.workoutHistory && this.state.workoutHistory.length > 0) {
+                        stats = this.calculateStats();
+                    }
+                } catch (e) {
+                    console.error('Error calculating stats for achievements:', e);
+                }
+                
+                const tierColors = {
+                    bronze: '#CD7F32',
+                    silver: '#C0C0C0',
+                    gold: '#FFD700',
+                    platinum: '#E5E4E2',
+                    diamond: '#B9F2FF',
+                    legendary: '#FF8C00',
+                    mythic: '#9D00FF',
+                    ultimate: '#FF1493',
+                    special: '#FF6B9D'
+                };
+                
+                const categoryNames = {
+                    streak: '🔥 Streak',
+                    volume: '💪 Volume',
+                    consistency: '🎯 Consistency',
+                    variety: '🏋️ Variety',
+                    pr: '🏆 Personal Records',
+                    time: '⏰ Time-Based',
+                    weekly: '📅 Weekly Consistency',
+                    sets: '🔢 Sets Milestones',
+                    special: '⭐ Special'
+                };
+                
+                // Group achievements by category
+                const categories = {};
+                this.state.achievements.forEach(achievement => {
+                    const cat = achievement.category || 'other';
+                    if (!categories[cat]) categories[cat] = [];
+                    categories[cat].push(achievement);
+                });
+                
+                let html = '';
+                
+                // Summary card
+                const unlockedCount = this.state.unlockedAchievements.length;
+                const totalCount = this.state.achievements.length;
+                const percentage = totalCount > 0 ? Math.round((unlockedCount / totalCount) * 100) : 0;
+                
+                html += '<div class="stat-card glass specular grain" style="margin-bottom: 24px;">';
+                html += '<div style="text-align: center; padding: 12px;">';
+                html += '<div style="font-size: 56px; margin-bottom: 12px;">🏆</div>';
+                html += '<div style="font-size: 28px; font-weight: 800; margin-bottom: 6px;">' + unlockedCount + '/' + totalCount + '</div>';
+                html += '<div style="font-size: 15px; opacity: 0.85; margin-bottom: 16px;">Achievements Unlocked</div>';
+                html += '<div style="background: rgba(255,255,255,0.12); height: 12px; border-radius: 6px; overflow: hidden; position: relative;">';
+                html += '<div style="background: linear-gradient(90deg, #FFD700, #FF8C00, #FF1493); height: 100%; width: ' + percentage + '%; transition: width 0.5s; box-shadow: 0 0 10px rgba(255,215,0,0.5);"></div>';
+                html += '<div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 10px; font-weight: 700; color: var(--text); text-shadow: 0 1px 2px rgba(0,0,0,0.8);">' + percentage + '%</div>';
+                html += '</div></div></div>';
+                
+                // Render each category
+                const categoryOrder = ['special', 'streak', 'consistency', 'volume', 'variety', 'pr', 'weekly', 'sets', 'time'];
+                
+                categoryOrder.forEach(catKey => {
+                    const categoryAchievements = categories[catKey];
+                    if (!categoryAchievements || categoryAchievements.length === 0) return;
+                    
+                    // Count unlocked in this category
+                    const catUnlocked = categoryAchievements.filter(a => 
+                        this.state.unlockedAchievements.includes(a.id)
+                    ).length;
+                    
+                    html += '<div class="achievement-category" style="margin-bottom: 28px;">';
+                    html += '<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">';
+                    html += '<div class="stat-card-title" style="margin: 0;">' + (categoryNames[catKey] || catKey) + '</div>';
+                    html += '<div style="font-size: 13px; font-weight: 600; padding: 4px 12px; background: rgba(255,255,255,0.1); border-radius: 12px;">';
+                    html += catUnlocked + '/' + categoryAchievements.length;
+                    html += '</div></div>';
+                    
+                    categoryAchievements.forEach(achievement => {
+                        const isUnlocked = this.state.unlockedAchievements.includes(achievement.id);
+                        let meetsCondition = false;
+                        
+                        try {
+                            meetsCondition = achievement.condition();
+                        } catch (e) {
+                            console.error('Error checking achievement condition:', achievement.id, e);
+                        }
+                        
+                        // Calculate progress for locked achievements
+                        let progress = 0;
+                        let progressText = '';
+                        
+                        if (!isUnlocked && !meetsCondition) {
+                            try {
+                                if (achievement.id.startsWith('streak_')) {
+                                    const target = parseInt(achievement.id.split('_')[1]);
+                                    progress = Math.min(100, (stats.currentStreak / target) * 100);
+                                    progressText = stats.currentStreak + '/' + target + ' days';
+                                } else if (achievement.id.startsWith('volume_')) {
+                                    let multiplier = 1000;
+                                    let targetStr = achievement.id.split('_')[1];
+                                    if (targetStr.includes('m')) {
+                                        multiplier = 1000000;
+                                        targetStr = targetStr.replace('m', '');
+                                    } else {
+                                        targetStr = targetStr.replace('k', '');
+                                    }
+                                    const target = parseInt(targetStr) * multiplier;
+                                    progress = Math.min(100, (stats.totalVolume / target) * 100);
+                                    progressText = stats.totalVolume.toLocaleString() + '/' + target.toLocaleString() + ' kg';
+                                } else if (achievement.id.startsWith('workouts_')) {
+                                    const target = parseInt(achievement.id.split('_')[1]);
+                                    progress = Math.min(100, (stats.totalWorkouts / target) * 100);
+                                    progressText = stats.totalWorkouts + '/' + target + ' workouts';
+                                } else if (achievement.id.startsWith('exercises_')) {
+                                    const uniqueExercises = new Set();
+                                    if (this.state.workoutHistory) {
+                                        this.state.workoutHistory.forEach(w => {
+                                            if (w.exercises) {
+                                                w.exercises.forEach(ex => {
+                                                    if (ex && ex.name) uniqueExercises.add(ex.name);
+                                                });
+                                            }
+                                        });
+                                    }
+                                    const target = parseInt(achievement.id.split('_')[1]);
+                                    progress = Math.min(100, (uniqueExercises.size / target) * 100);
+                                    progressText = uniqueExercises.size + '/' + target + ' exercises';
+                                }
+                            } catch (e) {
+                                console.error('Error calculating progress:', e);
+                            }
+                        }
+                        
+                        const tierColor = tierColors[achievement.tier] || '#CCC';
+                        
+                        html += '<div class="achievement-card glass specular grain" style="';
+                        html += 'opacity: ' + (isUnlocked ? '1' : '0.7') + '; ';
+                        html += 'margin-bottom: 12px; padding: 18px; border-radius: 16px; ';
+                        html += 'position: relative; overflow: hidden; ';
+                        if (isUnlocked) {
+                            html += 'border: 2px solid ' + tierColor + '; ';
+                            html += 'box-shadow: 0 4px 12px ' + tierColor + '33, 0 0 0 1px ' + tierColor + '22 inset;';
+                        }
+                        html += '">';
+                        
+                        // Tier badge
+                        html += '<div style="position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 700; text-transform: uppercase; padding: 4px 8px; background: ' + tierColor + '; color: #000; border-radius: 6px; letter-spacing: 0.5px;">';
+                        html += achievement.tier;
+                        html += '</div>';
+                        
+                        html += '<div style="display: flex; align-items: center; gap: 14px;">';
+                        html += '<div style="font-size: 40px; filter: ' + (isUnlocked ? 'none' : 'grayscale(100%)') + '; ' + (isUnlocked ? 'animation: bounce 0.5s;' : '') + '">' + achievement.icon + '</div>';
+                        html += '<div style="flex: 1;">';
+                        html += '<div style="font-weight: 700; font-size: 17px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">';
+                        html += achievement.name;
+                        if (isUnlocked) html += '<span style="font-size: 20px;">✅</span>';
+                        html += '</div>';
+                        html += '<div style="font-size: 13px; opacity: 0.85; line-height: 1.4;">' + achievement.desc + '</div>';
+                        
+                        if (!isUnlocked && progressText) {
+                            html += '<div style="margin-top: 10px;">';
+                            html += '<div style="font-size: 12px; font-weight: 600; opacity: 0.75; margin-bottom: 6px;">' + progressText + '</div>';
+                            html += '<div style="background: rgba(255,255,255,0.12); height: 8px; border-radius: 4px; overflow: hidden;">';
+                            html += '<div style="background: ' + tierColor + '; height: 100%; width: ' + progress + '%; transition: width 0.3s; box-shadow: 0 0 8px ' + tierColor + ';"></div>';
+                            html += '</div></div>';
+                        }
+                        
+                        html += '</div></div></div>';
+                    });
+                    
+                    html += '</div>';
+                });
+                
+                container.innerHTML = html;
+            },
+
+            checkAchievements() {
+                try {
+                    if (!this.state.achievements || this.state.achievements.length === 0) {
+                        this.initializeAchievements();
+                    }
+                    
+                    if (!this.state.unlockedAchievements) {
+                        this.state.unlockedAchievements = [];
+                    }
+                    
+                    this.state.achievements.forEach(achievement => {
+                        if (!this.state.unlockedAchievements.includes(achievement.id)) {
+                            try {
+                                if (achievement.condition()) {
+                                    this.unlockAchievement(achievement);
+                                }
+                            } catch (e) {
+                                console.error('Error checking achievement:', achievement.id, e);
+                            }
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error in checkAchievements:', e);
+                }
+            },
+
+            unlockAchievement(achievement) {
+                try {
+                    if (!this.state.unlockedAchievements) {
+                        this.state.unlockedAchievements = [];
+                    }
+                    
+                    this.state.unlockedAchievements.push(achievement.id);
+                    this.saveAchievements();
+                    
+                    this.showToast('🏆 Achievement Unlocked: ' + achievement.name + '!', 'success', 4000);
+                    console.log('🎉 ACHIEVEMENT UNLOCKED:', achievement.name);
+                } catch (e) {
+                    console.error('Error unlocking achievement:', e);
+                }
+            },
+
+            loadAchievements() {
+                try {
+                    const saved = this.safeLocalStorage.getItem('gymAchievements');
+                    if (saved) {
+                        this.state.unlockedAchievements = JSON.parse(saved);
+                    }
+                } catch (e) {
+                    console.error('Error loading achievements:', e);
+                    this.state.unlockedAchievements = [];
+                }
+            },
+
+            saveAchievements() {
+                try {
+                    this.safeLocalStorage.setItem('gymAchievements', JSON.stringify(this.state.unlockedAchievements));
+                } catch (e) {
+                    console.error('Error saving achievements:', e);
+                }
+            },
+
+            // 🆕 STEP 10: Render statistics
+            renderStats() {
+                const container = document.getElementById('statsContent');
+                
+                if (this.state.workoutHistory.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-stats">
+                            <div class="empty-stats-icon">📊</div>
+                            <div class="empty-stats-text">No workout data yet</div>
+                            <div style="margin-top: 12px; font-size: 14px; opacity: 0.7;">Complete a workout to see statistics!</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const stats = this.calculateStats();
+                
+                container.innerHTML = `
+                    <!-- Overview Card -->
+                    <div class="stat-card glass specular grain">
+                        <div class="stat-card-title">📈 Overview</div>
+                        <div class="stat-grid">
+                            <div class="stat-box">
+                                <div class="stat-number">${stats.totalWorkouts}</div>
+                                <div class="stat-label">Total Workouts</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number">${stats.currentStreak}</div>
+                                <div class="stat-label">Current Streak</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number">${stats.totalVolume.toLocaleString()}</div>
+                                <div class="stat-label">Total Volume (kg)</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-number">${stats.avgVolume.toLocaleString()}</div>
+                                <div class="stat-label">Avg/Workout (kg)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Records -->
+                    ${stats.personalRecords.length > 0 ? `
+                        <div class="stat-card glass specular grain">
+                            <div class="stat-card-title">🏆 Personal Records</div>
+                            <div class="pr-list">
+                                ${stats.personalRecords.slice(0, 5).map(pr => `
+                                    <div class="pr-item">
+                                        <span class="pr-name">${this.escapeHtml(pr.name)}</span>
+                                        <span class="pr-value">${pr.maxWeight} kg</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Most Frequent Exercises -->
+                    ${stats.mostFrequent.length > 0 ? `
+                        <div class="stat-card glass specular grain">
+                            <div class="stat-card-title">💪 Most Frequent</div>
+                            ${stats.mostFrequent.slice(0, 5).map((item, index) => `
+                                <div class="chart-bar">
+                                    <div class="chart-label">${this.escapeHtml(item.name)}</div>
+                                    <div class="chart-bar-fill" style="width: ${(item.count / stats.mostFrequent[0].count) * 100}%">
+                                        ${item.count}x
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    <!-- Volume by Day -->
+                    ${stats.volumeByDay.length > 0 ? `
+                        <div class="stat-card glass specular grain">
+                            <div class="stat-card-title">📊 Volume by Day</div>
+                            ${stats.volumeByDay.map((item, index) => {
+                                const maxVolume = Math.max(...stats.volumeByDay.map(d => d.volume));
+                                return `
+                                    <div class="chart-bar">
+                                        <div class="chart-label">Day ${item.day}</div>
+                                        <div class="chart-bar-fill" style="width: ${(item.volume / maxVolume) * 100}%">
+                                            ${item.volume.toLocaleString()} kg
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    ` : ''}
+                    
+                    <!-- Reset Button -->
+                    <button class="reset-stats-btn" onclick="app.resetStatistics()">
+                        🗑️ Reset All Statistics
+                    </button>
+                `;
+            },
+
+            // 🆕 STEP 10: Calculate statistics from workout history
+            calculateStats() {
+                const history = this.state.workoutHistory;
+                
+                // Total workouts
+                const totalWorkouts = history.length;
+                
+                // Calculate streak
+                let currentStreak = 0;
+                if (history.length > 0) {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    
+                    let checkDate = new Date(today);
+                    let foundGap = false;
+                    
+                    while (!foundGap && currentStreak < history.length) {
+                        const hasWorkout = history.some(w => {
+                            const workoutDate = new Date(w.date);
+                            workoutDate.setHours(0, 0, 0, 0);
+                            return workoutDate.getTime() === checkDate.getTime();
+                        });
+                        
+                        if (hasWorkout) {
+                            currentStreak++;
+                            checkDate.setDate(checkDate.getDate() - 1);
+                        } else {
+                            foundGap = true;
+                        }
+                    }
+                }
+                
+                // Total volume
+                let totalVolume = 0;
+                const exerciseStats = {};
+                const dayVolumes = {};
+                
+                history.forEach(workout => {
+                    let workoutVolume = 0;
+                    
+                    workout.exercises.forEach(ex => {
+                        const volume = (ex.sets || 0) * (ex.reps || 0) * (ex.weight || 0);
+                        totalVolume += volume;
+                        workoutVolume += volume;
+                        
+                        // Track per exercise
+                        if (!exerciseStats[ex.name]) {
+                            exerciseStats[ex.name] = {
+                                count: 0,
+                                maxWeight: 0,
+                                totalVolume: 0
+                            };
+                        }
+                        
+                        exerciseStats[ex.name].count++;
+                        exerciseStats[ex.name].maxWeight = Math.max(exerciseStats[ex.name].maxWeight, ex.weight || 0);
+                        exerciseStats[ex.name].totalVolume += volume;
+                    });
+                    
+                    // Track by day
+                    const dayLetter = this.getDayLetter(workout.day);
+                    if (!dayVolumes[dayLetter]) {
+                        dayVolumes[dayLetter] = { day: dayLetter, volume: 0 };
+                    }
+                    dayVolumes[dayLetter].volume += workoutVolume;
+                });
+                
+                // Personal records
+                const personalRecords = Object.keys(exerciseStats)
+                    .map(name => ({
+                        name,
+                        maxWeight: exerciseStats[name].maxWeight
+                    }))
+                    .filter(pr => pr.maxWeight > 0)
+                    .sort((a, b) => b.maxWeight - a.maxWeight);
+                
+                // Most frequent
+                const mostFrequent = Object.keys(exerciseStats)
+                    .map(name => ({
+                        name,
+                        count: exerciseStats[name].count
+                    }))
+                    .sort((a, b) => b.count - a.count);
+                
+                // Volume by day
+                const volumeByDay = Object.values(dayVolumes)
+                    .sort((a, b) => a.day.localeCompare(b.day));
+                
+                return {
+                    totalWorkouts,
+                    currentStreak,
+                    totalVolume: Math.round(totalVolume),
+                    avgVolume: Math.round(totalVolume / totalWorkouts) || 0,
+                    personalRecords,
+                    mostFrequent,
+                    volumeByDay
+                };
+            },
+
+            // 🆕 STEP 10: Reset all statistics
+            resetStatistics() {
+                const confirmMsg = 'Are you sure you want to reset all statistics?\n\n' +
+                                  'This will delete:\n' +
+                                  '• All workout history\n' +
+                                  '• Personal records\n' +
+                                  '• Streak data\n' +
+                                  '• Volume statistics\n' +
+                                  '• All achievements\n\n' +
+                                  'This action cannot be undone!';
+                
+                if (!confirm(confirmMsg)) {
+                    return;
+                }
+
+                // Reset workout history
+                this.state.workoutHistory = [];
+                this.safeLocalStorage.removeItem('gymWorkoutHistory');
+                
+                // Reset achievements
+                this.state.unlockedAchievements = [];
+                this.safeLocalStorage.removeItem('gymAchievements');
+                
+                // Show success toast
+                this.showToast('🗑️ All statistics and achievements have been reset', 'success', 3000);
+                
+                // Re-render stats page (will show empty state)
+                this.renderStats();
+            },
+
+            saveExercise() {
+                const name = this.dom.exerciseName.value.trim();
+                
+                // 🆕 STEP 3: Validazione migliorata con limiti specifici
+                // 🆕 STEP 6: Toast invece di alert
+                if (!name) {
+                    this.showToast('Please enter an exercise name', 'error');
+                    this.dom.exerciseName.focus();
+                    return;
+                }
+                
+                if (name.length > 100) {
+                    this.showToast('Exercise name must be 100 characters or less', 'error');
+                    this.dom.exerciseName.focus();
+                    return;
+                }
+
+                const sets = parseInt(this.dom.sets.value) || 0;
+                if (sets > 0 && (sets < 1 || sets > 20)) {
+                    this.showToast('Sets must be between 1 and 20', 'error');
+                    this.dom.sets.focus();
+                    return;
+                }
+                
+                const reps = parseInt(this.dom.reps.value) || 0;
+                if (reps > 0 && (reps < 1 || reps > 100)) {
+                    this.showToast('Reps must be between 1 and 100', 'error');
+                    this.dom.reps.focus();
+                    return;
+                }
+                
+                const weight = parseFloat(this.dom.weight.value) || 0;
+                if (weight < 0 || weight > 500) {
+                    this.showToast('Weight must be between 0 and 500 kg', 'error');
+                    this.dom.weight.focus();
+                    return;
+                }
+
+                // 🆕 STEP 7: Valida URL YouTube se presente
+                const videoLink = this.dom.videoLink.value.trim();
+                if (videoLink) {
+                    const videoId = this.getYouTubeVideoId(videoLink);
+                    if (!videoId) {
+                        this.showToast('⚠️ Invalid YouTube URL. Please use a valid YouTube link', 'error', 4000);
+                        this.dom.videoLink.focus();
+                        return;
+                    }
+                }
+
+                // 🆕 STEP 5: Show loading state
+                const saveBtn = document.querySelector('.button-primary');
+                const originalText = this.dom.saveButtonText.textContent;
+                saveBtn.disabled = true;
+                saveBtn.classList.add('button-loading');
+                this.dom.saveButtonText.textContent = 'Saving...';
+
+                // Simulate async operation con setTimeout
+                setTimeout(() => {
+                    const exercise = {
+                        id: this.state.editingId || Date.now(),
+                        name,
+                        sets: Math.max(0, sets),
+                        reps: Math.max(0, reps),
+                        weight: Math.max(0, weight),
+                        videoLink: videoLink,
+                        lastUpdated: new Date().toLocaleDateString('en-US')
+                    };
+
+                    const exercises = this.state.workoutData[this.state.currentDay];
+                    if (this.state.editingId) {
+                        const index = exercises.findIndex(e => e.id === this.state.editingId);
+                        if (index !== -1) exercises[index] = exercise;
+                    } else {
+                        exercises.unshift(exercise);
+                    }
+
+                    this.saveData();
+                    
+                    // Reset button state
+                    saveBtn.disabled = false;
+                    saveBtn.classList.remove('button-loading');
+                    this.dom.saveButtonText.textContent = originalText;
+                    
+                    this.closeAddModal();
+                    this.renderExercises();
+                    
+                    // 🆕 STEP 6: Success toast
+                    this.showToast(this.state.editingId ? '✅ Exercise updated!' : '✅ Exercise added!', 'success');
+                }, 300);
+            },
+
+            clearForm() {
+                this.dom.exerciseName.value = '';
+                this.dom.sets.value = '';
+                this.dom.reps.value = '';
+                this.dom.weight.value = '';
+                this.dom.videoLink.value = '';
+                this.state.editingId = null;
+                
+                // 🆕 STEP 3: Rimuovi classi di validazione
+                this.dom.sets.classList.remove('valid', 'invalid');
+                this.dom.reps.classList.remove('valid', 'invalid');
+                this.dom.weight.classList.remove('valid', 'invalid');
+                // 🆕 STEP 7: Rimuovi validazione YouTube URL
+                this.dom.videoLink.classList.remove('valid', 'invalid');
+            },
+
+            editExercise(id) {
+                const exercise = this.state.workoutData[this.state.currentDay].find(e => e.id === id);
+                if (!exercise) return;
+
+                this.dom.exerciseName.value = exercise.name;
+                this.dom.sets.value = exercise.sets || '';
+                this.dom.reps.value = exercise.reps || '';
+                this.dom.weight.value = exercise.weight || '';
+                this.dom.videoLink.value = exercise.videoLink || '';
+                this.dom.modalTitle.textContent = 'Edit Exercise';
+                this.dom.deleteBtn.classList.remove('hidden');
+                this.dom.saveButtonText.textContent = 'Save';
+                this.state.editingId = id;
+                
+                // 🆕 STEP 3: Pulisci classi di validazione quando si apre per editing
+                this.dom.sets.classList.remove('valid', 'invalid');
+                this.dom.reps.classList.remove('valid', 'invalid');
+                this.dom.weight.classList.remove('valid', 'invalid');
+                // 🆕 STEP 7: Pulisci validazione YouTube URL
+                this.dom.videoLink.classList.remove('valid', 'invalid');
+                
+                this.dom.addModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            },
+
+            confirmDelete() {
+                if (confirm('Delete this exercise?')) {
+                    // 🆕 STEP 5: Show deleting feedback
+                    const deleteBtn = document.getElementById('deleteBtn');
+                    const originalText = deleteBtn.textContent;
+                    deleteBtn.disabled = true;
+                    deleteBtn.textContent = 'Deleting...';
+                    
+                    setTimeout(() => {
+                        this.deleteExercise(this.state.editingId);
+                        deleteBtn.disabled = false;
+                        deleteBtn.textContent = originalText;
+                        this.closeAddModal();
+                        
+                        // 🆕 STEP 6: Success toast
+                        this.showToast('🗑️ Exercise deleted', 'success');
+                    }, 200);
+                }
+            },
+
+            deleteExercise(id) {
+                this.state.workoutData[this.state.currentDay] = 
+                    this.state.workoutData[this.state.currentDay].filter(e => e.id !== id);
+                this.saveData();
+                this.renderExercises();
+            },
+
+            getYouTubeVideoId(url) {
+                if (!url || typeof url !== 'string') return null;
+                
+                // 🆕 STEP 7: Sanitizza URL (rimuovi caratteri pericolosi)
+                url = url.trim().replace(/[<>'"]/g, '');
+                
+                // Se è solo l'ID (11 caratteri)
+                if (/^[a-zA-Z0-9_-]{11}$/.test(url)) {
+                    return url;
+                }
+                
+                // 🆕 STEP 7: Whitelist di domini YouTube ufficiali
+                const allowedDomains = [
+                    'youtube.com',
+                    'youtu.be',
+                    'youtube-nocookie.com',
+                    'www.youtube.com',
+                    'www.youtu.be',
+                    'www.youtube-nocookie.com',
+                    'm.youtube.com'
+                ];
+                
+                try {
+                    const urlObj = new URL(url);
+                    const hostname = urlObj.hostname.toLowerCase();
+                    
+                    // Verifica che il dominio sia nella whitelist
+                    if (!allowedDomains.includes(hostname)) {
+                        console.warn('⚠️ Invalid YouTube domain:', hostname);
+                        return null;
+                    }
+                    
+                    // Estrai video ID in base al formato URL
+                    let videoId = null;
+                    
+                    // youtube.com/watch?v=VIDEO_ID
+                    if (hostname.includes('youtube.com') && urlObj.pathname === '/watch') {
+                        videoId = urlObj.searchParams.get('v');
+                    }
+                    // youtu.be/VIDEO_ID
+                    else if (hostname.includes('youtu.be')) {
+                        videoId = urlObj.pathname.slice(1).split('?')[0];
+                    }
+                    // youtube.com/embed/VIDEO_ID
+                    else if (urlObj.pathname.startsWith('/embed/')) {
+                        videoId = urlObj.pathname.replace('/embed/', '').split('?')[0];
+                    }
+                    
+                    // 🆕 STEP 7: Valida che il video ID sia nel formato corretto (11 caratteri alfanumerici)
+                    if (videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
+                        return videoId;
+                    }
+                    
+                    console.warn('⚠️ Invalid YouTube video ID format:', videoId);
+                    return null;
+                    
+                } catch (e) {
+                    // Se non è un URL valido, prova i pattern regex come fallback
+                    const patterns = [
+                        /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+                    ];
+                    
+                    for (const pattern of patterns) {
+                        const match = url.match(pattern);
+                        if (match && match[1]) {
+                            return match[1];
+                        }
+                    }
+                    
+                    return null;
+                }
+            },
+
+            toggleVideo(id, event) {
+                event.stopPropagation();
+                const container = document.getElementById(`video-${id}`);
+                const button = document.getElementById(`btn-${id}`);
+                if (!container || !button) return;
+                
+                const isShowing = container.classList.contains('show');
+                const icon = isShowing ? 
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 5v14l11-7L8 5z"/></svg>' :
+                    '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>';
+                
+                if (isShowing) {
+                    container.classList.remove('show');
+                    button.innerHTML = icon + ' Video';
+                } else {
+                    // 🆕 STEP 2: Carica il video immediatamente se non è ancora caricato
+                    if (!container.dataset.loaded) {
+                        const videoId = container.dataset.videoId;
+                        if (videoId) {
+                            const iframe = document.createElement('iframe');
+                            iframe.className = 'video-frame';
+                            iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}`;
+                            iframe.title = 'Video';
+                            iframe.frameBorder = '0';
+                            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+                            iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+                            iframe.allowFullscreen = true;
+                            
+                            container.innerHTML = '';
+                            container.appendChild(iframe);
+                            container.dataset.loaded = 'true';
+                        }
+                    }
+                    
+                    container.classList.add('show');
+                    button.innerHTML = icon + ' Hide';
+                }
+            },
+
+            renderExercises() {
+                const exercises = this.state.workoutData[this.state.currentDay] || [];
+                
+                if (exercises.length === 0) {
+                    this.dom.exerciseList.innerHTML = `
+                        <div class="empty-state glass specular grain">
+                            <div class="empty-state-icon">💪</div>
+                            <div class="empty-state-text">No exercises</div>
+                        </div>
+                        <div class="scroll-spacer"></div>
+                    `;
+                    this.dom.scrollIndicators.style.display = 'none';
+                    return;
+                }
+                
+                const html = exercises.map((ex, index) => {
+                    const videoId = this.getYouTubeVideoId(ex.videoLink);
+                    return `
+                    <div class="exercise-item glass specular grain" data-exercise-index="${index}" onclick="app.editExercise(${ex.id})">
+                        <div class="exercise-name">${this.escapeHtml(ex.name)}</div>
+                        <div class="exercise-stats">
+                            <div class="stat">
+                                <div class="stat-value">${ex.sets}</div>
+                                <div class="stat-label">Sets</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${ex.reps}</div>
+                                <div class="stat-label">Reps</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${ex.weight}</div>
+                                <div class="stat-label">kg</div>
+                            </div>
+                        </div>
+                        ${videoId ? `
+                            <button class="video-toggle" id="btn-${ex.id}" onclick="app.toggleVideo(${ex.id}, event)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M8 5v14l11-7L8 5z"/>
+                                </svg>
+                                Video
+                            </button>
+                            <div class="video-container" id="video-${ex.id}" data-video-id="${videoId}">
+                                <div style="width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;">
+                                    Loading video...
+                                </div>
+                            </div>
+                        ` : ''}
+                        <div class="exercise-date" style="margin-top: auto;">${ex.lastUpdated}</div>
+                    </div>
+                `}).join('');
+                
+                this.dom.exerciseList.innerHTML = html + '<div class="scroll-spacer"></div>';
+                this.renderScrollIndicators(exercises.length);
+                this.dom.exerciseList.scrollTop = 0;
+                
+                // 🆕 STEP 2: Osserva i video containers per lazy loading
+                if (this.videoObserver) {
+                    const videoContainers = this.dom.exerciseList.querySelectorAll('.video-container[data-video-id]');
+                    videoContainers.forEach(container => {
+                        this.videoObserver.observe(container);
+                    });
+                }
+            },
+
+            renderScrollIndicators(count) {
+                if (count <= 1) {
+                    this.dom.scrollIndicators.style.display = 'none';
+                    return;
+                }
+                
+                this.dom.scrollIndicators.style.display = 'flex';
+                const dots = Array.from({ length: count }, (_, i) => 
+                    `<div class="scroll-dot ${i === 0 ? 'active' : ''}" data-dot-index="${i}"></div>`
+                ).join('');
+                
+                this.dom.scrollIndicators.innerHTML = dots;
+            },
+
+            updateScrollIndicators() {
+                const exercises = this.state.workoutData[this.state.currentDay];
+                if (!exercises || exercises.length <= 1) return;
+                
+                const container = this.dom.exerciseList;
+                const items = container.querySelectorAll('.exercise-item');
+                
+                if (items.length === 0) return;
+                
+                const containerTop = container.getBoundingClientRect().top;
+                const snapPosition = containerTop + (parseInt(getComputedStyle(container).scrollPaddingTop) || 0);
+                
+                let closestIndex = 0;
+                let closestDistance = Infinity;
+                
+                items.forEach((item, index) => {
+                    const itemTop = item.getBoundingClientRect().top;
+                    const distance = Math.abs(itemTop - snapPosition);
+                    
+                    if (distance < closestDistance) {
+                        closestDistance = distance;
+                        closestIndex = index;
+                    }
+                });
+                
+                const dots = this.dom.scrollIndicators.querySelectorAll('.scroll-dot');
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === closestIndex);
+                });
+            },
+
+            openImportModal() {
+                document.getElementById('importModal').classList.add('show');
+                this.setupDropZone();
+            },
+
+            closeImportModal() {
+                document.getElementById('importModal').classList.remove('show');
+                this.state.selectedFile = null;
+                document.getElementById('fileName').classList.add('hidden');
+                document.getElementById('fileInput').value = '';
+            },
+
+            closeImportOnBackdrop(event) {
+                if (event.target === document.getElementById('importModal')) {
+                    this.closeImportModal();
+                }
+            },
+
+            selectFormat(format) {
+                this.state.selectedFormat = format;
+                document.getElementById('jsonBtn').classList.toggle('selected', format === 'json');
+                document.getElementById('csvBtn').classList.toggle('selected', format === 'csv');
+                
+                const fileInput = document.getElementById('fileInput');
+                fileInput.accept = format === 'json' ? '.json' : '.csv';
+            },
+
+            setupDropZone() {
+                const dropZone = document.getElementById('dropZone');
+                
+                ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }, false);
+                });
+
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.add('dragover');
+                    }, false);
+                });
+
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropZone.addEventListener(eventName, () => {
+                        dropZone.classList.remove('dragover');
+                    }, false);
+                });
+
+                dropZone.addEventListener('drop', (e) => {
+                    const files = e.dataTransfer.files;
+                    if (files.length) {
+                        this.processFile(files[0]);
+                    }
+                }, false);
+            },
+
+            handleFileSelect(event) {
+                const file = event.target.files[0];
+                if (file) this.processFile(file);
+            },
+
+            processFile(file) {
+                const ext = file.name.split('.').pop().toLowerCase();
+                
+                if ((ext === 'json' && this.state.selectedFormat !== 'json') ||
+                    (ext === 'csv' && this.state.selectedFormat !== 'csv')) {
+                    this.showToast(`Please select ${ext.toUpperCase()} format first`, 'warning');
+                    return;
+                }
+                
+                this.state.selectedFile = file;
+                document.getElementById('fileName').textContent = `📎 ${file.name}`;
+                document.getElementById('fileName').classList.remove('hidden');
+            },
+
+            async importFile() {
+                if (!this.state.selectedFile) {
+                    this.showToast('Please select a file to import', 'error');
+                    return;
+                }
+
+                // 🆕 STEP 5: Show loading state
+                const importBtn = document.querySelector('#importModal .button-primary');
+                const originalText = importBtn.textContent;
+                importBtn.disabled = true;
+                importBtn.classList.add('button-loading');
+                importBtn.textContent = 'Importing...';
+
+                try {
+                    const text = await this.state.selectedFile.text();
+                    let data;
+
+                    if (this.state.selectedFormat === 'json') {
+                        data = await this.parseJSON(text);
+                    } else {
+                        data = await this.parseCSV(text);
+                    }
+
+                    if (data) {
+                        const configSuccess = this.safeLocalStorage.setItem('gymConfig', JSON.stringify({ 
+                            workoutDays: data.giorni 
+                        }));
+                        
+                        const dataSuccess = this.safeLocalStorage.setItem('gymWorkoutData', JSON.stringify(data.esercizi));
+                        
+                        if (configSuccess && dataSuccess) {
+                            this.closeImportModal();
+                            this.closeSettings();
+                            
+                            // Show success message before reload
+                            importBtn.textContent = 'Success!';
+                            this.showToast('✅ Import successful! Reloading...', 'success', 2000);
+                            
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 500);
+                        } else {
+                            this.showToast('⚠️ Import failed: Could not save data to storage', 'error');
+                            importBtn.disabled = false;
+                            importBtn.classList.remove('button-loading');
+                            importBtn.textContent = originalText;
+                        }
+                    } else {
+                        importBtn.disabled = false;
+                        importBtn.classList.remove('button-loading');
+                        importBtn.textContent = originalText;
+                    }
+                } catch (error) {
+                    console.error('❌ Import error:', error);
+                    this.showToast('❌ Import error: ' + error.message, 'error', 4000);
+                    importBtn.disabled = false;
+                    importBtn.classList.remove('button-loading');
+                    importBtn.textContent = originalText;
+                }
+            },
+
+            async parseJSON(text) {
+                try {
+                    const data = JSON.parse(text);
+                    
+                    // Supporta sia italiano che inglese
+                    const days = data.giorni || data.days || data.workoutDays;
+                    const exercises = data.esercizi || data.exercises || data.workoutData;
+                    
+                    if (!days && !exercises) {
+                        throw new Error('Invalid JSON format: missing days/exercises data.\n\nExpected format:\n{\n  "giorni": 3,\n  "esercizi": {...}\n}');
+                    }
+                    
+                    if (!days) {
+                        throw new Error('Missing "giorni" or "days" field');
+                    }
+                    
+                    if (!exercises) {
+                        throw new Error('Missing "esercizi" or "exercises" field');
+                    }
+                    
+                    const numDays = parseInt(days);
+                    if (isNaN(numDays) || numDays < 1 || numDays > 7) {
+                        throw new Error('Invalid number of days (must be between 1 and 7)');
+                    }
+
+                    const workoutData = {};
+                    let idCounter = Date.now();
+                    
+                    for (let day in exercises) {
+                        const dayNum = parseInt(day);
+                        
+                        if (isNaN(dayNum) || dayNum < 1) continue;
+                        if (!Array.isArray(exercises[day])) continue;
+                        
+                        workoutData[dayNum] = exercises[day]
+                            .filter(ex => ex && (ex.nome || ex.name))
+                            .map(ex => {
+                                idCounter++;
+                                return {
+                                    id: idCounter,
+                                    name: String(ex.nome || ex.name || ''),
+                                    sets: parseInt(ex.serie || ex.sets || 0) || 0,
+                                    reps: parseInt(ex.ripetizioni || ex.reps || 0) || 0,
+                                    weight: parseFloat(ex.peso || ex.weight || 0) || 0,
+                                    videoLink: String(ex.video || ex.videoLink || ''),
+                                    lastUpdated: new Date().toLocaleDateString('en-US')
+                                };
+                            });
+                    }
+                    
+                    const totalExercises = Object.values(workoutData).reduce((sum, arr) => sum + arr.length, 0);
+                    
+                    if (totalExercises === 0) {
+                        throw new Error('No valid exercises found in file');
+                    }
+
+                    return {
+                        giorni: numDays,
+                        esercizi: workoutData
+                    };
+                } catch (error) {
+                    if (error instanceof SyntaxError) {
+                        throw new Error('Invalid JSON file: ' + error.message);
+                    }
+                    throw error;
+                }
+            },
+
+            async parseCSV(text) {
+                try {
+                    const lines = text.trim().split('\n');
+                    
+                    if (lines.length < 2) {
+                        throw new Error('CSV file is empty or invalid');
+                    }
+                    
+                    const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+                    
+                    const hasName = headers.some(h => h.includes('nome') || h.includes('name'));
+                    if (!hasName) {
+                        throw new Error('CSV must contain a "nome" or "name" column');
+                    }
+                    
+                    const workoutData = {};
+                    let maxDay = 0;
+                    let idCounter = Date.now();
+                    let validRows = 0;
+
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (!line) continue;
+                        
+                        const values = line.split(',').map(v => v.trim());
+                        if (values.length < 2) continue;
+                        
+                        const row = {};
+                        headers.forEach((header, index) => {
+                            row[header] = values[index] || '';
+                        });
+                        
+                        const name = row.nome || row.name;
+                        if (!name) continue;
+                        
+                        const day = parseInt(row.giorno || row.day || 1);
+                        if (isNaN(day) || day < 1 || day > 7) continue;
+                        
+                        if (day > maxDay) maxDay = day;
+                        if (!workoutData[day]) workoutData[day] = [];
+                        
+                        idCounter++;
+                        workoutData[day].push({
+                            id: idCounter,
+                            name: String(name),
+                            sets: parseInt(row.serie || row.sets || 0) || 0,
+                            reps: parseInt(row.ripetizioni || row.reps || row.repetitions || 0) || 0,
+                            weight: parseFloat(row.peso || row.weight || 0) || 0,
+                            videoLink: String(row.video || row.videolink || ''),
+                            lastUpdated: new Date().toLocaleDateString('en-US')
+                        });
+                        validRows++;
+                    }
+                    
+                    if (validRows === 0) {
+                        throw new Error('No valid exercises found in CSV');
+                    }
+
+                    return {
+                        giorni: maxDay,
+                        esercizi: workoutData
+                    };
+                } catch (error) {
+                    if (error.message.includes('found')) {
+                        throw error;
+                    }
+                    throw new Error('Invalid CSV file: ' + error.message);
+                }
+            },
+
+            exportWorkout(event) {
+                // 🆕 STEP 5: Show loading feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = '📤 Exporting...';
+                
+                setTimeout(() => {
+                    const exportData = {
+                        nome: "My Workout",
+                        giorni: this.state.workoutDays,
+                        esercizi: {}
+                    };
+
+                    for (let day in this.state.workoutData) {
+                        exportData.esercizi[day] = this.state.workoutData[day].map(ex => ({
+                            nome: ex.name,
+                            serie: ex.sets,
+                            ripetizioni: ex.reps,
+                            peso: ex.weight,
+                            video: ex.videoLink
+                        }));
+                    }
+
+                    const dataStr = JSON.stringify(exportData, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `workout_${new Date().toISOString().split('T')[0]}.json`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    // Show success feedback
+                    btn.textContent = '✅ Exported!';
+                    this.showToast('✅ JSON exported successfully!', 'success');
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.textContent = originalText;
+                    }, 1500);
+                }, 200);
+            },
+
+            // 🆕 STEP 8: Export workout data as CSV
+            exportWorkoutCSV(event) {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = '📊 Exporting...';
+                
+                setTimeout(() => {
+                    // CSV Header
+                    let csv = 'Day,Exercise Name,Sets,Reps,Weight (kg),YouTube Link,Last Updated\n';
+                    
+                    // Itera attraverso tutti i giorni
+                    for (let day = 1; day <= this.state.workoutDays; day++) {
+                        const exercises = this.state.workoutData[day] || [];
+                        const dayLetter = this.getDayLetter(day);
+                        
+                        exercises.forEach(ex => {
+                            // Escape virgole e virgolette nei campi
+                            const escapeCsvField = (field) => {
+                                if (field === null || field === undefined) return '';
+                                const str = String(field);
+                                if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+                                    return `"${str.replace(/"/g, '""')}"`;
+                                }
+                                return str;
+                            };
+                            
+                            csv += `${dayLetter},`;
+                            csv += `${escapeCsvField(ex.name)},`;
+                            csv += `${ex.sets || 0},`;
+                            csv += `${ex.reps || 0},`;
+                            csv += `${ex.weight || 0},`;
+                            csv += `${escapeCsvField(ex.videoLink || '')},`;
+                            csv += `${escapeCsvField(ex.lastUpdated || '')}\n`;
+                        });
+                    }
+                    
+                    // Crea Blob con UTF-8 BOM per compatibilità Excel
+                    const BOM = '\uFEFF';
+                    const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+                    const url = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `workout_${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    // Show success feedback
+                    btn.textContent = '✅ Exported!';
+                    this.showToast('✅ CSV exported successfully!', 'success');
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.textContent = originalText;
+                    }, 1500);
+                }, 200);
+            },
+
+            downloadExampleWorkout(event) {
+                // 🆕 STEP 5: Show loading feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = '⬇️ Downloading...';
+                
+                setTimeout(() => {
+                    const exampleWorkout = {
+                        "nome": "6-Day Split",
+                        "giorni": 6,
+                        "esercizi": {
+                            "1": [
+                                {"nome": "Bench Press", "serie": 4, "ripetizioni": 8, "peso": 80, "video": ""},
+                                {"nome": "Incline Press", "serie": 4, "ripetizioni": 10, "peso": 32, "video": ""}
+                            ],
+                            "2": [
+                                {"nome": "Pull-ups", "serie": 4, "ripetizioni": 8, "peso": 0, "video": ""},
+                                {"nome": "Barbell Row", "serie": 4, "ripetizioni": 10, "peso": 70, "video": ""}
+                            ],
+                            "3": [
+                                {"nome": "Squat", "serie": 4, "ripetizioni": 8, "peso": 100, "video": ""},
+                                {"nome": "Leg Press", "serie": 4, "ripetizioni": 12, "peso": 180, "video": ""}
+                            ],
+                            "4": [
+                                {"nome": "Military Press", "serie": 4, "ripetizioni": 8, "peso": 50, "video": ""},
+                                {"nome": "Lateral Raises", "serie": 4, "ripetizioni": 12, "peso": 12, "video": ""}
+                            ],
+                            "5": [
+                                {"nome": "Barbell Curl", "serie": 4, "ripetizioni": 10, "peso": 30, "video": ""},
+                                {"nome": "Skull Crushers", "serie": 4, "ripetizioni": 10, "peso": 25, "video": ""}
+                            ],
+                            "6": [
+                                {"nome": "Deadlift", "serie": 4, "ripetizioni": 6, "peso": 110, "video": ""},
+                                {"nome": "Plank", "serie": 3, "ripetizioni": 60, "peso": 0, "video": ""}
+                            ]
+                        }
+                    };
+
+                    const dataStr = JSON.stringify(exampleWorkout, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = 'example-workout.json';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                    
+                    // Show success feedback
+                    btn.textContent = '✅ Downloaded!';
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.textContent = originalText;
+                    }, 1500);
+                }, 200);
+            },
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => app.init());
+        } else {
+            app.init();
+        }
+    </script>
+</body>
+</html>
