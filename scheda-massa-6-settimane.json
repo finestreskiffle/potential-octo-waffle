@@ -1,0 +1,354 @@
+{
+  "nome": "Scheda Massa 6 Settimane",
+  "giorni": 6,
+  "esercizi": {
+    "1": [
+      {
+        "nome": "Riscaldamento tapis roulant",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=ml6cT4AZdqI"
+      },
+      {
+        "nome": "Chest Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 8,
+        "video": "https://www.youtube.com/watch?v=hr0gkS6XyRc"
+      },
+      {
+        "nome": "Incline Dumbbell Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/shorts/8fXfwG4ftaQ"
+      },
+      {
+        "nome": "Shoulder Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=wBKV5i2bLVE"
+      },
+      {
+        "nome": "Pec Deck o Crossover",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=taI4XduLpTk"
+      },
+      {
+        "nome": "Triceps Pushdown",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=2-LAMcpzODU"
+      },
+      {
+        "nome": "Overhead Triceps Extension",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=vB5OHsJ3EME"
+      },
+      {
+        "nome": "Plank + Crunch su panca",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 40,
+        "video": ""
+      }
+    ],
+    "2": [
+      {
+        "nome": "Riscaldamento step",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=RRn6rL_KlLU"
+      },
+      {
+        "nome": "Lat Machine",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=lueEJGjTuPQ"
+      },
+      {
+        "nome": "Seated Row",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=pYcpY20QaE8"
+      },
+      {
+        "nome": "Pull Down presa inversa",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=roCP6wCXPqo"
+      },
+      {
+        "nome": "Curl bilanciere EZ",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=kwG2ipFRgfo"
+      },
+      {
+        "nome": "Curl alternato manubri",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=av7-8igSXTs"
+      },
+      {
+        "nome": "Leg Raise su panca inclinata",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/watch?v=l4kQd9eWclE"
+      },
+      {
+        "nome": "Cable Crunch",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/watch?v=4b7YFltzF64"
+      }
+    ],
+    "3": [
+      {
+        "nome": "Riscaldamento cyclette",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=58kAEM4yN0M"
+      },
+      {
+        "nome": "Leg Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=IZxyjW7MPJQ"
+      },
+      {
+        "nome": "Leg Extension",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=YyvSfVjQeL0"
+      },
+      {
+        "nome": "Leg Curl",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=1Tq3QdYUuHs"
+      },
+      {
+        "nome": "Calf Raise",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/watch?v=-M4-G8p8fmc"
+      },
+      {
+        "nome": "Crunch Machine",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/shorts/f0tJV1k5BNs"
+      },
+      {
+        "nome": "Plank laterale dx/sx",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 30,
+        "video": "https://www.youtube.com/shorts/fXoTfLuMogs"
+      },
+      {
+        "nome": "HIIT tapis roulant",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=ml6cT4AZdqI"
+      }
+    ],
+    "4": [
+      {
+        "nome": "Riscaldamento step",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=RRn6rL_KlLU"
+      },
+      {
+        "nome": "Lat Machine",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=lueEJGjTuPQ"
+      },
+      {
+        "nome": "Seated Row",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=pYcpY20QaE8"
+      },
+      {
+        "nome": "Pull Down presa inversa",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=roCP6wCXPqo"
+      },
+      {
+        "nome": "Curl bilanciere EZ",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=kwG2ipFRgfo"
+      },
+      {
+        "nome": "Curl alternato manubri",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=av7-8igSXTs"
+      },
+      {
+        "nome": "Leg Raise su panca inclinata",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/watch?v=l4kQd9eWclE"
+      },
+      {
+        "nome": "Cable Crunch",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/watch?v=4b7YFltzF64"
+      }
+    ],
+    "5": [
+      {
+        "nome": "Riscaldamento cyclette",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=58kAEM4yN0M"
+      },
+      {
+        "nome": "Leg Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=IZxyjW7MPJQ"
+      },
+      {
+        "nome": "Leg Extension",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=YyvSfVjQeL0"
+      },
+      {
+        "nome": "Leg Curl",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=1Tq3QdYUuHs"
+      },
+      {
+        "nome": "Calf Raise",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/watch?v=-M4-G8p8fmc"
+      },
+      {
+        "nome": "Crunch Machine",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 15,
+        "video": "https://www.youtube.com/shorts/f0tJV1k5BNs"
+      },
+      {
+        "nome": "Plank laterale dx/sx",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 30,
+        "video": "https://www.youtube.com/shorts/fXoTfLuMogs"
+      },
+      {
+        "nome": "HIIT tapis roulant",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=ml6cT4AZdqI"
+      }
+    ],
+    "6": [
+      {
+        "nome": "Riscaldamento tapis roulant",
+        "peso": 0,
+        "serie": 1,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=ml6cT4AZdqI"
+      },
+      {
+        "nome": "Chest Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 8,
+        "video": "https://www.youtube.com/watch?v=hr0gkS6XyRc"
+      },
+      {
+        "nome": "Incline Dumbbell Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/shorts/8fXfwG4ftaQ"
+      },
+      {
+        "nome": "Shoulder Press",
+        "peso": 0,
+        "serie": 4,
+        "ripetizioni": 10,
+        "video": "https://www.youtube.com/watch?v=wBKV5i2bLVE"
+      },
+      {
+        "nome": "Pec Deck o Crossover",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=taI4XduLpTk"
+      },
+      {
+        "nome": "Triceps Pushdown",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=2-LAMcpzODU"
+      },
+      {
+        "nome": "Overhead Triceps Extension",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 12,
+        "video": "https://www.youtube.com/watch?v=vB5OHsJ3EME"
+      },
+      {
+        "nome": "Plank + Crunch su panca",
+        "peso": 0,
+        "serie": 3,
+        "ripetizioni": 40,
+        "video": ""
+      }
+    ]
+  }
+}
